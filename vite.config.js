@@ -1,12 +1,14 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import { person } from './src/content.js'
 
-// Share cards need absolute URLs. Build with SITE_URL=https://your.domain/ to get them;
-// without it the tags fall back to relative paths, which some apps still resolve.
-const site = (process.env.SITE_URL || '').replace(/\/?$/, '/')
+// Share cards need absolute URLs: SITE_URL if set when building, otherwise person.site
+// in content.js, otherwise relative paths (which some apps still resolve).
+const raw = process.env.SITE_URL || person.site || ''
+const site = raw ? raw.replace(/\/?$/, '/') : './'
 const siteUrl = () => ({
   name: 'site-url',
-  transformIndexHtml: html => html.replaceAll('%SITE_URL%', process.env.SITE_URL ? site : './'),
+  transformIndexHtml: html => html.replaceAll('%SITE_URL%', site),
 })
 
 // base: './' lets the built site run from any folder or sub-path (Vercel, Netlify, GitHub Pages).

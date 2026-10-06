@@ -19,7 +19,7 @@ export const person = {
   linkedin: 'https://www.linkedin.com/in/aditi-arya-787336364',
   // The live address of the site, used by the print kit (QR codes) and share cards.
   // Leave empty to use whatever address the page is opened from.
-  site: '',
+  site: 'https://aditiaryaescaperoomsportfolio.vercel.app/',
 }
 
 export const collection = {

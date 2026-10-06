@@ -28,8 +28,8 @@ paths, so it also works from a sub-folder. On Vercel: framework "Vite", output `
 **Set `SITE_URL` when you build for the live site**, e.g. `SITE_URL=https://aditiarya.com/ npm run build`
 (on Vercel or Netlify, add it as an environment variable). It makes the share card
 (`public/og-card.jpg`, shown when the link is posted on WhatsApp, LinkedIn or X) use absolute
-addresses, which those apps need. Put the same address in `person.site` in `content.js` so the
-QR codes in the print kit point to it.
+addresses, which those apps need. `person.site` in `content.js` (already set to the Vercel address) is used when SITE_URL is not, and by the
+QR codes in the print kit.
 
 ## Change the words, prices or images
 
