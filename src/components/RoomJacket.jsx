@@ -1,22 +1,26 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { Plate, RoomHead, Chips, Spec, Film, SheetsLink } from './parts'
+import { StitchLine } from './craft'
 import { jacket, collection } from '../content'
 
 export default function RoomJacket() {
   const j = jacket
   const [focus, setFocus] = useState(null)
+  const [sewn, setSewn] = useState([])
+  const fig = useRef(null)
   const PAD = 0.05
   return (
     <section id="jacket" className="room" data-tone="#D4C7C3" data-ink="dark" data-sign={collection.signs.jacket}>
-      <RoomHead room={j} sign={collection.signs.jacket} />
+      <RoomHead room={j} sign={collection.signs.jacket} variant="stitch" />
       <div className="jacket-grid">
-        <figure className="jacket-hero">
+        <figure ref={fig} className="jacket-hero">
           <Plate {...j.hero} kind="cutout" pad={PAD} focus={focus} className="jacket-plate">
+            <StitchLine hotspots={j.hotspots} w={j.hero.w} h={j.hero.h} pad={PAD} trigger={fig} onPass={setSewn} />
             {j.hotspots.map(h => (
               <button
                 key={h.label}
                 type="button"
-                className={`hotspot ${h.x > 0.5 ? 'is-left' : ''} ${focus === h ? 'is-on' : ''}`}
+                className={`hotspot ${h.x > 0.5 ? 'is-left' : ''} ${focus === h ? 'is-on' : ''} ${sewn.includes(h.label) ? 'is-sewn' : ''}`}
                 style={{ left: `${(PAD + h.x * (1 - 2 * PAD)) * 100}%`, top: `${(PAD + h.y * (1 - 2 * PAD)) * 100}%` }}
                 aria-label={h.label}
                 onMouseEnter={() => setFocus(h)}
@@ -29,7 +33,7 @@ export default function RoomJacket() {
               </button>
             ))}
           </Plate>
-          <figcaption className="caption">Move the light across the jacket, or point at a marker to light a detail.</figcaption>
+          <figcaption className="caption">Follow the line: it sews from the collar to the cuff as you scroll. Move the light across the jacket, or point at a marker to light a detail.</figcaption>
         </figure>
 
         <div className="jacket-copy">

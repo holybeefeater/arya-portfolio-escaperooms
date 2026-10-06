@@ -5,18 +5,20 @@ import { useScroll, scrollToTarget } from '../lib/scroll'
 import { Sign } from './parts'
 import { models, collection } from '../content'
 
-// A turntable for the three pieces. Real .glb files load when content.js names them;
-// until then each piece is a photo relief, clearly labelled as such.
+// A turntable for the three pieces. Real .glb files load when content.js names them.
+// Pieces without one are left out, unless models.showReliefs asks for labelled photo reliefs.
+const ITEMS = models.showReliefs ? models.items : models.items.filter(i => i.src)
+
 export default function Showcase() {
   const { calm } = useScroll()
   const canvas = useRef(null)
   const api = useRef(null)
-  const [active, setActive] = useState(models.items[0].id)
+  const [active, setActive] = useState(ITEMS[0]?.id)
   const [status, setStatus] = useState({ mode: 'loading', progress: 0 })
   const [failed, setFailed] = useState(false)
   const [auto, setAuto] = useState(true)
   const [close, setClose] = useState(false)
-  const item = models.items.find(i => i.id === active)
+  const item = ITEMS.find(i => i.id === active) || ITEMS[0]
 
   useEffect(() => {
     try {
@@ -44,7 +46,7 @@ export default function Showcase() {
           <h2 className="display section-title">{models.title}</h2>
           <p className="lead">{models.intro}</p>
           <div className="v3d-tabs" role="group" aria-label="Choose a piece">
-            {models.items.map(m => (
+            {ITEMS.map(m => (
               <button key={m.id} type="button" className="v3d-tab" aria-pressed={m.id === active} onClick={() => setActive(m.id)}>{m.label}</button>
             ))}
           </div>

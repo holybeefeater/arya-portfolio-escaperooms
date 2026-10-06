@@ -16,8 +16,10 @@ export const person = {
   minor: 'Interdisciplinary minor in Fashion Communication',
   email: 'aryaaditi2607@gmail.com',
   instagram: { handle: '@diffworld__', url: 'https://www.instagram.com/diffworld__/' },
-  // Add a LinkedIn URL here to show it in the Exit section, e.g. 'https://www.linkedin.com/in/…'
-  linkedin: '',
+  linkedin: 'https://www.linkedin.com/in/aditi-arya-787336364',
+  // The live address of the site, used by the print kit (QR codes) and share cards.
+  // Leave empty to use whatever address the page is opened from.
+  site: '',
 }
 
 export const collection = {
@@ -60,10 +62,15 @@ export const collection = {
 }
 
 // The hero sculpture: one hide for each project. Each hide casts the shadow of what was made from it.
+// `passport` is the material passport shown in the brief. Only facts from her sheets are
+// filled in; add `tannage` or `source` to any of them and they appear too.
 export const hides = [
-  { id: 'suede',  label: 'Olive suede',      from: 'bags',   shadow: 'assets/shadows/suede.png',  swatch: '#5E5B38' },
-  { id: 'nappa',  label: 'Cherry nappa',     from: 'jacket', shadow: 'assets/shadows/nappa.png',  swatch: '#6A1F2E' },
-  { id: 'pullup', label: 'Oil pull-up',      from: 'boots',  shadow: 'assets/shadows/pullup.png', swatch: '#2F3D36' },
+  { id: 'suede',  label: 'Olive suede',      from: 'bags',   shadow: 'assets/shadows/suede.png',  swatch: '#5E5B38',
+    passport: { hide: 'Cow', finish: 'Suede, olive', use: 'Shell A of all four bags', area: '165 dm² across the four bags', pairs: 'Printed polyblend microfibre, dark green cotton lining' } },
+  { id: 'nappa',  label: 'Cherry nappa',     from: 'jacket', shadow: 'assets/shadows/nappa.png',  swatch: '#6A1F2E',
+    passport: { hide: 'Sheep', finish: 'Nappa, cherry maroon', use: 'Body of the jacket', pairs: 'Olive suede collar, cuffs and hem' } },
+  { id: 'pullup', label: 'Oil pull-up',      from: 'boots',  shadow: 'assets/shadows/pullup.png', swatch: '#2F3D36',
+    passport: { grain: 'Full grain', finish: 'Oil pull-up, dark green with black finish', thickness: '1.6–2.0 mm', use: 'Upper of the high ankle boot', pairs: 'Sheep nappa lining, 0.6 mm' } },
 ]
 
 // ─── Room 01 ────────────────────────────────────────────────────────────────
@@ -122,7 +129,9 @@ export const bags = {
       img: { src: 'assets/products/duffle.webp', alt: 'Olive suede duffle with printed panels, studs and a push-lock flap, held by the handles', w: 1113, h: 1536 },
       size: '17 × 9.5 × 5.5 in, 8 in handle drop, 47.2 in detachable strap',
       details: ['Five front-panel pockets', 'Detachable handles', 'Push-lock flap', 'Side concealed zip pocket', 'Back welt pocket', 'Bottom panel studs'],
-      // Aditi's sheet states ₹969. The line items below add up to ₹989. Check which is right.
+      // Aditi's sheet (page 23) prints ₹969, but its own line items add up to ₹989.
+      // The site shows the sum of the lines. Correct a line here if one is wrong.
+      retail: null, // her target retail price in rupees, e.g. 4200. Shown with the markup when set.
       bom: [
         ['Cow suede, olive (shell A)', '70 dm²', 350], ['Printed microfibre (shell B)', '0.10 m²', 45],
         ['Cotton lining, dark green', '0.30 m²', 60], ['Thread, stitch & turn', '1 spool', 40],
@@ -137,6 +146,7 @@ export const bags = {
       img: { src: 'assets/products/tbase.webp', alt: 'T-base crossbody with a suede pocket over a printed flap, lifted by the top edge', w: 739, h: 1145 },
       size: '12 × 10.5 × 3 in, 40 in detachable strap',
       details: ['Four front-panel pockets', 'Card holder', 'Charm-hanging rings', 'Flap gusset pocket', 'Front-panel zip pocket', 'Front-flap push lock'],
+      retail: null,
       bom: [
         ['Cow suede, olive (shell A)', '35 dm²', 175], ['Printed microfibre (shell B)', '0.05 m²', 22.5],
         ['Cotton lining, dark green', '0.15 m²', 30], ['Thread, stitch & turn', '1 spool', 40],
@@ -150,7 +160,9 @@ export const bags = {
       img: { src: 'assets/products/drawstring.webp', alt: 'Drawstring bag in olive suede with a studded flap pocket and a printed zipped base', w: 1416, h: 1688 },
       size: '12 × 15 × 2.5 in, 30 in string',
       details: ['Push-lock pocket flap', 'Two front-panel pockets', 'Side-seam concealed zip', 'Front-panel zip pocket', 'String and buckle'],
-      // Aditi's sheet states ₹870. The line items below add up to ₹810. Check which is right.
+      // Aditi's sheet (page 32) prints ₹870, but its own line items add up to ₹810.
+      // The site shows the sum of the lines. Correct a line here if one is wrong.
+      retail: null,
       bom: [
         ['Cow suede, olive (shell A)', '45 dm²', 225], ['Printed microfibre (shell B)', '0.06 m²', 27],
         ['Cotton lining, dark green', '0.20 m²', 40], ['Thread, stitch & turn', '1 spool', 40],
@@ -165,6 +177,7 @@ export const bags = {
       img: { src: 'assets/products/hobo-single.webp', alt: 'Small hobo bag with pleated printed panels between suede strips, on a long strap', w: 696, h: 936 },
       size: '12 × 5 in, 40 in detachable strap',
       details: ['Pleated panels', 'No. 5 metal zip', 'D-ring hardware', 'Base studs'],
+      retail: null,
       bom: [
         ['Cow suede, olive (shell A)', '15 dm²', 75], ['Printed microfibre (shell B)', '0.05 m²', 22.5],
         ['Cotton lining, dark green', '0.10 m²', 20], ['Thread, stitch & turn', '1 spool', 40],
@@ -173,6 +186,37 @@ export const bags = {
       ],
     },
   ],
+  // The Duffle's five ways to carry (portfolio, page 21). Each has a pictogram in the site.
+  carry: [
+    { id: 'duffle',    label: 'Duffle',     how: 'Both handles together, carried at the side.' },
+    { id: 'tophandle', label: 'Top handle', how: 'One handle, held in front like a case.' },
+    { id: 'backpack',  label: 'Backpack',   how: 'The two dogtooth-hooked straps clipped to the base rings.' },
+    { id: 'shoulder',  label: 'Shoulder',   how: 'The detachable strap shortened, under the arm.' },
+    { id: 'crossbody', label: 'Crossbody',  how: 'The 47.2 in strap at full length, across the body.' },
+  ],
+  // A day with the bags, imagined from the consumer in the brief.
+  day: [
+    { time: '08:30', place: 'Metro to college', bag: 'T-base', mode: 'crossbody', why: 'Hands free on the train; card slots for the metro pass.' },
+    { time: '10:00', place: 'Studio class',     bag: 'Duffle', mode: 'backpack',  why: 'Laptop, sketchbook and swatches, weight on both shoulders.' },
+    { time: '14:00', place: 'Café',             bag: 'Duffle', mode: 'shoulder',  why: 'Strap shortened, the bag sits on the chair beside you.' },
+    { time: '17:30', place: 'Client meeting',   bag: 'Duffle', mode: 'tophandle', why: 'Handles up, straps away: it reads as a case.' },
+    { time: '20:00', place: 'Out for the evening', bag: 'Hobo', mode: 'shoulder', why: 'Only the essentials, in the small pleated crossbody.' },
+  ],
+  // Nesting study for the Duffle: the pieces drawn from its finished size
+  // (17 × 9.5 × 5.5 in, 8 in handle drop, 47.2 in strap) with 1 cm seam allowance,
+  // packed onto a hide 95 cm across. Positions are [name, x, y, width, height] in cm.
+  // Compared with the 70 dm² of suede on Aditi's bill of materials.
+  nesting: {
+    bag: 'Duffle',
+    allowance: 70, // dm² of suede on her BOM
+    pieces: [
+      ['Front', 0, 0, 45.2, 26.1], ['Back', 46.0, 0, 45.2, 26.1], ['Base', 0, 26.9, 45.2, 16.0],
+      ['Flap', 46.0, 26.9, 24.0, 18.0], ['End gusset', 70.8, 26.9, 16.0, 26.1], ['End gusset', 0, 43.7, 26.1, 16.0],
+      ['Strap', 0, 60.5, 61.9, 5.0], ['Strap', 0, 66.3, 61.9, 5.0], ['Handle', 0, 72.1, 50.6, 5.0],
+      ['Handle', 87.6, 26.9, 5.0, 50.6], ['Pocket', 26.9, 43.7, 16.0, 14.0], ['Pocket', 46.0, 45.7, 16.0, 14.0],
+      ['Pocket', 70.8, 53.8, 16.0, 14.0],
+    ],
+  },
   campaign: [
     { src: 'assets/products/bags-pair.webp', alt: 'Drawstring and hobo bags held out side by side', w: 1800, h: 1656, kind: 'cutout' },
     { src: 'assets/products/collection.webp', alt: 'All four bags laid together on a suede-draped plinth', w: 1800, h: 934, kind: 'cutout' },
@@ -208,6 +252,7 @@ export const boots = {
     ['Stitching', 'Double stitch, reinforced panels'], ['Toe spring', '10–15 mm'], ['Heel height', '25–35 mm'],
     ['Ankle height', 'About 6–7 in'], ['Tongue', 'Closed gusset, dust resistant'],
   ],
+  retail: null,
   bom: [
     ['Upper: full grain / oil pull-up leather, 1.6–2.0 mm', '', 330],
     ['Toe puff and heel counter: thermoplastic, 0.6 mm', '', 40],
@@ -230,6 +275,9 @@ export const boots = {
 // path in `src`, e.g. src: 'assets/models/jacket.glb'. Leave src empty to show
 // the photo relief made from `relief`.
 export const models = {
+  // Photo reliefs are a stand-in. While this is false, only pieces with a real .glb
+  // in `src` are shown, and the whole section (and its menu link) hides if there are none.
+  showReliefs: false,
   title: 'Turn it over',
   intro: 'The three pieces on a turntable. Drag sideways to turn them, or use the buttons.',
   reliefNote: 'Shown as a photo relief: depth drawn from the photograph, with the far side mirrored. The full 3D model will replace it.',
@@ -262,23 +310,32 @@ export const internship = {
   ],
 }
 
+// Shown as a corridor of doors. Add `thumb: 'assets/other/….webp'` to any item and
+// the door opens onto that picture; without one it opens onto the description.
 export const otherWork = [
-  { title: 'Craft research documentation: Aipan art', role: 'Research, creative direction' },
-  { title: 'Tannery training, Mirza International Ltd., Unnao', role: 'Research, layout, creative direction' },
-  { title: 'Research paper: the use of AI in the leather industry', role: 'Research gap and academic writing' },
-  { title: 'Design associate, materials and social media', role: 'Startup' },
-  { title: 'Artwork published in Fashion Review, issue 1, Manchester', role: 'Publishing' },
-  { title: 'Artwork published in Lost Stories, 4th edition, NLUJAA Assam', role: 'Publishing' },
-  { title: 'Character design and comic strip design, IIT Bombay', role: 'Faculty mentorship' },
-  { title: 'Silver Jubilee logo, Sanskriti School, New Delhi', role: 'Identity' },
+  { short: 'Aipan art', title: 'Craft research documentation: Aipan art', role: 'Research, creative direction', thumb: '' },
+  { short: 'Tannery', title: 'Tannery training, Mirza International Ltd., Unnao', role: 'Research, layout, creative direction', thumb: '' },
+  { short: 'AI paper', title: 'Research paper: the use of AI in the leather industry', role: 'Research gap and academic writing', thumb: '' },
+  { short: 'Startup', title: 'Design associate, materials and social media', role: 'Startup', thumb: '' },
+  { short: 'Fashion Review', title: 'Artwork published in Fashion Review, issue 1, Manchester', role: 'Publishing', thumb: '' },
+  { short: 'Lost Stories', title: 'Artwork published in Lost Stories, 4th edition, NLUJAA Assam', role: 'Publishing', thumb: '' },
+  { short: 'IIT Bombay', title: 'Character design and comic strip design, IIT Bombay', role: 'Faculty mentorship', thumb: '' },
+  { short: 'Silver Jubilee', title: 'Silver Jubilee logo, Sanskriti School, New Delhi', role: 'Identity', thumb: '' },
 ]
 
 export const about = {
-  portrait: { src: 'assets/profile/aditi-portrait.jpg', alt: 'Portrait of Aditi Arya holding a leather bag', w: 340, h: 355 },
+  portrait: { src: 'assets/profile/aditi-portrait.webp', alt: 'Portrait of Aditi Arya holding a hand-painted bag, wearing her NIFT lanyard', w: 1179, h: 1400 },
+  // Her own line, from the reflection in her internship presentation.
+  motto: 'Craftsmanship is coordination made visible.',
   bio: [
-    'I am a design student drawn to design as a way to explore and to express. I am most interested in how ideas change through research, experiment and making by hand, and I like working just past the conventional approach, where there is room to question and test.',
-    'My work usually starts with research and grows into visual identities and narratives that feel intentional and expressive.',
+    'I see design as a way to make sense of the world and to navigate it with curiosity and purpose. Escape Rooms began with the routines we keep wanting to escape, and the mundane spaces where life still unfolds.',
+    'My work starts with research, then moves through experiment and making by hand. I like working just past the conventional approach, where there is still room to question and test.',
   ],
+  // A line from a mentor or tutor. Shown in About when filled in, e.g.
+  // { text: '…', name: 'Sunaina Harjai', role: 'Founder and director, Hats Off Accessories' }
+  testimonial: null,
+  // Photographs of the IFCOMA Shoetech display, e.g. [{ src: 'assets/exhibition/ifcoma-1.webp', alt: '…', w, h }]
+  exhibition: [],
   education: [
     ['Bachelor of Design, Leather Design', 'NIFT Raebareli, 2023–2027'],
     ['Minor, Fashion Communication', 'NIFT Raebareli'],
@@ -298,11 +355,20 @@ export const about = {
   tools: ['Adobe Creative Suite', 'Procreate', 'Figma', 'Rhino 3D', 'CLO 3D', 'Shoemaster', 'ERP software'],
 }
 
+// The Exit's clue cards, in this order.
 export const downloads = [
-  { label: 'Résumé', file: 'downloads/Aditi-Arya-Resume.pdf', size: '0.8 MB' },
-  { label: 'Full portfolio, 49 pages', file: 'downloads/Aditi-Arya-Full-Portfolio.pdf', size: '10 MB' },
-  { label: 'Internship presentation', file: 'downloads/Aditi-Arya-Industry-Internship.pptx', size: '5 MB' },
+  { label: 'Résumé', note: 'One page', file: 'downloads/Aditi-Arya-Resume.pdf', size: '0.8 MB' },
+  { label: 'Full portfolio', note: '49 pages', file: 'downloads/Aditi-Arya-Full-Portfolio.pdf', size: '10 MB' },
+  { label: 'Jacket', note: 'Project PDF', file: 'downloads/Aditi-Arya-Kimono-Jacket.pdf', size: '' },
+  { label: 'Bags', note: 'Project PDF', file: 'downloads/Aditi-Arya-Escape-Rooms.pdf', size: '' },
+  { label: 'Boots', note: 'Project PDF', file: 'downloads/Aditi-Arya-Ankle-Boots.pdf', size: '' },
+  { label: 'Internship', note: 'Presentation', file: 'downloads/Aditi-Arya-Industry-Internship.pptx', size: '5 MB' },
 ]
+
+// Short clips of making: skiving, edge painting, hand stitching, riveting. A strip of
+// them appears in the brief when this list has entries, e.g.
+// { src: 'assets/making/edge-paint.mp4', poster: 'assets/making/edge-paint.webp', label: 'Edge painting' }
+export const making = []
 
 // Portfolio pages, used by the sheet viewer. Page images live in assets/pages/p1.jpg … p49.jpg
 export const pageSrc = n => `assets/pages/p${n}.jpg`
@@ -311,3 +377,13 @@ export const sheetsFor = ({ from, to }) => Array.from({ length: to - from + 1 },
 // Sum a bill of materials. Returns a number in rupees.
 export const bomTotal = rows => rows.reduce((sum, row) => sum + Number(row[2] || 0), 0)
 export const rupees = n => '₹' + (Number.isInteger(n) ? n.toLocaleString('en-IN') : n.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }))
+
+// Aditi's own words, from her internship presentation. Used beside the nesting study.
+export const materialQuote = 'A material choice is never purely aesthetic; it changes cost, timing, construction and the final image.'
+
+// The three keys, one for finishing each room. They are a reward only: nothing is locked.
+export const keys = [
+  { id: 'jacket', label: 'Jacket', how: 'Follow the stitch line to the hem' },
+  { id: 'bags',   label: 'Bags',   how: 'Drive to the end of the row' },
+  { id: 'boots',  label: 'Boots',  how: 'Take the boot fully apart' },
+]

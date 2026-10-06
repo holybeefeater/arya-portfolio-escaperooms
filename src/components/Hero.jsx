@@ -6,6 +6,8 @@ import { url } from '../lib/asset'
 import { finePointer } from '../lib/motion'
 import { useScroll } from '../lib/scroll'
 import { guide, guideFor } from '../lib/guide'
+import { sound } from '../lib/sound'
+import { progress } from '../lib/progress'
 import { Sign } from './parts'
 import { person, collection, hides } from '../content'
 
@@ -18,6 +20,7 @@ export default function Hero({ onRoomReady }) {
   const section = useRef(null)
   const canvas = useRef(null)
   const nameRef = useRef(null)
+  const sign = useRef(null)
   const api = useRef(null)
   const [hide, setHide] = useState(hides[0].id)
   const [failed, setFailed] = useState(false)
@@ -44,6 +47,22 @@ export default function Hero({ onRoomReady }) {
   }, [])
   useEffect(() => { api.current?.setHide(hide) }, [hide])
   useEffect(() => { api.current?.setMotion(!calm) }, [calm])
+
+  // the collection's sign is a fluorescent box: it stutters on once the shutter opens
+  useEffect(() => {
+    let lit = false
+    return progress.subscribe(s => {
+      if (lit || !s.started || !sign.current) return
+      lit = true
+      if (calm) { gsap.set(sign.current, { opacity: 1 }); return }
+      gsap.timeline({ delay: 0.5 })
+        .to(sign.current, { opacity: 1, duration: 0.04 })
+        .to(sign.current, { opacity: 0.35, duration: 0.08 })
+        .to(sign.current, { opacity: 1, duration: 0.04, delay: 0.14 })
+        .to(sign.current, { opacity: 0.55, duration: 0.1 })
+        .to(sign.current, { opacity: 1, duration: 0.05, delay: 0.2 })
+    })
+  }, [calm])
 
   // keep the name inside the screen whatever font arrives (Archivo, or a wider fallback)
   useEffect(() => {
@@ -123,7 +142,10 @@ export default function Hero({ onRoomReady }) {
       {failed && <img className="room-fallback" src={url('assets/products/duffle.webp')} alt="Olive suede duffle bag from Escape Rooms" />}
 
       <div className="hero-fade hero-lede">
-        <p><strong>{collection.title}</strong>, a collection in leather.</p>
+        <p ref={sign} className="lit-sign">
+          <span className="lit-sign-title">{collection.title}</span>
+          <span className="lit-sign-sub">A collection in leather · {collection.season.replace('Ready-to-wear, ', '')}</span>
+        </p>
         <p>A jacket, four bags and a pair of boots by {person.name.split(' ')[0]}, {person.degree.split(',')[0].replace('B.Des. ', 'B.Des. student in ')} at {person.school}.</p>
       </div>
 
@@ -131,7 +153,7 @@ export default function Hero({ onRoomReady }) {
         <p className="picker-title" id="hide-label">Change the hide</p>
         <div role="group" aria-labelledby="hide-label" className="picker-row">
           {hides.map(h => (
-            <button key={h.id} type="button" className="hide-btn" aria-pressed={hide === h.id} onClick={() => setHide(h.id)}>
+            <button key={h.id} type="button" className="hide-btn" aria-pressed={hide === h.id} onClick={() => { if (h.id !== hide) sound.play('click'); setHide(h.id) }} aria-label={h.label}>
               <span className="hide-chip" style={{ '--c': h.swatch }} aria-hidden="true" />
               <span className="hide-name">{h.label}</span>
             </button>

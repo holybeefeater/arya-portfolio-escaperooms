@@ -4,7 +4,10 @@ import { stage } from '../lib/stage'
 import { finePointer } from '../lib/motion'
 import { useScroll, scrollToTarget } from '../lib/scroll'
 import { guide } from '../lib/guide'
-import { person, collection } from '../content'
+import { progress } from '../lib/progress'
+import { sound } from '../lib/sound'
+import Mark from './Mark'
+import { person, collection, models, keys } from '../content'
 
 // ── Intro: a fluorescent tube stutters on, then the shutter splits along its line.
 // The flicker stays under three flashes a second and is skipped for reduced motion.
@@ -56,6 +59,7 @@ export function Intro({ calm, roomReady, onDone }) {
       <div ref={top} className="intro-half intro-top" />
       <div ref={bottom} className="intro-half intro-bottom" />
       <div className="intro-center">
+        <Mark className="intro-mark" />
         <div ref={tube} className="intro-tube" />
         <p ref={text} className="intro-text" aria-live="polite">
           <span>{collection.signs.hero}</span>
@@ -103,9 +107,64 @@ export function Cursor() {
   )
 }
 
-const LINKS = [['Jacket', '#jacket'], ['Bags', '#bags'], ['Boots', '#boots'], ['In 3D', '#in-3d'], ['Other work', '#other'], ['About', '#about'], ['Contact', '#exit']]
+export const hasModels = models.showReliefs || models.items.some(i => i.src)
+const LINKS = [['Jacket', '#jacket'], ['Bags', '#bags'], ['Boots', '#boots'], ...(hasModels ? [['In 3D', '#in-3d']] : []), ['Other work', '#other'], ['About', '#about'], ['Contact', '#exit']]
 
-export function Header() {
+function KeyIcon({ found }) {
+  return (
+    <svg className={`key-icon ${found ? 'is-found' : ''}`} viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="7" cy="12" r="4.2" fill="none" stroke="currentColor" strokeWidth="2" />
+      <path d="M11.2 12 H21 M17 12 v3.4 M20 12 v2.4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  )
+}
+
+// ── Key ring: one brass key for finishing each room. A reward, never a lock.
+export function KeyRing() {
+  const [found, setFound] = useState([])
+  const [toast, setToast] = useState(null)
+  useEffect(() => {
+    let timer
+    let seen = 0
+    return progress.subscribe(s => {
+      setFound(s.keys)
+      if (s.keys.length > seen) {
+        seen = s.keys.length
+        const k = keys.find(k => k.id === s.last)
+        setToast(k ? `Key ${s.keys.length} of ${keys.length}: ${k.label}` : null)
+        sound.play('key')
+        clearTimeout(timer)
+        timer = setTimeout(() => setToast(null), 2600)
+      }
+    })
+  }, [])
+  const label = `${found.length} of ${keys.length} keys found. ${keys.map(k => `${k.label}: ${found.includes(k.id) ? 'found' : k.how.toLowerCase()}`).join('. ')}.`
+  return (
+    <div className="keyring" role="status" aria-label={label} title={label}>
+      <span className="keyring-loop" aria-hidden="true" />
+      {keys.map(k => <KeyIcon key={k.id} found={found.includes(k.id)} />)}
+      <span className={`keyring-toast ${toast ? 'is-on' : ''}`} aria-live="polite">{toast}</span>
+    </div>
+  )
+}
+
+export function SoundToggle() {
+  const [on, setOn] = useState(sound.isOn())
+  useEffect(() => sound.subscribe(setOn), [])
+  return (
+    <button type="button" className="sound-btn" aria-pressed={on} onClick={() => sound.toggle()} title={on ? 'Sound on' : 'Sound off'}>
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M4 9 H8 L13 5 V19 L8 15 H4 Z" fill="currentColor" />
+        {on
+          ? <path d="M16 9 q2 3 0 6 M18.5 6.5 q4.5 5.5 0 11" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+          : <path d="M16.5 9.5 l5 5 M21.5 9.5 l-5 5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />}
+      </svg>
+      <span className="sr-only">Sound</span>
+    </button>
+  )
+}
+
+export function Header({ onHint }) {
   const { smoother } = useScroll()
   const [open, setOpen] = useState(false)
   const btn = useRef(null)
@@ -118,13 +177,18 @@ export function Header() {
   const go = (e, href) => { e.preventDefault(); setOpen(false); scrollToTarget(smoother, href) }
   return (
     <header className="site-header">
-      <a href="#top" className="wordmark" onClick={e => go(e, '#top')}>{person.name}</a>
-      <button ref={btn} type="button" className="menu-btn" aria-expanded={open} aria-controls="site-nav" onClick={() => setOpen(v => !v)}>
-        {open ? 'Close' : 'Menu'}
-      </button>
+      <a href="#top" className="wordmark" onClick={e => go(e, '#top')}><Mark className="wordmark-mark" />{person.name}</a>
       <nav id="site-nav" className={open ? 'nav is-open' : 'nav'} aria-label="Sections">
         {LINKS.map(([label, href]) => <a key={href} href={href} onClick={e => go(e, href)}>{label}</a>)}
       </nav>
+      <div className="header-tools">
+        <button type="button" className="hint-btn" onClick={onHint} aria-haspopup="dialog">Need a hint?</button>
+        <KeyRing />
+        <SoundToggle />
+      </div>
+      <button ref={btn} type="button" className="menu-btn" aria-expanded={open} aria-controls="site-nav" onClick={() => setOpen(v => !v)}>
+        {open ? 'Close' : 'Menu'}
+      </button>
     </header>
   )
 }

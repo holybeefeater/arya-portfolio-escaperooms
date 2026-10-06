@@ -54,3 +54,39 @@ test('each hide has a shadow and a matching project', () => {
     assert.ok(existsSync(publicPath(h.shadow)), h.shadow)
   }
 })
+
+test('duffle nesting: pieces do not overlap, and the yield matches her bill of materials', () => {
+  const { pieces, allowance } = content.bags.nesting
+  assert.equal(pieces.length, 13)
+  for (let i = 0; i < pieces.length; i++) {
+    const [, x, y, w, h] = pieces[i]
+    assert.ok(x >= 0 && y >= 0 && x + w <= 95 + 1e-9, `${pieces[i][0]} sits on the 95 cm hide`)
+    for (let j = i + 1; j < pieces.length; j++) {
+      const [, x2, y2, w2, h2] = pieces[j]
+      const apart = x + w <= x2 || x2 + w2 <= x || y + h <= y2 || y2 + h2 <= y
+      assert.ok(apart, `${pieces[i][0]} overlaps ${pieces[j][0]}`)
+    }
+  }
+  const area = pieces.reduce((s, [, , , w, h]) => s + w * h, 0) / 100
+  assert.equal(Math.round(area * 10) / 10, 61.5)
+  // the duffle's suede line on its bill of materials is 70 dm²
+  assert.equal(allowance, Number(content.bags.pieces[0].bom[0][1].replace(/[^\d.]/g, '')))
+  assert.equal(Math.round((area / allowance) * 100), 88)
+})
+
+test('every stop in the day uses a real bag and a real carry mode', () => {
+  const bags = content.bags.pieces.map(p => p.name)
+  const modes = content.bags.carry.map(c => c.id)
+  assert.equal(modes.length, 5)
+  for (const s of content.bags.day) {
+    assert.ok(bags.includes(s.bag), s.bag)
+    assert.ok(modes.includes(s.mode), s.mode)
+  }
+})
+
+test('one key per room, and the suede area in the passport adds up', () => {
+  assert.deepEqual(content.keys.map(k => k.id), ['jacket', 'bags', 'boots'])
+  const suede = content.bags.pieces.reduce((s, p) => s + Number(p.bom[0][1].replace(/[^\d.]/g, '')), 0)
+  assert.equal(suede, 165)
+  assert.match(content.hides[0].passport.area, /^165 dm²/)
+})

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="480" height="480">
+  <!-- Aditi Arya, maker's mark. One colour; scale freely. For a deboss die, use the letters only. -->
+  <g fill="none" stroke="#1E2A24">
+    <rect x="3" y="3" width="114" height="114" rx="14" stroke-width="3.5"/>
+    <rect x="11" y="11" width="98" height="98" rx="8" stroke-width="1.6" stroke-dasharray="4.5 3.5"/>
+    <path d="M16 96 L37 24 H52 V96 M26 70 H52 M68 96 V24 H83 L104 96 M68 70 H94" stroke-width="8.5" stroke-linejoin="miter"/>
+  </g>
+</svg>

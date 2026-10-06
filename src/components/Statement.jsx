@@ -1,5 +1,6 @@
 import { Plate, Sign } from './parts'
-import { collection } from '../content'
+import { HidePassport, Making } from './craft'
+import { collection, hides, making } from '../content'
 
 export default function Statement() {
   const c = collection
@@ -40,6 +41,8 @@ export default function Statement() {
           ))}
         </ul>
       </div>
+      <HidePassport hides={hides} />
+      <Making clips={making} />
     </section>
   )
 }

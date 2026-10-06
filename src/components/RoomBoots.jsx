@@ -3,8 +3,10 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useScroll } from '../lib/scroll'
 import { guide, guideFor } from '../lib/guide'
+import { progress } from '../lib/progress'
+import { Costing } from './craft'
 import { Plate, RoomHead, Spec, Bom, Film, SheetsLink, Sign } from './parts'
-import { boots, collection } from '../content'
+import { boots, bags, collection } from '../content'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -53,7 +55,11 @@ export default function RoomBoots() {
 
   useLayoutEffect(() => {
     if (!ready) return
-    if (calm) { stack.current.style.setProperty('--e', '1'); return }
+    if (calm) {
+      stack.current.style.setProperty('--e', '1')
+      const st = ScrollTrigger.create({ trigger: stack.current, start: 'bottom 85%', onEnter: () => progress.key('boots') })
+      return () => st.kill()
+    }
     const hold = guideFor('boots', {
       smoother,
       skipText: 'Skip past the boot',
@@ -64,7 +70,10 @@ export default function RoomBoots() {
       gsap.fromTo(stack.current, { '--e': 0 }, {
         '--e': 1,
         ease: 'none',
-        scrollTrigger: { trigger: pin.current, start: 'top top', end: '+=90%', pin: true, scrub: 0.4, anticipatePin: 1, ...hold },
+        scrollTrigger: {
+          trigger: pin.current, start: 'top top', end: '+=90%', pin: true, scrub: 0.4, anticipatePin: 1, ...hold,
+          onUpdate: self => { hold.onUpdate(self); if (self.progress > 0.95) progress.key('boots') },
+        },
       })
     }, pin)
     return () => { ctx.revert(); guide.hide('boots') }
@@ -72,7 +81,7 @@ export default function RoomBoots() {
 
   return (
     <section id="boots" className="room" data-tone="#BCC8C3" data-ink="dark" data-sign={collection.signs.boots}>
-      <RoomHead room={b} sign={collection.signs.boots} />
+      <RoomHead room={b} sign={collection.signs.boots} variant="layers" />
       <div ref={pin} className="explode-pin">
         <div className="explode-copy">
           <p className="lead">{b.text}</p>
@@ -113,6 +122,7 @@ export default function RoomBoots() {
           <Bom rows={b.bom} name="UK 9" />
         </div>
       </div>
+      <Costing items={[...bags.pieces, { name: 'High ankle boot', bom: b.bom, retail: b.retail }]} />
       <Film film={b.film} alt="Process film for the boots" />
       <SheetsLink room={b} />
     </section>
