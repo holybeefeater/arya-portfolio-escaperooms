@@ -7,6 +7,15 @@ import { leatherNormal } from './leather'
 //  Its doorway is a stencil portal onto a corridor far deeper than the cube.
 //  It casts the shadow of whatever its hide was made into.
 //
+//  It is told the way a leather piece is made:
+//   build    · six cut panels fly in, lacing pulls them together, the seams are
+//              saddle-stitched and the straps buckle on (once, when the shutter opens)
+//   torch    · a warm work-lamp follows the pointer across the grain
+//   explode  · on scroll the room comes apart into its panels, laced edge to edge
+//              and lined in cotton, with tech-pack call-outs (anchors are reported
+//              to the page as screen positions)
+//   enter    · it closes again and the camera walks through the door
+//
 //  Render order each frame:
 //   1. the room itself            (colour + depth)
 //   2. the doorway mask           (stencil only, depth-tested against the room)
@@ -145,7 +154,7 @@ function glowTexture() {
   return t
 }
 
-export function createRoom(canvas, { hide = 'suede', shadows, motion = true, onReady } = {}) {
+export function createRoom(canvas, { hide = 'suede', shadows, motion = true, onReady, onAnchors } = {}) {
   const owned = { geo: [], mat: [], tex: [] }
   const G = g => (owned.geo.push(g), g)
   const M = m => (owned.mat.push(m), m)
@@ -185,6 +194,9 @@ export function createRoom(canvas, { hide = 'suede', shadows, motion = true, onR
   const strapMat = M(new THREE.MeshPhysicalMaterial({ color: '#3b281d', roughness: 0.5, clearcoat: 0.3, clearcoatRoughness: 0.4, side: THREE.DoubleSide }))
   const brass = M(new THREE.MeshStandardMaterial({ color: '#b39452', metalness: 1, roughness: 0.3 }))
   const thread = M(new THREE.MeshStandardMaterial({ color: '#d9c89b', roughness: 0.75 }))
+  const lace = M(new THREE.MeshStandardMaterial({ color: '#e8d9a8', roughness: 0.6, emissive: '#3a3018' }))
+  // dark green cotton, as in the bags
+  const lining = M(new THREE.MeshStandardMaterial({ color: '#1f3b2e', roughness: 1, side: THREE.DoubleSide }))
 
   // ── the room ─────────────────────────────────────────────────────────────
   const room = new THREE.Group()
@@ -200,8 +212,6 @@ export function createRoom(canvas, { hide = 'suede', shadows, motion = true, onR
   const plain = G(panelGeometry(false))
   const withDoor = G(panelGeometry(true))
   const zOut = T / 2 + BT
-  const stitchSpots = []
-  const rivetSpots = []
   const seamPath = roundRect(new THREE.Path(), -(A - 0.07), -(A - 0.07), 2 * (A - 0.07), 2 * (A - 0.07), 0.05)
   const doorSeam = new THREE.Path()
   {
@@ -210,38 +220,91 @@ export function createRoom(canvas, { hide = 'suede', shadows, motion = true, onR
     doorSeam.lineTo(xr - r, yt); doorSeam.quadraticCurveTo(xr, yt, xr, yt - r); doorSeam.lineTo(xr, yb)
   }
   const corner = A - 0.13
-  for (const f of faces) {
-    const mesh = new THREE.Mesh(f.door ? withDoor : plain, [hideMat, edgeMat])
-    mesh.position.set(...f.n).multiplyScalar(HALF - zOut)
-    mesh.rotation.set(...f.r)
-    mesh.updateMatrix()
-    room.add(mesh)
-    for (const s of stitchesAlong(seamPath, 0.072)) stitchSpots.push({ m: mesh.matrix, ...s })
-    if (f.door) for (const s of stitchesAlong(doorSeam, 0.072, true)) stitchSpots.push({ m: mesh.matrix, ...s })
-    for (const [x, y] of [[corner, corner], [-corner, corner], [-corner, -corner], [corner, -corner]]) rivetSpots.push({ m: mesh.matrix, x, y })
-    if (f.door) {
-      const dx = DOOR.w / 2 + 0.13
-      for (const [x, y] of [[dx, DOOR.y0 + 0.12], [-dx, DOOR.y0 + 0.12], [dx, DOOR.y0 + DOOR.h - 0.05], [-dx, DOOR.y0 + DOOR.h - 0.05]]) rivetSpots.push({ m: mesh.matrix, x, y })
-    }
-  }
-  const tmpM = new THREE.Matrix4(), tmpQ = new THREE.Quaternion(), tmpP = new THREE.Vector3(), one = new THREE.Vector3(1, 1, 1)
-  const zAxis = new THREE.Vector3(0, 0, 1)
-  const stitches = new THREE.InstancedMesh(G(new THREE.CylinderGeometry(0.0062, 0.0062, 0.04, 5, 1)), thread, stitchSpots.length)
-  stitchSpots.forEach((s, i) => {
-    tmpQ.setFromAxisAngle(zAxis, Math.atan2(s.t.y, s.t.x) - Math.PI / 2)
-    tmpP.set(s.p.x, s.p.y, zOut + 0.002)
-    tmpM.compose(tmpP, tmpQ, one).premultiply(s.m)
-    stitches.setMatrixAt(i, tmpM)
-  })
-  room.add(stitches)
+  const stitchGeo = G(new THREE.CylinderGeometry(0.0062, 0.0062, 0.04, 5, 1))
   const rivetGeo = G(new THREE.SphereGeometry(0.03, 14, 8, 0, Math.PI * 2, 0, Math.PI / 2))
   rivetGeo.rotateX(Math.PI / 2)
-  const rivets = new THREE.InstancedMesh(rivetGeo, brass, rivetSpots.length)
-  rivetSpots.forEach((s, i) => {
-    tmpM.makeTranslation(s.x, s.y, zOut).premultiply(s.m)
-    rivets.setMatrixAt(i, tmpM)
+  const liningPlain = G(new THREE.ShapeGeometry(roundRect(new THREE.Shape(), -A + 0.04, -A + 0.04, 2 * A - 0.08, 2 * A - 0.08, 0.05)))
+  const liningDoor = (() => {
+    const sh = roundRect(new THREE.Shape(), -A + 0.04, -A + 0.04, 2 * A - 0.08, 2 * A - 0.08, 0.05)
+    sh.holes.push(roundRect(new THREE.Path(), -DOOR.w / 2 - 0.01, DOOR.y0 - 0.01, DOOR.w + 0.02, DOOR.h + 0.02, 0.035))
+    return G(new THREE.ShapeGeometry(sh))
+  })()
+  const tmpM = new THREE.Matrix4(), tmpQ = new THREE.Quaternion(), tmpP = new THREE.Vector3(), one = new THREE.Vector3(1, 1, 1)
+  const zAxis = new THREE.Vector3(0, 0, 1)
+  // Each panel is its own group (its stitches and rivets ride with it), so the room
+  // can be assembled and taken apart. Local +z of every panel points outward.
+  const panels = faces.map((f, i) => {
+    const base = new THREE.Group()
+    base.position.set(...f.n).multiplyScalar(HALF - zOut)
+    base.rotation.set(...f.r)
+    const inner = new THREE.Group()
+    base.add(inner)
+    room.add(base)
+    inner.add(new THREE.Mesh(f.door ? withDoor : plain, [hideMat, edgeMat]))
+    const lin = new THREE.Mesh(f.door ? liningDoor : liningPlain, lining)
+    lin.position.z = -T / 2 - BT - 0.004
+    inner.add(lin)
+    const spots = stitchesAlong(seamPath, 0.072)
+    if (f.door) spots.push(...stitchesAlong(doorSeam, 0.072, true))
+    const st = new THREE.InstancedMesh(stitchGeo, thread, spots.length)
+    spots.forEach((sp, k) => {
+      tmpQ.setFromAxisAngle(zAxis, Math.atan2(sp.t.y, sp.t.x) - Math.PI / 2)
+      st.setMatrixAt(k, tmpM.compose(tmpP.set(sp.p.x, sp.p.y, zOut + 0.002), tmpQ, one))
+    })
+    inner.add(st)
+    const rs = [[corner, corner], [-corner, corner], [-corner, -corner], [corner, -corner]]
+    if (f.door) {
+      const dx = DOOR.w / 2 + 0.13
+      rs.push([dx, DOOR.y0 + 0.12], [-dx, DOOR.y0 + 0.12], [dx, DOOR.y0 + DOOR.h - 0.05], [-dx, DOOR.y0 + DOOR.h - 0.05])
+    }
+    const rv = new THREE.InstancedMesh(rivetGeo, brass, rs.length)
+    rs.forEach(([x, y], k) => rv.setMatrixAt(k, tmpM.makeTranslation(x, y, zOut)))
+    inner.add(rv)
+    return { i, n: new THREE.Vector3(...f.n), base, inner, stitches: st, total: spots.length, rivets: rv, d: 0 }
   })
-  room.add(rivets)
+  const front = panels[0]
+
+  // Lacing: waxed thread zig-zagging across each of the twelve edges, visible
+  // while the panels are apart (it is what pulls them together).
+  const EDGES = []
+  for (let a = 0; a < 6; a++) for (let b = a + 1; b < 6; b++) {
+    const n1 = panels[a].n, n2 = panels[b].n
+    if (Math.abs(n1.dot(n2)) < 0.5) EDGES.push([a, b, new THREE.Vector3().crossVectors(n1, n2).normalize()])
+  }
+  const LACE_K = 11
+  const laceGeo = G(new THREE.CylinderGeometry(0.0075, 0.0075, 1, 5, 1))
+  const laces = new THREE.InstancedMesh(laceGeo, lace, EDGES.length * LACE_K * 2)
+  laces.frustumCulled = false
+  room.add(laces)
+  const la = new THREE.Vector3(), lb = new THREE.Vector3(), ld = new THREE.Vector3(), yAxis = new THREE.Vector3(0, 1, 0)
+  const lacePoint = (out, n1, n2, axis, d1, t) => out.copy(n1).multiplyScalar(HALF - 0.05 + d1).addScaledVector(n2, A - 0.05).addScaledVector(axis, t)
+  const laceMid = new THREE.Vector3()
+  const tmpP2 = new THREE.Vector3()
+  function updateLaces() {
+    let k = 0
+    const midEdge = EDGES.findIndex(([a, b]) => (a === 0 && b === 2))
+    EDGES.forEach(([a, b, axis], e) => {
+      const d1 = panels[a].d, d2 = panels[b].d
+      const show = Math.max(d1, d2) > 0.03
+      for (let j = 0; j < LACE_K; j++) {
+        const t0 = -0.82 + (1.64 * j) / LACE_K, t1 = t0 + 0.82 / LACE_K
+        for (const [p1, p2] of [[lacePoint(la, panels[a].n, panels[b].n, axis, d1, t0), lacePoint(lb, panels[b].n, panels[a].n, axis, d2, t1)],
+                                [lacePoint(la, panels[b].n, panels[a].n, axis, d2, t1), lacePoint(lb, panels[a].n, panels[b].n, axis, d1, t1 + 0.82 / LACE_K)]]) {
+          ld.subVectors(p2, p1)
+          const len = ld.length()
+          tmpQ.setFromUnitVectors(yAxis, ld.divideScalar(len || 1))
+          tmpP.addVectors(p1, p2).multiplyScalar(0.5)
+          if (e === midEdge && j === Math.floor(LACE_K / 2)) laceMid.copy(tmpP)
+          laces.setMatrixAt(k++, tmpM.compose(tmpP, tmpQ, tmpP2.set(show ? 1 : 0, show ? len : 0, show ? 1 : 0)))
+        }
+      }
+    })
+    laces.instanceMatrix.needsUpdate = true
+  }
+
+  // A warm work-lamp that follows the pointer, raking across the grain.
+  const torch = new THREE.PointLight(0xffd2a0, 0, 3.6, 2)
+  main.add(torch)
 
   // Light leaking from the doorway.
   const leak = new THREE.PointLight(0x3ddc84, 4, 3.2, 2)
@@ -368,6 +431,7 @@ export function createRoom(canvas, { hide = 'suede', shadows, motion = true, onR
   // ── state ────────────────────────────────────────────────────────────────
   const state = {
     p: 0, motion, t: 0, rotY: -0.62, velY: 0.12, drag: false, lastX: 0, lastT: 0,
+    build: 0, building: false, apart: 0, apartTo: 0, lastPointer: -10,
     px: 0, py: 0, sx: 0, sy: 0, width: 1, height: 1, camZ0: 7.6, camZEnd: 1.6, visible: true, disposed: false,
     lookFrom: new THREE.Vector3(0, 0.62, 0), lookTo: new THREE.Vector3(0, DOOR_CY, -12), look: new THREE.Vector3(),
   }
@@ -387,23 +451,85 @@ export function createRoom(canvas, { hide = 'suede', shadows, motion = true, onR
     state.camZEnd = HALF + Math.max(0.06, dEnd)
   }
 
+  // Call-out anchors, in each panel's own coordinates (local +z is outward).
+  const ANCHORS = [
+    { id: 'stitch', panel: 0, at: new THREE.Vector3(-(A - 0.07), 0.28, zOut) },
+    { id: 'rivet', panel: 0, at: new THREE.Vector3(corner, corner, zOut + 0.03) },
+    { id: 'edge', panel: 4, at: new THREE.Vector3(0.45, -A - BS, 0) },
+    { id: 'hide', panel: 2, at: new THREE.Vector3(0.1, -0.25, zOut) },
+    { id: 'lining', panel: 3, at: new THREE.Vector3(0.2, 0.35, -T / 2 - BT - 0.01) },
+    { id: 'lace', lace: true },
+  ]
+  const anchorOut = ANCHORS.map(a => ({ id: a.id, x: 0, y: 0, front: true }))
+  const av = new THREE.Vector3(), camDir = new THREE.Vector3(), toCam = new THREE.Vector3()
+
+  function reportAnchors(show) {
+    if (!onAnchors) return
+    ANCHORS.forEach((a, i) => {
+      if (a.lace) av.copy(laceMid).applyMatrix4(room.matrixWorld)
+      else av.copy(a.at).applyMatrix4(panels[a.panel].inner.matrixWorld)
+      toCam.subVectors(camera.position, av).normalize()
+      // a lining point is "visible" when its panel is apart; outer points when they face us
+      const nrm = a.lace ? camDir.set(0, 0, 1) : camDir.copy(panels[a.panel].n).transformDirection(room.matrixWorld)
+      const facing = a.id === 'lining' ? panels[a.panel].d > 0.25 : nrm.dot(toCam) > 0.15
+      av.project(camera)
+      const o = anchorOut[i]
+      o.x = (av.x * 0.5 + 0.5) * state.width
+      o.y = (-av.y * 0.5 + 0.5) * state.height
+      o.front = facing
+    })
+    av.set(0, 0, 0).applyMatrix4(room.matrixWorld).project(camera)
+    anchorOut.cx = (av.x * 0.5 + 0.5) * state.width
+    anchorOut.cy = (-av.y * 0.5 + 0.5) * state.height
+    onAnchors(anchorOut, show)
+  }
+
   function frame(dt) {
     const s = state
     s.t += dt
     const p = s.p
-    const face = smooth(0, 0.34, p)
-    const release = smooth(0.1, 0.55, p)
-    const dolly = smooth(0.36, 1, p)
-    // rotation: idle drift and drag, then turn the door to face you
-    if (!s.drag && s.motion && p < 0.02) s.rotY += s.velY * dt
+    // build: panels fly in (0-0.55), stitches run round each seam, then the straps buckle on
+    if (s.building) s.build = Math.min(1, s.build + dt / 3.4)
+    const b = s.build
+    // scroll chapters: turn to face, unbuckle, come apart, close again, walk in
+    const face = smooth(0, 0.16, p)
+    const release = Math.max(1 - smooth(0.82, 1, b), smooth(0.06, 0.26, p))
+    s.apart += (s.apartTo - s.apart) * Math.min(1, dt * 3.5)
+    const explode = Math.max(smooth(0.26, 0.42, p) * (1 - smooth(0.6, 0.72, p)), s.apart * (1 - face))
+    const dolly = smooth(0.7, 1, p)
+    // panels: assembly offset and tilt, plus the exploded view
+    panels.forEach((pn, i) => {
+      const k = smooth(i * 0.06, i * 0.06 + 0.25, b)
+      const fly = (1 - k) * (2.4 + i * 0.25)
+      pn.d = fly + explode * (pn.i === 0 ? 0.62 : 0.5)
+      pn.inner.position.z = pn.d
+      pn.inner.rotation.x = (1 - k) * (i % 2 ? 0.9 : -0.9)
+      pn.inner.rotation.y = (1 - k) * (i % 3 - 1) * 0.6
+      const sew = smooth(0.42 + i * 0.05, 0.75 + i * 0.05, b)
+      pn.stitches.count = Math.floor(sew * pn.total)
+      pn.rivets.visible = sew > 0.98
+    })
+    updateLaces()
+    // the doorway's stencil rides with the front panel
+    mask.position.z = Z_IN + 0.0015 + front.d
+    // rotation: idle drift and drag; face the door, but swing to three-quarters to show it apart
+    if (!s.drag && s.motion && p < 0.02 && s.apart < 0.05) s.rotY += s.velY * dt
     if (!s.drag) s.velY += (0.12 * (s.motion ? 1 : 0) - s.velY) * Math.min(1, dt * 1.5)
-    const front = Math.round(s.rotY / (Math.PI * 2)) * Math.PI * 2
+    const frontRot = Math.round(s.rotY / (Math.PI * 2)) * Math.PI * 2
     s.sx += (s.px - s.sx) * Math.min(1, dt * 3)
     s.sy += (s.py - s.sy) * Math.min(1, dt * 3)
-    room.rotation.y = lerp(s.rotY + s.sx * 0.12, front, face)
-    room.rotation.x = lerp(0.16 + s.sy * 0.1, 0, face)
+    const scrollApart = smooth(0.26, 0.42, p) * (1 - smooth(0.6, 0.72, p))
+    room.rotation.y = lerp(s.rotY + s.sx * 0.12, frontRot - 0.62 * scrollApart, face)
+    room.rotation.x = lerp(0.16 + s.sy * 0.1, 0.32 * scrollApart, face)
     room.rotation.z = lerp(-0.035, 0, face)
     room.position.y = s.motion ? Math.sin(s.t * 0.8) * 0.05 * (1 - face) : 0
+    room.scale.setScalar(1 - 0.12 * explode)
+    // the work-lamp: follows the pointer; drifts by itself when there is none
+    const idle = s.t - s.lastPointer > 3
+    const lx = idle ? Math.sin(s.t * 0.4) * 1.6 : s.sx * 2.6
+    const ly = idle ? 0.6 + Math.cos(s.t * 0.3) * 0.6 : -s.sy * 2 + 0.3
+    torch.position.set(lx, ly, 2.3)
+    torch.intensity = (s.motion ? 3.2 : 2) * (1 - dolly) * smooth(0.2, 0.6, b)
     // straps slip off: A rises over the top, B slides out backwards
     strapA.position.y = release * 3.4
     strapA.rotation.x = release * 0.45
@@ -445,6 +571,8 @@ export function createRoom(canvas, { hide = 'suede', shadows, motion = true, onR
     inRoot.matrix.copy(room.matrixWorld)
     maskScene.updateMatrixWorld(true)
     inside.updateMatrixWorld(true)
+    camera.updateMatrixWorld()
+    reportAnchors(explode > 0.55 && dolly < 0.05)
 
     renderer.clear(true, true, true)
     renderer.render(main, camera)
@@ -458,7 +586,7 @@ export function createRoom(canvas, { hide = 'suede', shadows, motion = true, onR
   const loop = now => {
     raf = 0
     if (state.disposed) return
-    const dt = Math.min(0.05, (now - last) / 1000)
+    const dt = Math.max(0, Math.min(0.05, (now - last) / 1000))
     last = now
     frame(dt)
     if (!readyFired) { readyFired = true; onReady?.() }
@@ -467,7 +595,7 @@ export function createRoom(canvas, { hide = 'suede', shadows, motion = true, onR
   const wake = () => { if (!raf && !state.disposed && state.visible && !document.hidden) { last = performance.now(); raf = requestAnimationFrame(loop) } }
 
   const onDown = e => {
-    if (state.p > 0.05) return
+    if (state.p > 0.05 || state.apart > 0.5) return
     state.drag = true; state.lastX = e.clientX; state.lastT = performance.now()
     canvas.setPointerCapture?.(e.pointerId)
     canvas.classList.add('is-dragging')
@@ -476,6 +604,7 @@ export function createRoom(canvas, { hide = 'suede', shadows, motion = true, onR
     const r = canvas.getBoundingClientRect()
     state.px = ((e.clientX - r.left) / r.width) * 2 - 1
     state.py = ((e.clientY - r.top) / r.height) * 2 - 1
+    state.lastPointer = state.t
     if (!state.drag) return
     const now = performance.now()
     const dx = e.clientX - state.lastX
@@ -490,9 +619,15 @@ export function createRoom(canvas, { hide = 'suede', shadows, motion = true, onR
   window.addEventListener('pointerup', onUp)
   window.addEventListener('pointercancel', onUp)
 
-  const ro = new ResizeObserver(() => { resize(); wake() })
+  const ro = new ResizeObserver(() => { resize(); if (canvas.clientWidth) { io.unobserve(canvas); io.observe(canvas) } wake() })
   ro.observe(canvas)
-  const io = new IntersectionObserver(([en]) => { state.visible = en.isIntersecting; wake() })
+  // A zero-size reading (the canvas measured before layout) says nothing about visibility,
+  // so ignore it; the ResizeObserver re-observes once the canvas has a size.
+  const io = new IntersectionObserver(([en]) => {
+    if (!en.boundingClientRect.width || !en.boundingClientRect.height) return
+    state.visible = en.isIntersecting
+    wake()
+  })
   io.observe(canvas)
   const onVis = () => wake()
   document.addEventListener('visibilitychange', onVis)
@@ -501,6 +636,8 @@ export function createRoom(canvas, { hide = 'suede', shadows, motion = true, onR
 
   resize()
   wake()
+  // if nobody calls build() (no intro), assemble anyway
+  const buildTimer = setTimeout(() => api.build(), 7000)
 
   async function setHide(id) {
     const look = HIDE_LOOKS[id]
@@ -522,7 +659,6 @@ export function createRoom(canvas, { hide = 'suede', shadows, motion = true, onR
       hideMat.sheenColor.setRGB(lerp(from.sr, sc.r, k), lerp(from.sg, sc.g, k), lerp(from.sb, sc.b, k))
       edgeMat.color.setRGB(lerp(from.er, ec.r, k), lerp(from.eg, ec.g, k), lerp(from.eb, ec.b, k))
       for (const key of ['roughness', 'sheen', 'sheenRoughness', 'clearcoat', 'clearcoatRoughness']) hideMat[key] = lerp(from[key], look[key], k)
-      room.scale.setScalar(1 + Math.sin(k * Math.PI) * 0.025)
       wake()
       if (k < 1 && !state.disposed) requestAnimationFrame(step)
     }
@@ -540,9 +676,14 @@ export function createRoom(canvas, { hide = 'suede', shadows, motion = true, onR
     setHide,
     setProgress(p) { state.p = Math.min(1, Math.max(0, p)); wake() },
     setMotion(m) { state.motion = m; wake() },
+    // Assemble the room: panels in, lacing, stitching, straps. Instant without motion.
+    build() { if (state.building) return; state.building = true; if (!state.motion) state.build = 1; wake() },
+    // Take it apart (true) or sew it shut (false), for visitors who do not scroll.
+    setApart(on) { state.apartTo = on ? 1 : 0; if (!state.motion) state.apart = state.apartTo; wake() },
     onLost: null,
     dispose() {
       state.disposed = true
+      clearTimeout(buildTimer)
       cancelAnimationFrame(raf)
       ro.disconnect(); io.disconnect()
       document.removeEventListener('visibilitychange', onVis)

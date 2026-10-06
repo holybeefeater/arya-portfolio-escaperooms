@@ -720,6 +720,26 @@ html[data-ink='light'] .room .btn--quiet:hover { background: rgba(255, 255, 255,
 @media (max-width: 1000px) { .exit-grid { grid-template-columns: minmax(0, 1fr); } .clues { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 @media (max-width: 560px) { .clues { grid-template-columns: repeat(2, minmax(0, 1fr)); } .clue a { min-height: 128px; } }
 
+/* hero: tech-pack call-outs on the 3D room */
+.callouts { position: absolute; inset: 0; z-index: 3; pointer-events: none; opacity: 0; transition: opacity 0.5s; }
+.callouts.is-on { opacity: 1; }
+.callout { position: absolute; left: 0; top: 0; will-change: transform; transition: opacity 0.3s; }
+.callout.is-hidden { opacity: 0; }
+.callout-dot { position: absolute; left: -5px; top: -5px; width: 10px; height: 10px; border-radius: 50%; background: var(--brass); box-shadow: 0 0 0 3px rgba(166, 139, 69, 0.3); }
+.callout-line { position: absolute; left: 0; top: 0; width: var(--len, 80px); height: 1px; transform-origin: left; transform: rotate(var(--ang, 0rad)); background: repeating-linear-gradient(to right, #e6ebd9 0 4px, transparent 4px 7px); }
+.callout p { position: absolute; left: var(--ex, 60px); top: var(--ey, 0px); display: grid; gap: 2px; width: max-content; max-width: 200px; padding: 7px 11px; border-left: 2px solid var(--brass); font-size: 12px; line-height: 1.25; color: var(--tube); background: rgba(12, 24, 19, 0.8); transform: translate(6px, -50%); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
+.callout p strong { font-size: 13.5px; font-weight: 700; font-stretch: 87%; }
+.callout p span { opacity: 0.75; }
+.callout.is-left p { border-left: 0; border-right: 2px solid var(--brass); text-align: right; transform: translate(calc(-100% - 6px), -50%); }
+.callouts .callout:nth-child(n) { transition-delay: calc(var(--d, 0) * 1ms); }
+.apart-btn { margin-top: 10px; padding: 7px 14px; border: 1px dashed rgba(230, 235, 217, 0.6); border-radius: 999px; font-size: 13px; font-weight: 600; transition: background 0.2s; }
+.apart-btn:hover, .apart-btn[aria-pressed='true'] { background: rgba(230, 235, 217, 0.12); border-style: solid; }
+@media (max-width: 760px) {
+  .callout p { max-width: 120px; font-size: 11px; padding: 5px 8px; }
+  .callout p span { display: none; }
+  .apart-btn { margin: 0 0 0 4px; padding: 5px 10px; font-size: 12px; white-space: nowrap; }
+}
+
 /* ── scroll guide (only while a section holds the page) ───────────────────── */
 .pin-guide {
   position: fixed; left: 50%; bottom: max(18px, env(safe-area-inset-bottom)); z-index: 45;

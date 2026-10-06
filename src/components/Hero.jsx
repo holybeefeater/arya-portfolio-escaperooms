@@ -24,6 +24,8 @@ export default function Hero({ onRoomReady }) {
   const api = useRef(null)
   const [hide, setHide] = useState(hides[0].id)
   const [failed, setFailed] = useState(false)
+  const [apart, setApart] = useState(false)
+  const callouts = useRef(null)
   const current = hides.find(h => h.id === hide)
 
   // the 3D room
@@ -35,6 +37,28 @@ export default function Hero({ onRoomReady }) {
         shadows: Object.fromEntries(hides.map(h => [h.id, url(h.shadow)])),
         motion: !calm,
         onReady: onRoomReady,
+        // tech-pack call-outs follow their points on the model
+        onAnchors: (list, show) => {
+          const root = callouts.current
+          if (!root) return
+          root.classList.toggle('is-on', show)
+          // each label is pushed outward from the room's centre, along its own ray
+          const reach = Math.min(150, root.clientWidth * 0.14)
+          list.forEach((a, i) => {
+            const el = root.children[i]
+            if (!el) return
+            let dx = a.x - list.cx, dy = a.y - list.cy
+            const len = Math.hypot(dx, dy) || 1
+            dx /= len; dy /= len
+            el.style.transform = `translate(${a.x.toFixed(1)}px, ${a.y.toFixed(1)}px)`
+            el.style.setProperty('--ang', `${Math.atan2(dy, dx).toFixed(3)}rad`)
+            el.style.setProperty('--ex', `${(dx * reach).toFixed(1)}px`)
+            el.style.setProperty('--ey', `${(dy * reach).toFixed(1)}px`)
+            el.style.setProperty('--len', `${reach}px`)
+            el.classList.toggle('is-hidden', !a.front)
+            el.classList.toggle('is-left', dx < 0)
+          })
+        },
       })
       room.onLost = () => setFailed(true)
       api.current = room
@@ -46,6 +70,7 @@ export default function Hero({ onRoomReady }) {
     return () => { room?.dispose(); api.current = null }
   }, [])
   useEffect(() => { api.current?.setHide(hide) }, [hide])
+  useEffect(() => { api.current?.setApart(apart) }, [apart])
   useEffect(() => { api.current?.setMotion(!calm) }, [calm])
 
   // the collection's sign is a fluorescent box: it stutters on once the shutter opens
@@ -54,6 +79,7 @@ export default function Hero({ onRoomReady }) {
     return progress.subscribe(s => {
       if (lit || !s.started || !sign.current) return
       lit = true
+      api.current?.build()
       if (calm) { gsap.set(sign.current, { opacity: 1 }); return }
       gsap.timeline({ delay: 0.5 })
         .to(sign.current, { opacity: 1, duration: 0.04 })
@@ -108,8 +134,9 @@ export default function Hero({ onRoomReady }) {
       showAtStart: true,
       skipText: 'Skip to the brief',
       next: '#brief',
-      label: p => p < 0.02 ? ['Scroll down', 'The door opens as you scroll']
-        : ['Keep scrolling', p < 0.34 ? 'Turning the room to face you' : p < 0.55 ? 'Unbuckling the straps' : 'Walking through the door'],
+      label: p => p < 0.02 ? ['Scroll down', 'Take the room apart, then walk in']
+        : ['Keep scrolling', p < 0.12 ? 'Turning the room to face you' : p < 0.26 ? 'Unbuckling the straps'
+          : p < 0.6 ? 'Six panels, laced edge to edge' : p < 0.72 ? 'Sewing it shut again' : 'Walking through the door'],
     })
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ paused: true })
@@ -119,7 +146,7 @@ export default function Hero({ onRoomReady }) {
       ScrollTrigger.create({
         trigger: section.current,
         start: 'top top',
-        end: '+=110%',
+        end: '+=220%',
         pin: true,
         scrub: true,
         anticipatePin: 1,
@@ -149,6 +176,19 @@ export default function Hero({ onRoomReady }) {
         <p>A jacket, four bags and a pair of boots by {person.name.split(' ')[0]}, {person.degree.split(',')[0].replace('B.Des. ', 'B.Des. student in ')} at {person.school}.</p>
       </div>
 
+      <div ref={callouts} className="callouts" aria-hidden="true">
+        {[
+          ['Hand saddle stitch', 'two needles, one waxed thread'],
+          ['Antique-brass rivets', 'set at every corner'],
+          ['Burnished, painted edges', 'the cut edge, sealed'],
+          [current.label, `the hide of the ${current.from}`],
+          ['Dark green cotton lining', 'as in the bags'],
+          ['Laced edge to edge', 'six panels, one room'],
+        ].map(([t, sub]) => (
+          <div key={t} className="callout"><span className="callout-dot" /><span className="callout-line" /><p><strong>{t}</strong><span>{sub}</span></p></div>
+        ))}
+      </div>
+
       <div className="hero-fade hide-picker">
         <p className="picker-title" id="hide-label">Change the hide</p>
         <div role="group" aria-labelledby="hide-label" className="picker-row">
@@ -159,6 +199,9 @@ export default function Hero({ onRoomReady }) {
             </button>
           ))}
         </div>
+        <button type="button" className="apart-btn" aria-pressed={apart} onClick={() => { setApart(v => !v); sound.play('zip') }}>
+          {apart ? 'Sew it shut' : 'Take it apart'}
+        </button>
         <p className="picker-note" aria-live="polite">
           {current.label}, from the {current.from}. Each hide casts the shadow of what it became.
         </p>
