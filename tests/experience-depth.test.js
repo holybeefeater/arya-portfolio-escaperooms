@@ -1,6 +1,6 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
-import { boxBlur, softBlur, reliefFromAlpha, fitScale } from '../src/lib/depth.js'
+import { boxBlur, softBlur, reliefFromAlpha, fitScale } from '../src/experience/lib/depth.js'
 
 test('box blur keeps a flat field flat and spreads a point', () => {
   const w = 21, h = 21
@@ -38,7 +38,7 @@ test('fitScale: contain keeps the whole image, cover fills the frame', () => {
   assert.ok(Math.abs(px - 1.25) < 1e-9 && Math.abs(py - 1.25) < 1e-9)
 })
 
-import { fitTransform, frameDistance } from '../src/lib/fit.js'
+import { fitTransform, frameDistance } from '../src/experience/lib/fit.js'
 
 test('fitTransform stands a model on the floor, centred, at the right size', () => {
   // a 2 m tall coat, off-centre and floating: largest side becomes 1.6

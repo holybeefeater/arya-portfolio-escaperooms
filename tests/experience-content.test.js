@@ -2,7 +2,7 @@ import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { existsSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
-import * as content from '../src/content.js'
+import * as content from '../src/experience/content.js'
 
 const publicPath = p => fileURLToPath(new URL('../public/' + p, import.meta.url))
 
