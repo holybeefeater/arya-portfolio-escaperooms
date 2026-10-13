@@ -2,7 +2,7 @@
 // Palette is taken from Aditi's own Pantone card for Escape Rooms
 // (7763 C, 7428 C, 567 C, Fort Knox) plus the fluorescent light of her moodboard.
 export default {
-  content: ['./index.html', './src/**/*.{js,jsx}'],
+  content: ['./escape-rooms/**/*.html', './src/experience/**/*.{js,jsx}'],
   theme: {
     extend: {
       colors: {

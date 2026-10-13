@@ -1,0 +1,487 @@
+{
+ "about/portrait": {
+  "w": 1179,
+  "h": 1400,
+  "widths": [
+   480,
+   960,
+   1179
+  ],
+  "alpha": true
+ },
+ "auxin/board-brainstorm": {
+  "w": 2400,
+  "h": 1350,
+  "widths": [
+   480,
+   960,
+   1600,
+   2400
+  ],
+  "alpha": false
+ },
+ "auxin/board-calf-boots-colour-material": {
+  "w": 2400,
+  "h": 1350,
+  "widths": [
+   480,
+   960,
+   1600,
+   2400
+  ],
+  "alpha": false
+ },
+ "auxin/board-calf-boots-forms-shapes": {
+  "w": 2400,
+  "h": 1350,
+  "widths": [
+   480,
+   960,
+   1600,
+   2400
+  ],
+  "alpha": false
+ },
+ "auxin/board-calf-boots-spec-costing": {
+  "w": 2400,
+  "h": 1350,
+  "widths": [
+   480,
+   960,
+   1600,
+   2400
+  ],
+  "alpha": false
+ },
+ "auxin/board-calf-boots-trend": {
+  "w": 2400,
+  "h": 1350,
+  "widths": [
+   480,
+   960,
+   1600,
+   2400
+  ],
+  "alpha": false
+ },
+ "auxin/board-consumer-persona": {
+  "w": 2400,
+  "h": 1350,
+  "widths": [
+   480,
+   960,
+   1600,
+   2400
+  ],
+  "alpha": false
+ },
+ "auxin/board-cowboy-boots-colour-material": {
+  "w": 2400,
+  "h": 1350,
+  "widths": [
+   480,
+   960,
+   1600,
+   2400
+  ],
+  "alpha": false
+ },
+ "auxin/board-cowboy-boots-forms-shapes": {
+  "w": 2400,
+  "h": 1350,
+  "widths": [
+   480,
+   960,
+   1600,
+   2400
+  ],
+  "alpha": false
+ },
+ "auxin/board-cowboy-boots-spec-costing": {
+  "w": 2400,
+  "h": 1350,
+  "widths": [
+   480,
+   960,
+   1600,
+   2400
+  ],
+  "alpha": false
+ },
+ "auxin/board-cowboy-boots-trend": {
+  "w": 2400,
+  "h": 1350,
+  "widths": [
+   480,
+   960,
+   1600,
+   2400
+  ],
+  "alpha": false
+ },
+ "auxin/board-garment-colour-material": {
+  "w": 2400,
+  "h": 1350,
+  "widths": [
+   480,
+   960,
+   1600,
+   2400
+  ],
+  "alpha": false
+ },
+ "auxin/board-garment-forms-shapes": {
+  "w": 2400,
+  "h": 1350,
+  "widths": [
+   480,
+   960,
+   1600,
+   2400
+  ],
+  "alpha": false
+ },
+ "auxin/board-garment-spec-costing": {
+  "w": 2400,
+  "h": 1350,
+  "widths": [
+   480,
+   960,
+   1600,
+   2400
+  ],
+  "alpha": false
+ },
+ "auxin/board-garment-trend": {
+  "w": 2400,
+  "h": 1350,
+  "widths": [
+   480,
+   960,
+   1600,
+   2400
+  ],
+  "alpha": false
+ },
+ "auxin/board-inspiration": {
+  "w": 2400,
+  "h": 1350,
+  "widths": [
+   480,
+   960,
+   1600,
+   2400
+  ],
+  "alpha": false
+ },
+ "auxin/board-moodboard": {
+  "w": 2400,
+  "h": 1350,
+  "widths": [
+   480,
+   960,
+   1600,
+   2400
+  ],
+  "alpha": false
+ },
+ "auxin/calf-boots-final-design": {
+  "w": 1122,
+  "h": 812,
+  "widths": [
+   480,
+   960,
+   1122
+  ],
+  "alpha": true
+ },
+ "auxin/calf-boots-range": {
+  "w": 942,
+  "h": 1427,
+  "widths": [
+   480,
+   942
+  ],
+  "alpha": true
+ },
+ "auxin/cells-texture": {
+  "w": 1024,
+  "h": 1024,
+  "widths": [
+   480,
+   960,
+   1024
+  ],
+  "alpha": false
+ },
+ "auxin/closing-plant": {
+  "w": 1080,
+  "h": 1350,
+  "widths": [
+   480,
+   960,
+   1080
+  ],
+  "alpha": false
+ },
+ "auxin/final-closeup": {
+  "w": 1122,
+  "h": 1402,
+  "widths": [
+   480,
+   960,
+   1122
+  ],
+  "alpha": false
+ },
+ "auxin/final-design-front-back": {
+  "w": 866,
+  "h": 1096,
+  "widths": [
+   480,
+   866
+  ],
+  "alpha": true
+ },
+ "auxin/final-editorial-1": {
+  "w": 1122,
+  "h": 1402,
+  "widths": [
+   480,
+   960,
+   1122
+  ],
+  "alpha": false
+ },
+ "auxin/final-full-look": {
+  "w": 1122,
+  "h": 1402,
+  "widths": [
+   480,
+   960,
+   1122
+  ],
+  "alpha": false
+ },
+ "auxin/range-garments": {
+  "w": 1631,
+  "h": 848,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "alpha": true
+ },
+ "auxin/title-plate": {
+  "w": 750,
+  "h": 939,
+  "widths": [
+   480,
+   750
+  ],
+  "alpha": false
+ },
+ "escape-rooms/bags-pair": {
+  "w": 1800,
+  "h": 1656,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "alpha": true
+ },
+ "escape-rooms/board-bag-explorations": {
+  "w": 1800,
+  "h": 1158,
+  "widths": [
+   480,
+   960,
+   1600,
+   1800
+  ],
+  "alpha": false
+ },
+ "escape-rooms/board-boot-explorations": {
+  "w": 1800,
+  "h": 1158,
+  "widths": [
+   480,
+   960,
+   1600,
+   1800
+  ],
+  "alpha": false
+ },
+ "escape-rooms/board-boot-spec": {
+  "w": 1800,
+  "h": 1158,
+  "widths": [
+   480,
+   960,
+   1600,
+   1800
+  ],
+  "alpha": false
+ },
+ "escape-rooms/board-duffle-spec": {
+  "w": 1800,
+  "h": 1158,
+  "widths": [
+   480,
+   960,
+   1600,
+   1800
+  ],
+  "alpha": false
+ },
+ "escape-rooms/board-exploded-view": {
+  "w": 1800,
+  "h": 1158,
+  "widths": [
+   480,
+   960,
+   1600,
+   1800
+  ],
+  "alpha": false
+ },
+ "escape-rooms/board-inspiration": {
+  "w": 1800,
+  "h": 1012,
+  "widths": [
+   480,
+   960,
+   1600,
+   1800
+  ],
+  "alpha": false
+ },
+ "escape-rooms/board-moodboard": {
+  "w": 1800,
+  "h": 1012,
+  "widths": [
+   480,
+   960,
+   1600,
+   1800
+  ],
+  "alpha": false
+ },
+ "escape-rooms/boot-detail": {
+  "w": 1800,
+  "h": 1672,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "alpha": true
+ },
+ "escape-rooms/boot": {
+  "w": 1800,
+  "h": 1158,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "alpha": false
+ },
+ "escape-rooms/campaign": {
+  "w": 1800,
+  "h": 1200,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "alpha": true
+ },
+ "escape-rooms/collection": {
+  "w": 1800,
+  "h": 934,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "alpha": true
+ },
+ "escape-rooms/drawstring": {
+  "w": 1416,
+  "h": 1688,
+  "widths": [
+   480,
+   960,
+   1416
+  ],
+  "alpha": true
+ },
+ "escape-rooms/duffle": {
+  "w": 1113,
+  "h": 1536,
+  "widths": [
+   480,
+   960,
+   1113
+  ],
+  "alpha": true
+ },
+ "escape-rooms/hobo-single": {
+  "w": 696,
+  "h": 936,
+  "widths": [
+   480,
+   696
+  ],
+  "alpha": true
+ },
+ "escape-rooms/jacket-back": {
+  "w": 664,
+  "h": 1346,
+  "widths": [
+   480,
+   664
+  ],
+  "alpha": true
+ },
+ "escape-rooms/jacket-close": {
+  "w": 1800,
+  "h": 1182,
+  "widths": [
+   480,
+   960,
+   1600
+  ],
+  "alpha": false
+ },
+ "escape-rooms/jacket-front": {
+  "w": 785,
+  "h": 1800,
+  "widths": [
+   480,
+   785
+  ],
+  "alpha": true
+ },
+ "escape-rooms/look": {
+  "w": 744,
+  "h": 1800,
+  "widths": [
+   480,
+   744
+  ],
+  "alpha": true
+ },
+ "escape-rooms/tbase": {
+  "w": 739,
+  "h": 1145,
+  "widths": [
+   480,
+   739
+  ],
+  "alpha": true
+ }
+}

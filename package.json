@@ -1,26 +1,32 @@
 {
-  "name": "aditi-arya-escape-rooms",
+  "name": "aditi-arya-portfolio",
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Escape Rooms: leather design portfolio of Aditi Arya, NIFT Raebareli",
+  "description": "Portfolio of Aditi Arya: leather, footwear and garment design",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "images": "node scripts/images.mjs",
+    "build": "node scripts/images.mjs && vite build && node scripts/prerender.mjs",
     "preview": "vite preview",
-    "test": "node --test tests/content.test.js tests/depth.test.js"
+    "test": "node --test tests/*.test.js"
   },
   "dependencies": {
+    "@fontsource-variable/bodoni-moda": "^5.3.0",
+    "@fontsource-variable/schibsted-grotesk": "^5.3.0",
+    "@fontsource/jetbrains-mono": "^5.3.0",
     "gsap": "3.13.0",
     "qrcode": "1.5.4",
     "react": "18.3.1",
     "react-dom": "18.3.1",
+    "react-router-dom": "^6.28.0",
     "three": "0.176.0"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "4.4.1",
     "autoprefixer": "10.4.20",
     "postcss": "8.5.3",
+    "sharp": "^0.33.5",
     "tailwindcss": "3.4.17",
     "vite": "6.3.5"
   },

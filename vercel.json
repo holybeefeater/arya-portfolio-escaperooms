@@ -1,0 +1,8 @@
+{
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/escape-rooms/experience", "destination": "/escape-rooms/experience/index.html" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
