@@ -1,0 +1,5 @@
+{
+  "redirects": [
+    { "source": "/auxin", "destination": "/auxin/", "permanent": true }
+  ]
+}

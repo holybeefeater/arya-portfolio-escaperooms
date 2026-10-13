@@ -7,7 +7,9 @@ import { guide } from '../lib/guide'
 import { progress } from '../lib/progress'
 import { sound } from '../lib/sound'
 import Mark from './Mark'
-import { person, collection, models, keys } from '../content'
+import Toggle from '../shared/Toggle'
+import { url } from '../lib/asset'
+import { person, collection, models, keys, downloads } from '../content'
 
 // ── Intro: a fluorescent tube stutters on, then the shutter splits along its line.
 // The flicker stays under three flashes a second and is skipped for reduced motion.
@@ -178,8 +180,10 @@ export function Header({ onHint }) {
   return (
     <header className="site-header">
       <a href="#top" className="wordmark" onClick={e => go(e, '#top')}><Mark className="wordmark-mark" />{person.name}</a>
+      <Toggle current="escape-rooms" className="header-toggle" />
       <nav id="site-nav" className={open ? 'nav is-open' : 'nav'} aria-label="Sections">
         {LINKS.map(([label, href]) => <a key={href} href={href} onClick={e => go(e, href)}>{label}</a>)}
+        <a href={url(downloads[0].file)} target="_blank" rel="noreferrer" className="nav-resume">Résumé <span aria-hidden="true">↗</span></a>
       </nav>
       <div className="header-tools">
         <button type="button" className="hint-btn" onClick={onHint} aria-haspopup="dialog">Need a hint?</button>

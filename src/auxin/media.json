@@ -1,0 +1,200 @@
+{
+ "board-brainstorm": {
+  "alpha": false,
+  "h": 1012,
+  "sw": 900,
+  "w": 1800
+ },
+ "board-calf-boots-colour-material": {
+  "alpha": false,
+  "h": 1012,
+  "sw": 900,
+  "w": 1800
+ },
+ "board-calf-boots-forms-shapes": {
+  "alpha": false,
+  "h": 1012,
+  "sw": 900,
+  "w": 1800
+ },
+ "board-calf-boots-spec-costing": {
+  "alpha": false,
+  "h": 1012,
+  "sw": 900,
+  "w": 1800
+ },
+ "board-calf-boots-trend": {
+  "alpha": false,
+  "h": 1012,
+  "sw": 900,
+  "w": 1800
+ },
+ "board-consumer-persona": {
+  "alpha": false,
+  "h": 1012,
+  "sw": 900,
+  "w": 1800
+ },
+ "board-cowboy-boots-colour-material": {
+  "alpha": false,
+  "h": 1012,
+  "sw": 900,
+  "w": 1800
+ },
+ "board-cowboy-boots-forms-shapes": {
+  "alpha": false,
+  "h": 1012,
+  "sw": 900,
+  "w": 1800
+ },
+ "board-cowboy-boots-spec-costing": {
+  "alpha": false,
+  "h": 1012,
+  "sw": 900,
+  "w": 1800
+ },
+ "board-cowboy-boots-trend": {
+  "alpha": false,
+  "h": 1012,
+  "sw": 900,
+  "w": 1800
+ },
+ "board-garment-colour-material": {
+  "alpha": false,
+  "h": 1012,
+  "sw": 900,
+  "w": 1800
+ },
+ "board-garment-forms-shapes": {
+  "alpha": false,
+  "h": 1012,
+  "sw": 900,
+  "w": 1800
+ },
+ "board-garment-spec-costing": {
+  "alpha": false,
+  "h": 1012,
+  "sw": 900,
+  "w": 1800
+ },
+ "board-garment-trend": {
+  "alpha": false,
+  "h": 1012,
+  "sw": 900,
+  "w": 1800
+ },
+ "board-inspiration": {
+  "alpha": false,
+  "h": 1012,
+  "sw": 900,
+  "w": 1800
+ },
+ "board-moodboard": {
+  "alpha": false,
+  "h": 1012,
+  "sw": 900,
+  "w": 1800
+ },
+ "calf-boots-final-design": {
+  "alpha": true,
+  "h": 812,
+  "sw": 720,
+  "w": 1122
+ },
+ "calf-boots-range": {
+  "alpha": true,
+  "h": 1427,
+  "sw": 720,
+  "w": 942
+ },
+ "calf-view-back": {
+  "alpha": true,
+  "h": 787,
+  "sw": 214,
+  "w": 214
+ },
+ "calf-view-front": {
+  "alpha": true,
+  "h": 804,
+  "sw": 228,
+  "w": 228
+ },
+ "calf-view-side": {
+  "alpha": true,
+  "h": 777,
+  "sw": 400,
+  "w": 577
+ },
+ "cells-texture": {
+  "alpha": false,
+  "h": 1024,
+  "sw": 640,
+  "w": 1024
+ },
+ "closing-plant": {
+  "alpha": false,
+  "h": 1350,
+  "sw": 640,
+  "w": 1080
+ },
+ "final-closeup": {
+  "alpha": false,
+  "h": 1402,
+  "sw": 640,
+  "w": 1122
+ },
+ "final-design-front-back": {
+  "alpha": true,
+  "h": 1096,
+  "sw": 720,
+  "w": 866
+ },
+ "final-editorial-1": {
+  "alpha": false,
+  "h": 1402,
+  "sw": 640,
+  "w": 1122
+ },
+ "final-full-look": {
+  "alpha": false,
+  "h": 1402,
+  "sw": 640,
+  "w": 1122
+ },
+ "flat-calf": {
+  "alpha": true,
+  "h": 721,
+  "sw": 531,
+  "w": 531
+ },
+ "flat-cowboy": {
+  "alpha": true,
+  "h": 672,
+  "sw": 600,
+  "w": 728
+ },
+ "flat-jacket": {
+  "alpha": true,
+  "h": 434,
+  "sw": 600,
+  "w": 694
+ },
+ "flat-trousers": {
+  "alpha": true,
+  "h": 503,
+  "sw": 600,
+  "w": 701
+ },
+ "range-garments": {
+  "alpha": true,
+  "h": 832,
+  "sw": 720,
+  "w": 1600
+ },
+ "title-plate": {
+  "alpha": false,
+  "h": 939,
+  "sw": 640,
+  "w": 750
+ }
+}

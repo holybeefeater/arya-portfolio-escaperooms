@@ -792,3 +792,16 @@ html[data-ink='light'] .room .btn--quiet:hover { background: rgba(255, 255, 255,
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
 }
+
+/* ── the collection toggle and résumé link (shared with Auxin) ─────────── */
+.header-toggle { --aa-toggle-on: var(--garage); }
+html[data-ink='dark'] .header-toggle { --aa-toggle-on: var(--tube); }
+.site-header:has(.nav.is-open) .header-toggle { --aa-toggle-on: var(--garage); }
+.nav-resume { padding: 5px 12px; border: 1px solid currentColor; border-radius: 999px; }
+.nav-resume::after { display: none; }
+@media (max-width: 1180px) { .nav-resume { padding: 0; border: 0; } }
+/* phones: the toggle takes its own row under the header */
+@media (max-width: 560px) {
+  .header-toggle { position: absolute; left: var(--left); top: 62px; font-size: 12px; }
+  .header-toggle a { padding: 0 10px; min-height: 28px; }
+}

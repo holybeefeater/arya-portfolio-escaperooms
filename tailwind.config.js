@@ -2,7 +2,8 @@
 // Palette is taken from Aditi's own Pantone card for Escape Rooms
 // (7763 C, 7428 C, 567 C, Fort Knox) plus the fluorescent light of her moodboard.
 export default {
-  content: ['./index.html', './src/**/*.{js,jsx}'],
+  // Escape Rooms only; Auxin has its own config (tailwind.auxin.config.js)
+  content: ['./index.html', './print.html', './src/*.{js,jsx}', './src/components/**/*.{js,jsx}', './src/lib/**/*.{js,jsx}', './src/shared/**/*.{js,jsx}'],
   theme: {
     extend: {
       colors: {

@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <!-- Arriving from another collection: paint its cover colour before anything loads (see src/shared/swap.js). -->
+    <script>try{var s=JSON.parse(sessionStorage.getItem('aa-swap')||'null');if(s&&s.to==='auxin'&&Date.now()-s.t<15000){var h=document.documentElement;h.classList.add('swap-in');h.dataset.swapTo='auxin';h.style.setProperty('--swap-cover','#D6DECE')}}catch(e){}</script>
+    <style>html.swap-in body::before{content:'';position:fixed;inset:0;z-index:9998;background:var(--swap-cover)}</style>
+    <title>Aditi Arya · Auxin · Leather Design, NIFT Raebareli</title>
+    <meta name="description" content="Auxin, a collection by Aditi Arya (B.Des. Leather Design, NIFT Raebareli): an oil pull-up leather jacket with striped trousers, calf boots and cowboy boots, shaped like growth that bends toward light." />
+    <meta name="theme-color" content="#D6DECE" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Aditi Arya" />
+    <meta property="og:title" content="Auxin · Aditi Arya, leather design" />
+    <meta property="og:description" content="A jacket and trousers, calf boots and cowboy boots in aqua oil pull-up leather and furnishing fabric, built on how plants grow toward light. NIFT Raebareli." />
+    <meta property="og:image" content="%SITE_URL%og-auxin.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="The name Aditi Arya and the word Auxin beside a close-up of the blue oil pull-up leather jacket" />
+    <meta property="og:url" content="%SITE_URL%auxin/" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Auxin · Aditi Arya, leather design" />
+    <meta name="twitter:image" content="%SITE_URL%og-auxin.jpg" />
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <noscript>This page needs JavaScript. Escape Rooms and the portfolio PDFs are at the site's home page.</noscript>
+    <div id="root"></div>
+    <script type="module" src="/src/auxin/main.jsx"></script>
+  </body>
+</html>

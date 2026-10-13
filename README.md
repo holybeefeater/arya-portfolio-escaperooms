@@ -1,11 +1,18 @@
-# Escape Rooms · Aditi Arya
+# Aditi Arya · Escape Rooms and Auxin
 
 Leather design portfolio for Aditi Arya, B.Des. Leather Design, NIFT Raebareli.
 React 18 · three.js r176 · GSAP 3.13 (ScrollTrigger) · Tailwind CSS 3 · Vite 6.
 
-The site is built around her collection's own idea: rooms you escape from.
-The phrases on her inspiration board ("sealed entrance", "follow the line", "it loops",
-"entry != exit") are the signage, and the palette comes from her Pantone card.
+Each collection is its own site with its own idea, joined by a switch in the header:
+
+| Address | Collection | Built around |
+| --- | --- | --- |
+| `/` | **Escape Rooms** (A/W 2026) | rooms you escape from: her wayfinding phrases are the signage, her Pantone card the palette |
+| `/auxin/` | **Auxin** (A/W 27/28) | growth that bends toward light: the visitor is the light, and the page grows toward it |
+
+Both share the header (name, the collection switch, about, contact, résumé), the about and
+contact details, and the résumé. More collections can be added without redesigning either
+(see *Add another collection* below).
 
 ## Run it
 
@@ -13,13 +20,13 @@ Needs Node.js 18.18 or newer (20 or 22 recommended).
 
 ```bash
 npm install        # or: npm ci  (uses the included lockfile, same versions every time)
-npm run dev        # opens http://localhost:5173
+npm run dev        # opens http://localhost:5173 (Escape Rooms); Auxin is http://localhost:5173/auxin/
 ```
 
 ```bash
 npm run build      # production build in dist/
 npm run preview    # serve that build locally
-npm test           # every asset path exists, bills of materials add up, the nesting study fits, maths helpers
+npm test           # every asset path exists, costings add up, the nesting study fits, every collection has a page
 ```
 
 Deploy `dist/` anywhere static: Vercel, Netlify, GitHub Pages. The build uses relative
@@ -30,6 +37,79 @@ paths, so it also works from a sub-folder. On Vercel: framework "Vite", output `
 (`public/og-card.jpg`, shown when the link is posted on WhatsApp, LinkedIn or X) use absolute
 addresses, which those apps need. `person.site` in `content.js` (already set to the Vercel address) is used when SITE_URL is not, and by the
 QR codes in the print kit.
+
+## The collection switch
+
+`src/shared/projects.js` lists the collections in toggle order. Clicking the other one closes
+a cover in its colours over the page (Auxin's rises from the ground with a wave; Escape Rooms'
+drops like a garage door), the browser goes to that page, and the new page opens the same
+cover. The switch is a pair of real links, so it also works in a new tab and without scripts.
+Arriving at Escape Rooms through the switch skips its shutter intro. Under *reduced motion*
+the switch simply navigates.
+
+### Add another collection
+
+1. Add it to `src/shared/projects.js` (`path` is its folder, e.g. `'dark-ages/'`).
+2. Copy `auxin/index.html` to `<folder>/index.html`; change the title, share tags and the id
+   and colour in the small script at the top. Add the page to `input` in `vite.config.js`, to
+   `folders` in the same file, and a redirect in `vercel.json`.
+3. Build the page in `src/<name>/` (Auxin's folder is a working template) and use
+   `<Toggle current="<id>" />` in its header.
+
+The switch becomes three-way by itself. `npm test` checks that every collection in the list
+has a page, a build entry and its arrival script.
+
+## Auxin
+
+The deck's idea is phototropism: auxin is the plant hormone that bends a stem toward light.
+Here **the visitor is the light**. The pointer (a finger on a phone, or the phone's tilt) is
+one light that everything leans toward:
+
+- **The hero**: a stand of strips in three.js, cut from crops of her own shoot photographs (the
+  aqua oil pull-up leather of the jacket, the striped curtain fabric and the teal pleat of the
+  trousers). Each strip bends along an arc until its tip points at the light. Leather strips
+  have pinked edges and a stitched centre seam ("seams as veins", from her brainstorm); brass
+  rings sit at their roots ("hardware as nodes"). Click and they reach; pick a material and
+  the others step back. Scrolling lifts the camera up the stems.
+- **The stem down the left edge** grows as you read, leans to the light, and has a brass node
+  per chapter (click one to go there).
+- **Photographs and drawings** turn to face the light; cut-outs cast a shadow away from it.
+
+The page follows growth stages: **Seed** (the idea: her brainstorm redrawn as a stem that grows
+as you scroll), **Roots** (research and persona), **Stem** (colour and material),
+**Leaves** (the three pieces, each with its own room: the jacket from flat to design to
+photograph, the calf boot you can turn, the cowboy boot whose drawing fills with leather
+under your light and its 66 rivets), **Bloom** (the shoot), then About and Contact.
+Her own note on the brainstorm, "keep it abstract, not botanical", is followed: no leaf icons.
+
+### Change Auxin's words, numbers or images
+
+- **Words and numbers**: `src/auxin/content.js`. Facts come only from the Auxin deck. Where the
+  deck is silent the value is `gap('…')`, which shows on the page as a dashed **To add** note.
+  Costing totals are added up from the lines; `npm test` checks them against her printed
+  totals (jacket ₹2,460, trousers ₹1,090, cowboy boots ₹1,362).
+- **Images**: originals live in `media/auxin/`. After adding or replacing one, run
+  `npm run media:auxin` (needs Python 3 with Pillow) to write the two web sizes to
+  `public/assets/auxin/img/` and update `src/auxin/media.json`. The script also cuts the
+  technical flats out of her specification pages and makes their sage background clear.
+- **Video**: every moving photograph has a `video: ''` slot. Put an `.mp4` in
+  `public/assets/auxin/video/` and write its path there. Until then it plays a *moving still*:
+  a slow camera move over the same photograph (`public/assets/auxin/loops/`, made with ffmpeg
+  from her photographs, nothing generated). It is labelled as such and can be paused.
+- **Strip materials**: `public/assets/auxin/tex/` (crops of her photographs with the lighting
+  flattened, plus a relief map computed from each).
+
+### Things only Aditi can add (Auxin)
+
+- Her role on Auxin, the year and module, and a short reflection (marked **To add** under Bloom).
+- Photographs (or video) of the finished calf boots and cowboy boots: their frames say
+  *photographs to come*. The deck's final-product page for the calf boots is empty.
+- Her shoot video, if there is one, for the moving stills.
+
+Two notes from the deck: the jacket's specification lists "Comfort features: cushioned insole,
+moisture-wicking lining", which looks copied from a boot sheet, so it is left out; the calf
+boot sheet gives cost ranges per component but no total, so the page shows the sum of her
+ranges (₹3,050–5,400) and says so.
 
 ## Change the words, prices or images
 
@@ -127,8 +207,25 @@ normal video player; the page still works end to end.
 ## Files
 
 ```
+index.html              ← Escape Rooms page
+auxin/index.html        ← Auxin page
 src/
-  content.js            ← all copy, specs, prices and asset paths
+  shared/               ← the collection switch: projects.js (the list), Toggle.jsx, swap.js, shared.css
+  auxin/
+    content.js          ← all Auxin copy, specs, costings and image names
+    media.json          ← image sizes (written by scripts/auxin-media.py)
+    App.jsx  main.jsx  styles.css
+    components/
+      Hero.jsx          ← the stand of strips, intro, materials
+      chrome.jsx        ← header, the stem down the left edge, chapter titles
+      Seed.jsx  Roots.jsx  StemChapter.jsx  Leaves.jsx  Rooms.jsx  Bloom.jsx  Closing.jsx
+      media.jsx         ← pictures, Lean (faces the light), moving stills, boards, tables
+    lib/
+      garden.js         ← three.js: the strips, ground, spores and light
+      light.js          ← the one light everything leans toward
+      asset.js
+  content.js            ← all Escape Rooms copy, specs, prices and asset paths; also the
+                          shared person, about and downloads
   App.jsx               ← page order, smooth scroll, per-room light and wayfinding
   styles.css            ← Tailwind + the design system
   components/
@@ -158,30 +255,36 @@ public/assets/
   films/      ← process films assembled from her sheets
   posters/  shadows/
 public/brand/     ← maker's mark SVGs
-public/og-card.jpg ← share card, 1200 × 630
+public/og-card.jpg ← Escape Rooms share card, 1200 × 630
+public/og-auxin.jpg ← Auxin share card
+public/assets/auxin/ ← img/ (web images), tex/ (strip materials), loops/ (moving stills)
+media/auxin/      ← Auxin originals (from the deck and the shoot)
+scripts/auxin-media.py ← prepares the Auxin images
 public/downloads/ ← résumé, full portfolio, project PDFs, internship deck
 tests/          ← node --test
 ```
 
 ## How this was checked
 
-Built in a sandbox without access to the npm registry, so three.js and GSAP could not be
-installed there. What was verified:
+Built and run with the real dependencies (three.js, GSAP, React) and driven in headless
+Chromium with software WebGL:
 
-- The whole app bundles with no syntax or import errors (esbuild).
-- Both shaders compile and link against three.js's exact ShaderMaterial prelude in headless
-  Chromium, and render correctly on real product photographs (relight, cast shadow, film reveal).
-- Every three.js API used is a real r176 export.
-- Desktop (1440 px) and phone (390 px) layouts, rendered with real React and the no-WebGL
-  fallback path: no page errors, no sideways scroll.
-- `npm test` passes.
+- `npm run build` and `npm test` pass.
+- Both collections at 1440 px and 390 px: no page errors, no sideways scroll; every Auxin
+  chapter, the pinned scenes part-way through, and the hero with the light in two places.
+- The switch both ways (Escape Rooms → Auxin → Escape Rooms), including the covers and the
+  skipped intro on return; `/auxin` redirects to `/auxin/` in dev, preview and on Vercel.
+- Reduced motion: no autoplay, no pinning, every part of every scene shown.
+- `npm run dev` serves both pages.
 
-Not verifiable in the sandbox: the live three.js room and GSAP scrolling. Your first
-`npm run dev` is their first real run. If anything misbehaves, the browser console names the
-part (`[room]`, `[stage]`, `[scroll]`) and the rest of the page keeps working.
+A real GPU will look smoother than these checks: software WebGL runs the hero at a few frames
+a second, which is why growth is timed by the clock rather than by frames.
 
 ## Credits
 
 Product work, photographs, drawings and documents © Aditi Arya.
 Films, boot layers and shadows are made directly from her portfolio pages.
-Typeface: Archivo (SIL Open Font License), served by Google Fonts.
+Auxin's strips, swatches and moving stills are made directly from her shoot photographs.
+Type: Archivo (Omnibus-Type) and Instrument Serif (Rodrigo Fuenzalida, Jordan Egstad), both
+SIL Open Font License. Escape Rooms loads them from Google Fonts; Auxin bundles them
+(`@fontsource`), so it also works offline.

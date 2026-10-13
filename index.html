@@ -3,6 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <!-- Arriving from another collection: paint its cover colour before anything loads (see src/shared/swap.js). -->
+    <script>try{var s=JSON.parse(sessionStorage.getItem('aa-swap')||'null');if(s&&s.to==='escape-rooms'&&Date.now()-s.t<15000){var h=document.documentElement;h.classList.add('swap-in');h.dataset.swapTo='escape-rooms';h.style.setProperty('--swap-cover','#13241E')}}catch(e){}</script>
+    <style>html.swap-in body::before{content:'';position:fixed;inset:0;z-index:9998;background:var(--swap-cover)}</style>
     <title>Aditi Arya · Escape Rooms · Leather Design, NIFT Raebareli</title>
     <meta name="description" content="Escape Rooms, a leather collection by Aditi Arya (B.Des. Leather Design, NIFT Raebareli): a kimono jacket, four bags and high ankle boots." />
     <meta name="theme-color" content="#13241E" />
@@ -22,7 +25,7 @@
     <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
   </head>
   <body>
     <noscript>This portfolio needs JavaScript. The full portfolio PDF is in the downloads folder.</noscript>

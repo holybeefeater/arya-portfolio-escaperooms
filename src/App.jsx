@@ -15,19 +15,24 @@ import Showcase from './components/Showcase'
 import { OtherWork, About, Exit } from './components/closing'
 import SheetViewer from './components/SheetViewer'
 import Hint from './components/Hint'
+import { arriving, reveal } from './shared/swap'
+
+// Arriving through the collection toggle: open the cover instead of the shutter intro.
+const fromToggle = arriving('escape-rooms')
 
 gsap.registerPlugin(ScrollTrigger)
 
 export default function App() {
   const calm = useReducedMotion()
   const [ready, setReady] = useState(false)
-  const [entered, setEntered] = useState(false)
+  const [entered, setEntered] = useState(fromToggle)
   const [roomReady, setRoomReady] = useState(false)
   const [sheets, setSheets] = useState(null)
   const [hint, setHint] = useState(false)
 
   // the WebGL stage for every photograph
   useEffect(() => { stage.start() }, [])
+  useEffect(() => { reveal('escape-rooms') }, [])
 
   // Native scrolling: the page moves exactly as the wheel or trackpad says.
   useLayoutEffect(() => {

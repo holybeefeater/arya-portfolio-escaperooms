@@ -1,0 +1,52 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   Shared by every collection: the collection toggle and the cover between pages.
+   Each site sets --aa-toggle-ink (the line and knob colour, usually currentColor)
+   and --aa-toggle-on (the text colour on the knob).
+   ───────────────────────────────────────────────────────────────────────── */
+.aa-toggle {
+  position: relative; display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr));
+  flex: none; padding: 3px; border: 1px solid var(--aa-toggle-ink, currentColor); border-radius: 999px;
+  font-size: 13px; font-weight: 600; line-height: 1; white-space: nowrap;
+}
+.aa-toggle a {
+  position: relative; z-index: 1; display: grid; place-items: center; min-height: 30px; padding: 0 14px;
+  border-radius: 999px; transition: color 0.35s;
+}
+.aa-toggle a.is-on { color: var(--aa-toggle-on, #fff); }
+.aa-toggle a:not(.is-on):hover { text-decoration: underline; text-underline-offset: 3px; }
+.aa-toggle a:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+.aa-toggle-knob {
+  position: absolute; top: 3px; bottom: 3px; left: 3px; width: calc((100% - 6px) / var(--n));
+  border-radius: 999px; background: var(--aa-toggle-ink, currentColor);
+  transform: translateX(calc(var(--i) * 100%)); transition: transform 0.5s cubic-bezier(0.65, 0, 0.25, 1);
+}
+@media (max-width: 420px) { .aa-toggle { font-size: 12px; } .aa-toggle a { padding: 0 9px; min-height: 28px; } }
+@media (prefers-reduced-motion: reduce) { .aa-toggle-knob, .aa-toggle a { transition: none; } }
+
+/* the cover between collections */
+.swap { position: fixed; inset: 0; z-index: 9999; pointer-events: all; color: var(--swap-ink); overflow: hidden; }
+.swap-svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.swap-fill { fill: var(--swap-bg); }
+.swap-vein { fill: none; stroke: var(--swap-ink); stroke-dasharray: 1.2 0.9; vector-effect: non-scaling-stroke; stroke-width: 1.5px; opacity: 0.7; }
+.swap-door { position: absolute; left: 0; right: 0; height: 50.5%; background: var(--swap-bg); }
+.swap-door--top { top: 0; background-image: repeating-linear-gradient(to bottom, transparent 0 46px, rgba(0, 0, 0, 0.22) 46px 48px, rgba(255, 255, 255, 0.05) 48px 50px); }
+.swap-door--bottom { bottom: 0; background-image: repeating-linear-gradient(to top, transparent 0 46px, rgba(0, 0, 0, 0.22) 46px 48px, rgba(255, 255, 255, 0.05) 48px 50px); }
+.swap-tube { position: absolute; left: 20%; right: 20%; top: calc(50% - 2px); height: 4px; border-radius: 4px; background: #f2f7e6; box-shadow: 0 0 24px 6px rgba(61, 220, 132, 0.45); }
+.swap-label {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: grid; justify-items: center; gap: 10px;
+  opacity: 0; pointer-events: none; text-align: center;
+}
+.swap-title { font-size: clamp(44px, 9vw, 120px); line-height: 0.9; }
+.swap--grow .swap-title { font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; letter-spacing: -0.02em; }
+.swap--shutter .swap-title { font-family: Archivo, 'Archivo Variable', 'Helvetica Neue', Arial, sans-serif; font-weight: 800; font-stretch: 62%; text-transform: uppercase; }
+.swap--shutter .swap-label { top: calc(50% - 26px); transform: translate(-50%, -100%); }
+.swap--shutter .swap-title { white-space: nowrap; font-size: clamp(38px, 7vw, 100px); }
+/* arriving: the doors start closed and slide apart */
+.swap--shutter.is-closed .swap-door { transform: none; }
+.swap--shutter.is-opening { pointer-events: none; }
+.swap--shutter.is-opening .swap-door { transition: transform 0.95s cubic-bezier(0.87, 0, 0.13, 1) 0.25s; }
+.swap--shutter.is-opening .swap-door--top { transform: translateY(-100%); }
+.swap--shutter.is-opening .swap-door--bottom { transform: translateY(100%); }
+.swap--shutter.is-opening .swap-tube { transition: transform 0.4s, opacity 0.4s; transform: scaleX(2.4); opacity: 0; }
+.swap--shutter.is-opening .swap-label { transition: opacity 0.25s; opacity: 0 !important; }
+.swap-sub { font-family: Archivo, 'Archivo Variable', 'Helvetica Neue', Arial, sans-serif; font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.8; }

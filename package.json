@@ -1,16 +1,19 @@
 {
-  "name": "aditi-arya-escape-rooms",
+  "name": "aditi-arya-portfolio",
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Escape Rooms: leather design portfolio of Aditi Arya, NIFT Raebareli",
+  "description": "Aditi Arya, leather design (NIFT Raebareli): the Escape Rooms and Auxin collections",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "node --test tests/content.test.js tests/depth.test.js"
+    "test": "node --test tests/content.test.js tests/depth.test.js tests/auxin.test.js",
+    "media:auxin": "python3 scripts/auxin-media.py"
   },
   "dependencies": {
+    "@fontsource-variable/archivo": "5.2.8",
+    "@fontsource/instrument-serif": "5.2.8",
     "gsap": "3.13.0",
     "qrcode": "1.5.4",
     "react": "18.3.1",
