@@ -16,7 +16,8 @@
 //             is the point it keeps in view.
 //      pause  one frame between the drawings and the specification, or a list
 //             of two shown side by side.
-//      proof  the plain-background frames beside the specification. `links`
+//      proof  the plain-background frames beside the specification (`white`:
+//             a white backdrop, printed onto the plate so it shows no box). `links`
 //             ties a specification row (by its label) to a point on one of them:
 //             'Row label': ['image', x, y], x and y from 0 to 1 from the top left.
 //             Pointing at or focusing that row lights that point.
@@ -259,7 +260,7 @@ export const calf = {
   ],
   proof: [
     { img: 'calf-side-plinth', label: 'Side', alt: 'A calf boot in profile on a plinth: deep blue ostrich-embossed upper, teal textured panels and toe cap, striped collar, black lug sole' },
-    { img: 'calf-top-pair-white', label: 'Above', alt: 'The pair from above on white: teal tongues, black laces, the shaped teal panels and toe caps' },
+    { img: 'calf-top-pair-white', white: true, label: 'Above', alt: 'The pair from above on white: teal tongues, black laces, the shaped teal panels and toe caps' },
     { img: 'calf-pair-flatlay', label: 'Pair', alt: 'The pair laid flat on pale grey, one boot turned over above the other, showing the full lacing and the lug sole' },
     { img: 'calf-lace-detail', label: 'Eyestay', alt: 'Close-up of the eyestay: the ostrich grain, a double row of topstitching and flat woven laces over the teal tongue' },
   ],
@@ -361,9 +362,9 @@ export const cowboy = {
   },
   made: { img: 'cowboy-dark-studio', alt: 'One cowboy boot lit against a dark ground: the chevron of brass rivets and the pleated teal panel', caption: 'As made.' },
   proof: [
-    { img: 'cowboy-side-white', label: 'Inner side', alt: 'A cowboy boot in profile on white: two columns of brass rivets either side of a pleated teal panel, a stacked heel and a pull tab' },
-    { img: 'cowboy-outer-white', label: 'Outer side', alt: 'The outer side on white: a chevron band of rivets over a short pleated panel, with a row of rivets beneath' },
-    { img: 'cowboy-back-white', label: 'Back', alt: 'The boot from behind on white: the back seam, both pull tabs and the stacked heel' },
+    { img: 'cowboy-side-white', white: true, label: 'Inner side', alt: 'A cowboy boot in profile on white: two columns of brass rivets either side of a pleated teal panel, a stacked heel and a pull tab' },
+    { img: 'cowboy-outer-white', white: true, label: 'Outer side', alt: 'The outer side on white: a chevron band of rivets over a short pleated panel, with a row of rivets beneath' },
+    { img: 'cowboy-back-white', white: true, label: 'Back', alt: 'The boot from behind on white: the back seam, both pull tabs and the stacked heel' },
   ],
   links: {
     'Upper': ['cowboy-outer-white', 0.4, 0.66],
@@ -401,6 +402,7 @@ export const bloom = {
     ],
     [
       { img: 'calf-crowd-print', piece: 'Calf boots', alt: 'An aged, taped print: a crowd walking past in a blur, one pair of calf boots standing still and sharp' },
+      { img: 'calf-walking-away', piece: 'Calf boots', alt: 'Walking away across a pale floor in the calf boots: the striped collars, the lacing at the back of the leg and the lug soles' },
     ],
     [
       { img: 'cowboy-branch-seated', develop: true, piece: 'Cowboy boots', alt: 'Sitting on a fallen branch in the cowboy boots: one shows the chevron of rivets, the other the pleated teal panel between two rows' },

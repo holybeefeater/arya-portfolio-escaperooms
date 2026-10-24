@@ -324,7 +324,7 @@ export const otherWork = [
 ]
 
 export const about = {
-  portrait: { src: 'assets/profile/aditi-portrait.webp', alt: 'Portrait of Aditi Arya holding a hand-painted bag, wearing her NIFT lanyard', w: 1179, h: 1400 },
+  portrait: { src: 'assets/profile/aditi-portrait.webp', alt: 'Portrait of Aditi Arya holding a hand-painted bag, wearing a NIFT lanyard', w: 1179, h: 1400 },
   // Her own line, from the reflection in her internship presentation.
   motto: 'Craftsmanship is coordination made visible.',
   bio: [

@@ -59,7 +59,7 @@ export default function App() {
       <LightboxProvider>
         <div id="ground" aria-hidden="true" />
         <div className="ax-glow" aria-hidden="true" />
-        {/* her palette as a tritone (Surf the Web, Teal, Green Eyes), for photographs the light develops */}
+        {/* the collection's palette as a tritone (Surf the Web, Teal, Green Eyes), for photographs the light develops */}
         <svg className="ax-defs" width="0" height="0" aria-hidden="true" focusable="false">
           <filter id="ax-tritone" colorInterpolationFilters="sRGB">
             <feColorMatrix type="matrix" values="0.2126 0.7152 0.0722 0 0  0.2126 0.7152 0.0722 0 0  0.2126 0.7152 0.0722 0 0  0 0 0 1 0" />

@@ -499,6 +499,7 @@ html[data-ink='light'] .ax-header { --aa-toggle-on: var(--cobalt); }
 /* a pause between the drawings and the specification */
 .room-pause { width: min(100%, 440px); margin: clamp(90px, 13vw, 180px) auto 0 clamp(0px, 8vw, 140px); }
 .room-pause-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(12px, 2vw, 28px); margin-top: clamp(90px, 13vw, 180px); align-items: start; }
+.room-pause-pair .shot-frame { aspect-ratio: 4 / 5 !important; }
 .room-pause--right { margin-left: auto; margin-right: clamp(0px, 8vw, 140px); }
 .room-made { max-width: 420px; }
 
@@ -510,6 +511,7 @@ html[data-ink='light'] .ax-header { --aa-toggle-on: var(--cobalt); }
 .proof-plate { display: grid; place-items: center; aspect-ratio: 4 / 5; container-type: size; background: var(--pale); }
 .proof-box { position: relative; display: block; width: min(100cqw, calc(100cqh * var(--ar))); aspect-ratio: var(--ar); cursor: zoom-in; }
 .proof-box img { width: 100%; height: 100%; object-fit: contain; }
+.proof-item.is-white .proof-box img { mix-blend-mode: multiply; }
 .proof-light {
   position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity 0.35s;
   background: radial-gradient(circle at var(--px) var(--py), rgba(255, 252, 236, 0.3) 0 5%, transparent 9%, rgba(18, 28, 24, 0.58) 32%);
@@ -524,8 +526,10 @@ html[data-ink='light'] .ax-header { --aa-toggle-on: var(--cobalt); }
 
 /* calf boots: each view of the drawing beside the boot as made */
 .turn-pair { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: clamp(16px, 2.4vw, 32px); align-items: center; }
-.turn-made-plate { position: relative; aspect-ratio: 4 / 5; background: #fff; }
-.turn-made-plate img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: 0; transition: opacity 0.5s; }
+/* the photographs' white backdrop is printed onto the page (multiply), so the
+   boot stands on the sage like the drawing beside it, with its own shadow */
+.turn-made-plate { position: relative; aspect-ratio: 4 / 5; }
+.turn-made-plate img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: 0; transition: opacity 0.5s; mix-blend-mode: multiply; }
 .turn-made-plate img.is-on { opacity: 1; }
 
 @media (max-width: 899px) {

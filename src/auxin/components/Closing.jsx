@@ -21,7 +21,7 @@ export function About() {
         <div className="about-copy">
           <p className="about-lede">{person.degree.split(',')[0]} at {person.school}, {person.degree.split(', ')[1]}. {person.minor}.</p>
           {bio.map(p => <p key={p}>{p}</p>)}
-          <blockquote className="about-motto"><p>“{about.motto}”</p><footer>From her internship reflection</footer></blockquote>
+          <blockquote className="about-motto"><p>“{about.motto}”</p><footer>From the internship reflection</footer></blockquote>
         </div>
         <div className="about-lists">
           <div><h3 className="list-k">Education</h3><ul>{about.education.map(([a, b]) => <li key={a}>{a}<span>{b}</span></li>)}</ul></div>
@@ -55,7 +55,7 @@ export function Contact() {
       </div>
       <footer className="colophon">
         <p>Type: <a href="https://fonts.google.com/specimen/Instrument+Serif" target="_blank" rel="noreferrer">Instrument Serif</a> (Rodrigo Fuenzalida, Jordan Egstad) and <a href="https://fonts.google.com/specimen/Archivo" target="_blank" rel="noreferrer">Archivo</a> (Omnibus-Type), both SIL Open Font License.</p>
-        <p>The strips at the top are cut, in 3D, from crops of the shoot photographs. A “moving still” is a slow camera move over one of the photographs; her own shoot video replaces it when added. The palette that develops into colour under your light and the close crop of the leather are made by the page as you look; the photographs themselves are untouched, and open full size when clicked. Boards, drawings and the closing image are pages of her Auxin deck.</p>
+        <p>The strips at the top are cut, in 3D, from crops of the shoot photographs. A “moving still” is a slow camera move over one of the photographs; the shoot video replaces it when added. The palette that develops into colour under your light and the close crop of the leather are made by the page as you look; the photographs themselves are untouched, and open full size when clicked. Boards, drawings and the closing image are pages of the Auxin deck.</p>
         <p>© {person.name}</p>
       </footer>
     </section>

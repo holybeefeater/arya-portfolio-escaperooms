@@ -48,7 +48,7 @@ export default function Bloom() {
   return (
     <section id={c.id} className="ch ch--bloom" data-tone={c.tone} data-ink={c.ink}>
       <ChapterHead c={c}>
-        <p>The three pieces as made and worn: the jacket and trousers, the calf boots and the cowboy boots.{calm ? '' : ' Some photographs wait in her palette until your light develops them into colour.'} Click any photograph to see it full size, untouched.</p>
+        <p>The three pieces as made and worn: the jacket and trousers, the calf boots and the cowboy boots.{calm ? '' : ' Some photographs wait in the collection’s palette until your light develops them into colour.'} Click any photograph to see it full size, untouched.</p>
       </ChapterHead>
       <div ref={stage} className="bloom-stage">
         <p className="bloom-word" aria-hidden="true">bloom</p>

@@ -208,7 +208,7 @@ export function RoomCalf() {
           <div>
             <Spec rows={b.spec} links={b.links} caption="Specification: calf boots" />
             <Lean max={5} cutout className="flat"><Pic name={b.flat.img} alt={b.flat.alt} sizes="(min-width: 900px) 30vw, 80vw" /></Lean>
-            <Estimate rows={b.estimate} caption="Estimated cost per component, ₹ (her ranges)" />
+            <Estimate rows={b.estimate} caption="Estimated cost per component, ₹ (ranges from the costing sheet)" />
           </div>
         </div>
       </ProofRoom>
@@ -245,7 +245,7 @@ function Reveal() {
         <span className="reveal-leather" aria-hidden="true" />
         <Pic name={cowboy.flat.img} alt={cowboy.flat.alt} sizes="(min-width: 900px) 50vw, 100vw" className="reveal-lines" />
       </div>
-      <figcaption className="cap">Her technical flat. Where your light falls, it fills with the aqua oil pull-up leather it specifies, shown with a crop from the photograph of the boot.</figcaption>
+      <figcaption className="cap">Where your light falls, the drawing fills with the aqua oil pull-up leather it specifies, cropped from the photograph of the boot.</figcaption>
     </figure>
   )
 }

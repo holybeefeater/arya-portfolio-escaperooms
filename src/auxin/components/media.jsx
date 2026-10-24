@@ -183,7 +183,7 @@ export function ProofGallery({ items, label }) {
         const m = img(p.img)
         const on = a?.img === p.img
         return (
-          <figure key={p.img} data-proof={p.img} className={`proof-item ${on ? 'is-on' : ''}`}>
+          <figure key={p.img} data-proof={p.img} className={`proof-item ${on ? 'is-on' : ''} ${p.white ? 'is-white' : ''}`}>
             <div className="proof-plate">
               <button type="button" className="proof-box" style={{ '--ar': m.width / m.height, '--px': `${(on ? a.x : 0.5) * 100}%`, '--py': `${(on ? a.y : 0.5) * 100}%` }}
                 onClick={() => open({ img: p.img, alt: p.alt, caption: p.label })} aria-label={`Open full size: ${p.alt}`}>
@@ -306,7 +306,7 @@ export function Estimate({ rows, caption }) {
       {caption && <caption>{caption}</caption>}
       <thead><tr><th scope="col">Component</th><th scope="col" className="num">Estimate</th></tr></thead>
       <tbody>{rows.map(([m, a, b]) => <tr key={m}><td>{m}</td><td className="num">{rupees(a)}–{b.toLocaleString('en-IN')}</td></tr>)}</tbody>
-      <tfoot><tr><th scope="row">Sum of her estimates</th><td className="num">{rupees(lo)}–{hi.toLocaleString('en-IN')}</td></tr></tfoot>
+      <tfoot><tr><th scope="row">Sum of the estimates</th><td className="num">{rupees(lo)}–{hi.toLocaleString('en-IN')}</td></tr></tfoot>
     </table>
   )
 }

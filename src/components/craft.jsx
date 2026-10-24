@@ -195,12 +195,12 @@ export function Nesting({ nesting }) {
         <h3 className="craft-h">Cutting the {nesting.bag.toLowerCase()}</h3>
         <blockquote className="nest-quote">
           <p>“{materialQuote}”</p>
-          <cite>Aditi, on her internship</cite>
+          <cite>Aditi, on the internship</cite>
         </blockquote>
         <dl className="nest-stats">
           <div><dt>Pieces</dt><dd>{n}</dd></div>
           <div><dt>Leather in the pieces</dt><dd>{area.toFixed(1)} dm²</dd></div>
-          <div><dt>Suede on her bill of materials</dt><dd>{nesting.allowance} dm²</dd></div>
+          <div><dt>Suede on the bill of materials</dt><dd>{nesting.allowance} dm²</dd></div>
           <div className="nest-yield"><dt>Yield</dt><dd>{yieldPct}%</dd></div>
         </dl>
         <p className="caption">A nesting study drawn from the {nesting.bag.toLowerCase()}’s finished size, with 1 cm seam allowance. The other {spare.toFixed(1)} dm² covers flaws, stretch direction and the loss between cuts.</p>
@@ -278,14 +278,14 @@ export function Costing({ items }) {
               <tr key={it.name}>
                 <th scope="row">{it.name}</th>
                 <td>{rupees(cost)}</td>
-                <td>{rupees(retail)}{it.retail ? <span className="costing-own"> her price, {(it.retail / cost).toFixed(1)}×</span> : null}</td>
+                <td>{rupees(retail)}{it.retail ? <span className="costing-own"> set price, {(it.retail / cost).toFixed(1)}×</span> : null}</td>
                 <td className="costing-bar"><span style={{ '--r': retail, '--c': cost }} aria-hidden="true" /></td>
               </tr>
             )
           })}
         </tbody>
       </table>
-      <p className="caption">Material cost is the sum of each bill of materials. Retail is indicative, at a {m}× markup rounded to ₹50, unless a price of her own is shown. Each bar is the retail price, against the dearest piece; the dark part is the material.</p>
+      <p className="caption">Material cost is the sum of each bill of materials. Retail is indicative, at a {m}× markup rounded to ₹50, unless a set price is shown. Each bar is the retail price, against the dearest piece; the dark part is the material.</p>
     </div>
   )
 }
