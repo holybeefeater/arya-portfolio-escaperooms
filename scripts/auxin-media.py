@@ -2,8 +2,10 @@
 
     python3 scripts/auxin-media.py
 
-Writes two sizes of each image to public/assets/auxin/img/ (<name>.webp and
-<name>-s.webp) and their sizes to src/auxin/media.json. Line drawings are cut
+Photographs from the shoot go in media/auxin/shoot/; the file name becomes the
+image name in content.js. Writes two sizes of each image to
+public/assets/auxin/img/ (<name>.webp and <name>-s.webp) and their sizes to
+src/auxin/media.json. Line drawings are cut
 out of Aditi's specification boards and their sage background made transparent.
 Run it again after adding or replacing an image in media/auxin/.
 """
@@ -49,9 +51,12 @@ def key_sage(im, thresh=30):
 def open_(n):
     return Image.open(os.path.join(SRC, n))
 
-# photographs from the shoot
-for n in ('final-closeup', 'final-editorial-1', 'final-full-look'):
-    save(n, open_(n + '.jpg'), big=1122, small=640)
+# photographs from the shoot: every file in media/auxin/shoot/, named by its file
+SHOOT = os.path.join(SRC, 'shoot')
+for f in sorted(os.listdir(SHOOT)):
+    n, ext = os.path.splitext(f)
+    if ext.lower() in ('.jpg', '.jpeg', '.png', '.webp', '.tif', '.tiff'):
+        save(n, Image.open(os.path.join(SHOOT, f)), big=1600, small=720)
 # images from the deck (reference images, not her photographs)
 for n in ('title-plate', 'cells-texture', 'closing-plant'):
     save(n, open_(n + '.jpg'), big=1200, small=640)

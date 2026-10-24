@@ -95,6 +95,12 @@
   "sw": 900,
   "w": 1800
  },
+ "calf-back-pair-white": {
+  "alpha": false,
+  "h": 1448,
+  "sw": 720,
+  "w": 1086
+ },
  "calf-boots-final-design": {
   "alpha": true,
   "h": 812,
@@ -106,6 +112,96 @@
   "h": 1427,
   "sw": 720,
   "w": 942
+ },
+ "calf-crowd-print": {
+  "alpha": false,
+  "h": 1054,
+  "sw": 720,
+  "w": 1492
+ },
+ "calf-door-handle": {
+  "alpha": false,
+  "h": 1402,
+  "sw": 720,
+  "w": 1122
+ },
+ "calf-front-pair-white": {
+  "alpha": false,
+  "h": 1254,
+  "sw": 720,
+  "w": 1254
+ },
+ "calf-gum-step": {
+  "alpha": false,
+  "h": 1402,
+  "sw": 720,
+  "w": 1122
+ },
+ "calf-lace-detail": {
+  "alpha": false,
+  "h": 1448,
+  "sw": 720,
+  "w": 1086
+ },
+ "calf-pair-flatlay": {
+  "alpha": false,
+  "h": 1400,
+  "sw": 720,
+  "w": 1123
+ },
+ "calf-pair-stitched-tissue": {
+  "alpha": false,
+  "h": 1402,
+  "sw": 720,
+  "w": 1122
+ },
+ "calf-pair-tulle": {
+  "alpha": false,
+  "h": 1337,
+  "sw": 720,
+  "w": 1177
+ },
+ "calf-seated-pair": {
+  "alpha": false,
+  "h": 1402,
+  "sw": 720,
+  "w": 1122
+ },
+ "calf-side-black": {
+  "alpha": false,
+  "h": 1402,
+  "sw": 720,
+  "w": 1122
+ },
+ "calf-side-plinth": {
+  "alpha": false,
+  "h": 1402,
+  "sw": 720,
+  "w": 1122
+ },
+ "calf-side-white": {
+  "alpha": false,
+  "h": 1536,
+  "sw": 720,
+  "w": 1024
+ },
+ "calf-skyline": {
+  "alpha": false,
+  "h": 1518,
+  "sw": 720,
+  "w": 1036
+ },
+ "calf-stride-sole": {
+  "alpha": false,
+  "h": 1402,
+  "sw": 720,
+  "w": 1122
+ },
+ "calf-top-pair-white": {
+  "alpha": false,
+  "h": 1374,
+  "sw": 720,
+  "w": 1145
  },
  "calf-view-back": {
   "alpha": true,
@@ -125,6 +221,12 @@
   "sw": 400,
   "w": 577
  },
+ "calf-walking-away": {
+  "alpha": false,
+  "h": 1430,
+  "sw": 720,
+  "w": 1100
+ },
  "cells-texture": {
   "alpha": false,
   "h": 1024,
@@ -137,10 +239,64 @@
   "sw": 640,
   "w": 1080
  },
- "final-closeup": {
+ "cowboy-back-white": {
+  "alpha": false,
+  "h": 1312,
+  "sw": 720,
+  "w": 1199
+ },
+ "cowboy-branch-seated": {
+  "alpha": false,
+  "h": 1254,
+  "sw": 720,
+  "w": 1254
+ },
+ "cowboy-dark-studio": {
   "alpha": false,
   "h": 1402,
-  "sw": 640,
+  "sw": 720,
+  "w": 1122
+ },
+ "cowboy-grass-low": {
+  "alpha": false,
+  "h": 1672,
+  "sw": 720,
+  "w": 941
+ },
+ "cowboy-moss-walk": {
+  "alpha": false,
+  "h": 1080,
+  "sw": 720,
+  "w": 1457
+ },
+ "cowboy-outer-white": {
+  "alpha": false,
+  "h": 1312,
+  "sw": 720,
+  "w": 1199
+ },
+ "cowboy-side-white": {
+  "alpha": false,
+  "h": 1312,
+  "sw": 720,
+  "w": 1199
+ },
+ "cowboy-willow-water": {
+  "alpha": false,
+  "h": 1402,
+  "sw": 720,
+  "w": 1122
+ },
+ "ensemble-back": {
+  "alpha": false,
+  "h": 1402,
+  "sw": 720,
+  "w": 1122
+ },
+ "ensemble-fisheye-sky": {
+  "alpha": false,
+  "h": 1402,
+  "sw": 720,
   "w": 1122
  },
  "final-design-front-back": {
@@ -148,18 +304,6 @@
   "h": 1096,
   "sw": 720,
   "w": 866
- },
- "final-editorial-1": {
-  "alpha": false,
-  "h": 1402,
-  "sw": 640,
-  "w": 1122
- },
- "final-full-look": {
-  "alpha": false,
-  "h": 1402,
-  "sw": 640,
-  "w": 1122
  },
  "flat-calf": {
   "alpha": true,
@@ -185,6 +329,48 @@
   "sw": 600,
   "w": 701
  },
+ "jacket-front-studio": {
+  "alpha": false,
+  "h": 1402,
+  "sw": 720,
+  "w": 1122
+ },
+ "jacket-grass-blade": {
+  "alpha": false,
+  "h": 1402,
+  "sw": 720,
+  "w": 1122
+ },
+ "jacket-neckline": {
+  "alpha": false,
+  "h": 1254,
+  "sw": 720,
+  "w": 1254
+ },
+ "jacket-reach-fog": {
+  "alpha": false,
+  "h": 1402,
+  "sw": 720,
+  "w": 1122
+ },
+ "jacket-sleeve-zip": {
+  "alpha": false,
+  "h": 1254,
+  "sw": 720,
+  "w": 1254
+ },
+ "jacket-stem-shadow": {
+  "alpha": true,
+  "h": 720,
+  "sw": 576,
+  "w": 576
+ },
+ "jacket-upside-down": {
+  "alpha": false,
+  "h": 540,
+  "sw": 720,
+  "w": 720
+ },
  "range-garments": {
   "alpha": true,
   "h": 832,
@@ -196,5 +382,17 @@
   "h": 939,
   "sw": 640,
   "w": 750
+ },
+ "trousers-seam": {
+  "alpha": false,
+  "h": 1254,
+  "sw": 720,
+  "w": 1254
+ },
+ "trousers-seated": {
+  "alpha": false,
+  "h": 1402,
+  "sw": 720,
+  "w": 1122
  }
 }

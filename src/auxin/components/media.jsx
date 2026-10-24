@@ -80,6 +80,109 @@ export function Living({ name, alt, loop, video, sizes, className = '', label = 
   )
 }
 
+// A photograph that opens full size, untreated, in the lightbox.
+export function Shot({ item, sizes = '(min-width: 900px) 40vw, 100vw', className = '', caption, max = 5 }) {
+  const open = useLightbox()
+  const i = img(item.img)
+  return (
+    <figure className={`shot ${className}`}>
+      <Lean max={max}>
+        <button type="button" className="shot-btn" onClick={() => open({ img: item.img, alt: item.alt, caption: caption ?? item.caption ?? '' })} aria-label={`Open full size: ${item.alt}`}>
+          <span className="shot-frame" style={{ aspectRatio: `${i.width} / ${i.height}` }}><Pic name={item.img} alt="" sizes={sizes} /></span>
+        </button>
+      </Lean>
+      {(caption ?? item.caption) && <figcaption className="cap">{caption ?? item.caption}</figcaption>}
+    </figure>
+  )
+}
+
+// Shown in her palette (Surf the Web, Teal, Green Eyes) until the visitor's
+// light falls on it; where it falls, the photograph develops into colour.
+// Under reduced motion it is simply shown in colour.
+export function Develop({ name, sizes }) {
+  const calm = useCalm()
+  const ref = useRef(null)
+  useEffect(() => {
+    const el = ref.current
+    if (calm || !el) return
+    return light.subscribe(s => {
+      const r = el.getBoundingClientRect()
+      if (r.bottom < -200 || r.top > window.innerHeight + 200) return
+      el.style.setProperty('--dx', `${(s.x - r.left).toFixed(0)}px`)
+      el.style.setProperty('--dy', `${(s.y - r.top).toFixed(0)}px`)
+    })
+  }, [calm])
+  return (
+    <span ref={ref} className="develop">
+      <Pic name={name} alt="" sizes={sizes} />
+      {!calm && <Pic name={name} alt="" sizes={sizes} className="develop-duo" />}
+    </span>
+  )
+}
+
+// An extreme crop made at display time: the original is untouched.
+export function Crop({ name, crop, sizes }) {
+  return (
+    <span className="crop">
+      <Pic name={name} alt="" sizes={sizes} style={{ transformOrigin: `${crop.x * 100}% ${crop.y * 100}%`, transform: `scale(${crop.zoom})` }} />
+    </span>
+  )
+}
+
+// ── Proof: the plain-background photographs beside a specification ─────────
+// A specification row with a link lights its point on the photograph; the
+// other photographs step back, as the strips do in the hero.
+const Proof = createContext(null)
+
+export function ProofRoom({ children }) {
+  const [hover, setHover] = useState(null)
+  const [pinned, setPinned] = useState(null)
+  const ref = useRef(null)
+  const calm = useCalm()
+  const api = {
+    active: hover || pinned,
+    pinned,
+    show: v => setHover(v),
+    pin: v => {
+      const next = pinned?.label === v.label ? null : v
+      setPinned(next)
+      if (!next) return
+      // on a phone the photographs sit above the table: bring the lit one into view
+      const fig = ref.current?.querySelector(`[data-proof="${v.img}"]`)
+      const r = fig?.getBoundingClientRect()
+      if (r && (r.top < 70 || r.bottom > window.innerHeight)) fig.scrollIntoView({ block: 'center', behavior: calm ? 'auto' : 'smooth' })
+    },
+  }
+  return <Proof.Provider value={api}><div ref={ref} className="proof-room">{children}</div></Proof.Provider>
+}
+
+export function ProofGallery({ items, label }) {
+  const proof = useContext(Proof)
+  const open = useLightbox()
+  const a = proof?.active
+  return (
+    <div className={`proof ${a ? 'is-pointing' : ''}`} role="group" aria-label={label}>
+      {items.map(p => {
+        const m = img(p.img)
+        const on = a?.img === p.img
+        return (
+          <figure key={p.img} data-proof={p.img} className={`proof-item ${on ? 'is-on' : ''}`}>
+            <div className="proof-plate">
+              <button type="button" className="proof-box" style={{ '--ar': m.width / m.height, '--px': `${(on ? a.x : 0.5) * 100}%`, '--py': `${(on ? a.y : 0.5) * 100}%` }}
+                onClick={() => open({ img: p.img, alt: p.alt, caption: p.label })} aria-label={`Open full size: ${p.alt}`}>
+                <Pic name={p.img} alt="" sizes="(min-width: 900px) 22vw, 46vw" />
+                <span className="proof-light" aria-hidden="true" />
+                {on && <span className={`proof-node ${a.x > 0.6 ? 'is-flip' : ''}`} style={{ left: `${a.x * 100}%`, top: `${a.y * 100}%` }} aria-hidden="true"><span className="proof-node-label">{a.label}</span></span>}
+              </button>
+            </div>
+            <figcaption className="cap">{p.label}</figcaption>
+          </figure>
+        )
+      })}
+    </div>
+  )
+}
+
 // An honest empty frame where a photograph or film is still to come.
 export function Slot({ label, note, ratio = '4 / 5', className = '' }) {
   return (
@@ -147,11 +250,22 @@ export function Board({ item, className = '', sizes = '(min-width: 900px) 45vw, 
 }
 
 // ── Tables ─────────────────────────────────────────────────────────────────
-export function Spec({ rows, caption }) {
+export function Spec({ rows, caption, links }) {
+  const proof = useContext(Proof)
+  const row = (k, l) => {
+    const v = { label: k, img: l[0], x: l[1], y: l[2] }
+    return (
+      <button type="button" className="spec-link" aria-pressed={proof.pinned?.label === k}
+        onMouseEnter={() => proof.show(v)} onMouseLeave={() => proof.show(null)}
+        onFocus={() => proof.show(v)} onBlur={() => proof.show(null)} onClick={() => proof.pin(v)}>
+        <span className="spec-node" aria-hidden="true" />{k}<span className="sr-only">: show on the photograph</span>
+      </button>
+    )
+  }
   return (
-    <table className="spec">
+    <table className={`spec ${links && proof ? 'spec--linked' : ''}`}>
       {caption && <caption>{caption}</caption>}
-      <tbody>{rows.map(([k, v]) => <tr key={k}><th scope="row">{k}</th><td>{v}</td></tr>)}</tbody>
+      <tbody>{rows.map(([k, v]) => <tr key={k}><th scope="row">{links?.[k] && proof ? row(k, links[k]) : k}</th><td>{v}</td></tr>)}</tbody>
     </table>
   )
 }

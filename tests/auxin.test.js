@@ -1,6 +1,6 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
-import { existsSync, readFileSync } from 'node:fs'
+import { existsSync, readdirSync, readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import * as ax from '../src/auxin/content.js'
 import { projects } from '../src/shared/projects.js'
@@ -67,4 +67,39 @@ test('every collection in the toggle has its own page and arrival script', () =>
   }
   const vite = readFileSync(root('vite.config.js'), 'utf8')
   for (const p of projects.filter(p => p.path)) assert.ok(vite.includes(`'${p.path}index.html'`), `vite input for ${p.path}`)
+})
+
+test('every specification link names a real row and one of the room’s photographs', () => {
+  const rooms = [
+    [ax.jacket.spec, ax.jacket.links, ax.jacket.proof],
+    [ax.jacket.trousers.spec, ax.jacket.trousers.links, ax.jacket.proof],
+    [ax.calf.spec, ax.calf.links, ax.calf.proof],
+    [ax.cowboy.spec, ax.cowboy.links, ax.cowboy.proof],
+  ]
+  for (const [spec, links, proof] of rooms) {
+    for (const [row, [name, x, y]] of Object.entries(links)) {
+      assert.ok(spec.some(r => r[0] === row), `no specification row "${row}"`)
+      assert.ok(proof.some(p => p.img === name), `${row}: ${name} is not beside this specification`)
+      assert.ok(x >= 0 && x <= 1 && y >= 0 && y <= 1, `${row}: point outside the photograph`)
+    }
+  }
+})
+
+test('every room opens on photographs, and every shoot photograph has alt text', () => {
+  for (const l of ax.leaves) {
+    assert.ok(['left', 'right'].includes(l.open.side), l.id)
+    assert.ok(l.open.slit > 0 && l.open.slit < 1, l.id)
+    for (const p of [l.open.lead, l.open.second, l.pause || l.made, ...l.proof]) assert.ok(p.img && p.alt && p.alt.length > 20, `${l.id}: ${p.img}`)
+  }
+  const { hero, spreads, finale } = ax.bloom
+  for (const p of [hero, ...spreads.flat(), finale]) {
+    assert.ok(p.alt && p.alt.length > 20, p.img)
+    if (p.crop) assert.ok(p.crop.zoom > 1 && p.crop.x >= 0 && p.crop.x <= 1 && p.crop.y >= 0 && p.crop.y <= 1, p.img)
+  }
+})
+
+test('every shoot photograph has been through the media script', () => {
+  const shoot = readdirSync(root('media/auxin/shoot')).map(f => f.replace(/\.[^.]+$/, ''))
+  assert.ok(shoot.length > 0)
+  assert.deepEqual(shoot.filter(n => !media[n]), [])
 })

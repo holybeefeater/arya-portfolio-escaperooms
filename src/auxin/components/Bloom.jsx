@@ -2,11 +2,31 @@ import { useLayoutEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { ChapterHead } from './chrome'
-import { Gap, Living, Lean, Pic, useCalm } from './media'
-import { chapters, collection, shoot, closingImage } from '../content'
+import { Crop, Develop, Gap, Living, Lean, Pic, useCalm, useLightbox } from './media'
+import { img } from '../lib/asset'
+import { chapters, collection, bloom, closingImage } from '../content'
 
 gsap.registerPlugin(ScrollTrigger)
 const c = chapters[4]
+
+// One frame of a spread. It opens full size and untreated when clicked.
+function Frame({ item, sizes }) {
+  const open = useLightbox()
+  const i = img(item.img)
+  const ar = item.crop ? '4 / 5' : `${i.width} / ${i.height}`
+  return (
+    <figure className="bloom-shot">
+      <Lean max={4}>
+        <button type="button" className="shot-btn" onClick={() => open({ img: item.img, alt: item.alt, caption: item.piece })} aria-label={`Open full size: ${item.alt}`}>
+          <span className="shot-frame" style={{ aspectRatio: ar }}>
+            {item.develop ? <Develop name={item.img} sizes={sizes} /> : item.crop ? <Crop name={item.img} crop={item.crop} sizes={sizes} /> : <Pic name={item.img} alt="" sizes={sizes} />}
+          </span>
+        </button>
+      </Lean>
+      <figcaption className="cap">{item.piece}</figcaption>
+    </figure>
+  )
+}
 
 export default function Bloom() {
   const calm = useCalm()
@@ -24,11 +44,11 @@ export default function Bloom() {
     })
     return () => mm.revert()
   }, [calm])
-  const [full, ...rest] = shoot
+  const { hero: full, spreads, finale } = bloom
   return (
     <section id={c.id} className="ch ch--bloom" data-tone={c.tone} data-ink={c.ink}>
       <ChapterHead c={c}>
-        <p>The ensemble as made: the jacket in blue oil pull-up cow leather, the trousers in striped curtain fabric with teal pleated panels.</p>
+        <p>The three pieces as made and worn: the jacket and trousers, the calf boots and the cowboy boots.{calm ? '' : ' Some photographs wait in her palette until your light develops them into colour.'} Click any photograph to see it full size, untouched.</p>
       </ChapterHead>
       <div ref={stage} className="bloom-stage">
         <p className="bloom-word" aria-hidden="true">bloom</p>
@@ -36,8 +56,13 @@ export default function Bloom() {
           <Living name={full.img} loop={full.loop} video={full.video} alt={full.alt} sizes="100vw" />
         </div>
       </div>
-      <div className="bloom-pair">
-        {rest.map(s => <Living key={s.img} name={s.img} loop={s.loop} video={s.video} alt={s.alt} sizes="(min-width: 900px) 45vw, 100vw" />)}
+      {spreads.map((sp, n) => (
+        <div key={sp[0].img} className={`bloom-spread ${sp.length === 1 ? 'bloom-spread--wide' : spreads.slice(0, n).filter(x => x.length > 1).length % 2 ? 'bloom-spread--flip' : ''}`}>
+          {sp.map((it, k) => <Frame key={it.img + k} item={it} sizes={sp.length === 1 ? '(min-width: 900px) 80vw, 100vw' : k ? '(min-width: 900px) 30vw, 70vw' : '(min-width: 900px) 55vw, 100vw'} />)}
+        </div>
+      ))}
+      <div className="bloom-finale">
+        <Living name={finale.img} loop={finale.loop} video={finale.video} alt={finale.alt} sizes="(min-width: 900px) 60vw, 100vw" />
       </div>
       <div className="bloom-close">
         <p className="bloom-quote">“{collection.closing}”</p>

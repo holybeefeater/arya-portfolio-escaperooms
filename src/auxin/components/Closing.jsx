@@ -55,7 +55,7 @@ export function Contact() {
       </div>
       <footer className="colophon">
         <p>Type: <a href="https://fonts.google.com/specimen/Instrument+Serif" target="_blank" rel="noreferrer">Instrument Serif</a> (Rodrigo Fuenzalida, Jordan Egstad) and <a href="https://fonts.google.com/specimen/Archivo" target="_blank" rel="noreferrer">Archivo</a> (Omnibus-Type), both SIL Open Font License.</p>
-        <p>The strips at the top are cut, in 3D, from crops of the shoot photographs. A “moving still” is a slow camera move over one of those photographs; her own shoot video replaces it when added. Boards, drawings and the closing image are pages of her Auxin deck.</p>
+        <p>The strips at the top are cut, in 3D, from crops of the shoot photographs. A “moving still” is a slow camera move over one of the photographs; her own shoot video replaces it when added. The stretch as a room's first photograph arrives, the palette that develops into colour under your light, and the close crop of the leather are made by the page as you look; the photographs themselves are untouched, and open full size when clicked. Boards, drawings and the closing image are pages of her Auxin deck.</p>
         <p>© {person.name}</p>
       </footer>
     </section>

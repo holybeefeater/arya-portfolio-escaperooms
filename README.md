@@ -74,12 +74,21 @@ one light that everything leans toward:
 - **The stem down the left edge** grows as you read, leans to the light, and has a brass node
   per chapter (click one to go there).
 - **Photographs and drawings** turn to face the light; cut-outs cast a shadow away from it.
+- **The shoot photographs** are treated by the page, never in the files: a room's first
+  photograph stretches upward out of its frame as it arrives and settles into the true picture
+  by the middle of the screen; some Bloom photographs wait in her palette (Surf the Web, Teal,
+  Green Eyes) until the light develops them into colour; one is a close crop of the leather.
+  Every one opens full size and untouched when clicked. Under *reduced motion* they are simply
+  the photographs.
 
 The page follows growth stages: **Seed** (the idea: her brainstorm redrawn as a stem that grows
 as you scroll), **Roots** (research and persona), **Stem** (colour and material),
-**Leaves** (the three pieces, each with its own room: the jacket from flat to design to
-photograph, the calf boot you can turn, the cowboy boot whose drawing fills with leather
-under your light and its 66 rivets), **Bloom** (the shoot), then About and Contact.
+**Leaves** (the three pieces, each with its own room. A room opens on its lifestyle
+photographs, then the drawings: the jacket from flat to design to photograph, the calf boot you
+can turn beside the boot as made, the cowboy boot whose drawing fills with its leather under your
+light and its 66 rivets. Its plain-background photographs sit beside the specification: point at
+a row and its place on the photograph lights up), **Bloom** (the shoot, from fog to full sun),
+then About and Contact.
 Her own note on the brainstorm, "keep it abstract, not botanical", is followed: no leaf icons.
 
 ### Change Auxin's words, numbers or images
@@ -88,23 +97,38 @@ Her own note on the brainstorm, "keep it abstract, not botanical", is followed: 
   deck is silent the value is `gap('…')`, which shows on the page as a dashed **To add** note.
   Costing totals are added up from the lines; `npm test` checks them against her printed
   totals (jacket ₹2,460, trousers ₹1,090, cowboy boots ₹1,362).
-- **Images**: originals live in `media/auxin/`. After adding or replacing one, run
+- **Images**: originals live in `media/auxin/`; shoot photographs in `media/auxin/shoot/`,
+  where the file name is the name used in `content.js`. After adding or replacing one, run
   `npm run media:auxin` (needs Python 3 with Pillow) to write the two web sizes to
   `public/assets/auxin/img/` and update `src/auxin/media.json`. The script also cuts the
   technical flats out of her specification pages and makes their sage background clear.
+- **Where the shoot photographs go**: each piece in `content.js` has `open` (the lifestyle
+  photographs that open its room, with `side`: the lead photograph sits on the side that sends
+  the eye into the text), `pause` (one photograph between the drawings and the specification),
+  `proof` (the plain-background photographs beside the specification) and `links` (a
+  specification row, by its label, to a point on one of them). Bloom is `bloom`, near the end.
+  `npm test` checks that every link names a real row and photograph.
 - **Video**: every moving photograph has a `video: ''` slot. Put an `.mp4` in
   `public/assets/auxin/video/` and write its path there. Until then it plays a *moving still*:
   a slow camera move over the same photograph (`public/assets/auxin/loops/`, made with ffmpeg
-  from her photographs, nothing generated). It is labelled as such and can be paused.
+  from her photographs, nothing generated). It is labelled as such and can be paused. To make
+  one for another photograph (720 × 900, five seconds in and five back):
+  `ffmpeg -i media/auxin/shoot/NAME.webp -filter_complex "[0]scale=2880:-2,zoompan=z='1+0.07*on/150':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=150:s=720x900:fps=30,format=yuv420p,split[a][b];[b]reverse[r];[a][r]concat=n=2:v=1[v]" -map "[v]" -c:v libx264 -crf 24 -movflags +faststart -an public/assets/auxin/loops/NAME.mp4`
 - **Strip materials**: `public/assets/auxin/tex/` (crops of her photographs with the lighting
-  flattened, plus a relief map computed from each).
+  flattened, plus a relief map computed from each). `cowboy-leather.jpg` is a crop of
+  `cowboy-outer-white`; the cowboy boot's drawing fills with it.
 
 ### Things only Aditi can add (Auxin)
 
 - Her role on Auxin, the year and module, and a short reflection (marked **To add** under Bloom).
-- Photographs (or video) of the finished calf boots and cowboy boots: their frames say
-  *photographs to come*. The deck's final-product page for the calf boots is empty.
 - Her shoot video, if there is one, for the moving stills.
+- Full-size files for two photographs that arrived small: `jacket-upside-down` (720 × 540)
+  and `jacket-stem-shadow` (576 × 720). Replace them in `media/auxin/shoot/` and run the script.
+- Rows her specification sheets do not have, for details the photographs show: the jacket's
+  flap pockets; the calf boots' teal textured panels and toe caps and striped collar (her sheet
+  calls the contrast panels "reinforced curtain fabric, muted green"); the cowboy boots' pleated
+  teal panel. Her deck calls the cowboy boots "the same finish as the jacket"; in the photographs
+  the jacket reads cobalt and the boots grey-aqua.
 
 Two notes from the deck: the jacket's specification lists "Comfort features: cushioned insole,
 moisture-wicking lining", which looks copied from a boot sheet, so it is left out; the calf

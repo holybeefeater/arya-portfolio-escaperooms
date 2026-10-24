@@ -72,7 +72,7 @@ export default function Hero() {
       </p>
       <h1 className="hx-title" aria-label={`${collection.title}, a collection by ${person.name}`}>{collection.title}</h1>
       <canvas ref={canvas} className="hx-canvas" aria-hidden="true" />
-      {failed && <Pic name="final-closeup" alt="Close-up of the Auxin jacket in blue oil pull-up leather" className="hx-fallback" eager />}
+      {failed && <Pic name="jacket-neckline" alt="Close-up of the Auxin jacket: the crossover neckline and the grain of the leather" className="hx-fallback" eager />}
 
       <div className="hx-intro hx-fade">
         <p className="hx-lede">

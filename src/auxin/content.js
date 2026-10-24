@@ -8,6 +8,17 @@
 //  • Images are named by their file in public/assets/auxin/img/ (no extension).
 //    To add or replace one, put the original in media/auxin/ and run
 //    `python3 scripts/auxin-media.py`.
+//  • Photographs from the shoot sit in three places in each piece's room:
+//      open   the lifestyle frames that open the room. `side` is where the lead
+//             frame sits ('left' when the model looks or moves to the right, so
+//             the eye travels into the text); `slit` is how far down the lead
+//             frame the scroll-stretch starts (0 to 1, see Stretch in Rooms.jsx).
+//      pause  one frame between the drawings and the specification.
+//      proof  the plain-background frames beside the specification. `links`
+//             ties a specification row (by its label) to a point on one of them:
+//             'Row label': ['image', x, y], x and y from 0 to 1 from the top left.
+//             Pointing at or focusing that row lights that point.
+//    Bloom, the shoot chapter, is `bloom` near the end of this file.
 //  • Video: every moving photograph has a `video` slot. Put an .mp4 in
 //    public/assets/auxin/video/ and write its path, e.g. video: 'assets/auxin/video/shoot-1.mp4'.
 //    Until then the photograph moves with a slow camera move (a "moving still").
@@ -121,7 +132,7 @@ export const jacket = {
   stages: [
     { img: 'flat-jacket', label: 'Technical flat', alt: 'Technical flat of the jacket, front and back' },
     { img: 'final-design-front-back', label: 'Final design', alt: 'Final design of the jacket, front and back: the back shows a centre seam with a teal pleat insertion' },
-    { img: 'final-editorial-1', label: 'Made', alt: 'The finished jacket in blue oil pull-up leather, worn with the striped trousers', photo: true },
+    { img: 'jacket-front-studio', label: 'Made', alt: 'The finished jacket, tied at the waist with its lace, worn with the striped trousers against a plain grey backdrop', photo: true },
   ],
   // points on the final design image (front view on the left, back on the right).
   // x and y run from 0 to 1, measured from the image's top-left corner.
@@ -135,9 +146,30 @@ export const jacket = {
   ],
   range: { img: 'range-garments', alt: 'Range: five variations of the jacket and trousers, drawn on a model', caption: 'Range: five variations on the jacket and trousers.' },
   forms: { img: 'board-garment-forms-shapes', alt: 'Pages of silhouette sketches for jackets and trousers', caption: 'Forms and shapes: silhouette sketches.' },
-  photos: [
-    { img: 'final-closeup', loop: 'assets/auxin/loops/final-closeup.mp4', video: '', alt: 'Close-up of the crossover neckline and the grain of the blue oil pull-up leather' },
+  open: {
+    side: 'left', slit: 0.16,
+    lead: { img: 'jacket-grass-blade', alt: 'The jacket worn open against a dark wall, a long blade of grass held up to the face; the teal pleat shows at the inner sleeve' },
+    second: { img: 'jacket-stem-shadow', alt: 'A hand holding the jacket closed at the lapel, a curved stem across the body and window shadows on the wall behind' },
+  },
+  pause: { img: 'trousers-seated', alt: 'Seated with legs crossed: the striped trousers with their teal pleated outer panels, black lug-soled boots, the jacket’s lace hanging at the knee', caption: 'The trousers, seated, with their pleated outer panels.' },
+  proof: [
+    { img: 'jacket-front-studio', label: 'Front', alt: 'Front of the jacket on a plain grey backdrop: the crossover neckline, the lace tied at the waist, flap pockets and zipped sleeves' },
+    { img: 'ensemble-back', label: 'Back', alt: 'Back of the jacket and trousers: the teal pleat insertion down the centre back, and the trousers’ pleated outer panels flaring to the floor' },
+    { img: 'jacket-neckline', label: 'Neckline', alt: 'Close-up of the crossover neckline with its topstitched collar band, and the grain of the leather' },
+    { img: 'jacket-sleeve-zip', label: 'Sleeve', alt: 'The zip that sets the sleeve’s length, the teal pleat along the inner sleeve and the side panel' },
+    { img: 'trousers-seam', label: 'Outer seam', alt: 'Close-up of the trousers’ outer seam: green and cream stripes meeting the teal pleated panel' },
   ],
+  links: {
+    'Fabric': ['jacket-neckline', 0.22, 0.72],
+    'Closure': ['jacket-front-studio', 0.47, 0.58],
+    'Sleeve': ['jacket-sleeve-zip', 0.3, 0.52],
+    'Neckline': ['jacket-neckline', 0.42, 0.42],
+    'Shoulder': ['jacket-neckline', 0.07, 0.5],
+    'Seam detail': ['ensemble-back', 0.44, 0.25],
+    'Pleat placement': ['jacket-sleeve-zip', 0.22, 0.68],
+    'Hem': ['jacket-front-studio', 0.3, 0.84],
+    'Colour finish': ['jacket-front-studio', 0.72, 0.42],
+  },
   spec: [
     ['Category', 'Relaxed kimono jacket, menswear'],
     ['Fabric', 'Full grain cowhide, upholstery fabric'],
@@ -185,6 +217,13 @@ export const jacket = {
       ['Sewing thread', '1 reel', '₹40', 40],
     ],
     flat: { img: 'flat-trousers', alt: 'Technical flat of the trousers, front and back, with pleated outer panels' },
+    links: {
+      'Category': ['ensemble-back', 0.38, 0.84],
+      'Fabric': ['trousers-seam', 0.3, 0.6],
+      'Pleat placement': ['trousers-seam', 0.8, 0.55],
+      'Pockets': ['jacket-front-studio', 0.18, 0.87],
+      'Surface': ['trousers-seam', 0.25, 0.35],
+    },
   },
   sheet: { img: 'board-garment-spec-costing', alt: 'Specification and costing sheet with jacket and trouser flats', caption: 'The specification and costing page.' },
 }
@@ -199,10 +238,32 @@ export const calf = {
   research: 'Research followed the #BoxingBoot, forecast as a key item through #SportCore: knee-high or mid-calf lengths for directional ranges, rubber soles for grip, and gender-inclusive styles (source: WGSN).',
   // the final design's three views, for turning the boot
   views: [
-    { img: 'calf-view-front', label: 'Front' },
-    { img: 'calf-view-side', label: 'Side' },
-    { img: 'calf-view-back', label: 'Back' },
+    { img: 'calf-view-front', label: 'Front', photo: { img: 'calf-front-pair-white', alt: 'The finished pair from the front, on white' } },
+    { img: 'calf-view-side', label: 'Side', photo: { img: 'calf-side-white', alt: 'A finished boot worn, in profile on white' } },
+    { img: 'calf-view-back', label: 'Back', photo: { img: 'calf-back-pair-white', alt: 'The finished pair from behind, on white: back seams, heel counters and striped collars' } },
   ],
+  open: {
+    side: 'left', slit: 0.42,
+    lead: { img: 'calf-stride-sole', alt: 'A calf boot mid-stride, seen from below with its lug sole toward the camera, a striped trouser hem above' },
+    second: { img: 'calf-gum-step', alt: 'A calf boot lifting off a string of chewing gum on an olive floor' },
+  },
+  pause: { img: 'calf-door-handle', alt: 'One calf boot hung by its sole on a brass door handle, lit by a single spot', caption: 'One boot, hung on a door.' },
+  proof: [
+    { img: 'calf-side-plinth', label: 'Side', alt: 'A calf boot in profile on a plinth: deep blue ostrich-embossed upper, teal textured panels and toe cap, striped collar, black lug sole' },
+    { img: 'calf-top-pair-white', label: 'Above', alt: 'The pair from above on white: teal tongues, black laces, the shaped teal panels and toe caps' },
+    { img: 'calf-pair-flatlay', label: 'Pair', alt: 'The pair laid flat on pale grey, one boot turned over above the other, showing the full lacing and the lug sole' },
+    { img: 'calf-lace-detail', label: 'Eyestay', alt: 'Close-up of the eyestay: the ostrich grain, a double row of topstitching and flat woven laces over the teal tongue' },
+  ],
+  links: {
+    'Main upper': ['calf-side-plinth', 0.3, 0.35],
+    'Contrast panels': ['calf-side-plinth', 0.42, 0.62],
+    'Tongue': ['calf-top-pair-white', 0.33, 0.12],
+    'Eyestay': ['calf-lace-detail', 0.2, 0.45],
+    'Lining': ['calf-top-pair-white', 0.33, 0.04],
+    'Toe puff and heel counter': ['calf-side-plinth', 0.2, 0.72],
+    'Outsole': ['calf-pair-flatlay', 0.55, 0.88],
+    'Eyelets': ['calf-pair-flatlay', 0.52, 0.45],
+  },
   range: { img: 'calf-boots-range', alt: 'Range of calf boot designs in blue embossed leather with green panels', caption: 'Range.' },
   flat: { img: 'flat-calf', alt: 'Technical flat of the calf boot, front and back' },
   forms: { img: 'board-calf-boots-forms-shapes', alt: 'Two pages of boot sketches', caption: 'Forms and shapes: boot sketches.' },
@@ -234,7 +295,6 @@ export const calf = {
     ['Stitching thread', 50, 100], ['Interlining / backing', 80, 150], ['Adhesives / primers', 100, 200],
     ['Edge finishing', 50, 100], ['Packaging', 100, 200],
   ],
-  photo: { video: '', label: 'Finished pair', note: 'Photographs of the finished calf boots to come (the final product page in the deck is empty).' },
   boards: [
     { img: 'board-calf-boots-trend', alt: 'Calf boots trend forecasting board', caption: 'Trend forecasting. Source: WGSN.' },
     { img: 'board-calf-boots-colour-material', alt: 'Calf boots colour and material board', caption: 'Colour and material.' },
@@ -283,7 +343,30 @@ export const cowboy = {
     ['Lasting charges', '1 pair', '', 500],
   ],
   rivets: 66,
-  photo: { video: '', label: 'Finished pair', note: 'Photographs of the finished cowboy boots to come.' },
+  // the drawing fills with this crop of the boot's own leather (from cowboy-outer-white)
+  leather: 'assets/auxin/tex/cowboy-leather.jpg',
+  open: {
+    side: 'right', slit: 0.3,
+    lead: { img: 'cowboy-willow-water', alt: 'The cowboy boots worn with legs crossed, hanging under a willow over dark water' },
+    second: { img: 'cowboy-grass-low', alt: 'Walking away through long grass, seen from the ground: the rivet rows and one sole' },
+  },
+  made: { img: 'cowboy-dark-studio', alt: 'One cowboy boot lit against a dark ground: the chevron of brass rivets and the pleated teal panel', caption: 'As made.' },
+  proof: [
+    { img: 'cowboy-side-white', label: 'Inner side', alt: 'A cowboy boot in profile on white: two columns of brass rivets either side of a pleated teal panel, a stacked heel and a pull tab' },
+    { img: 'cowboy-outer-white', label: 'Outer side', alt: 'The outer side on white: a chevron band of rivets over a short pleated panel, with a row of rivets beneath' },
+    { img: 'cowboy-back-white', label: 'Back', alt: 'The boot from behind on white: the back seam, both pull tabs and the stacked heel' },
+  ],
+  links: {
+    'Upper': ['cowboy-outer-white', 0.4, 0.66],
+    'Outsole': ['cowboy-side-white', 0.3, 0.9],
+    'Toe shape': ['cowboy-side-white', 0.12, 0.8],
+    'Heel': ['cowboy-side-white', 0.48, 0.9],
+    'Shaft height': ['cowboy-side-white', 0.42, 0.3],
+    'Closure': ['cowboy-back-white', 0.62, 0.05],
+    'Decoration': ['cowboy-outer-white', 0.5, 0.33],
+    'Stitching': ['cowboy-back-white', 0.5, 0.45],
+    'Colour finish': ['cowboy-outer-white', 0.55, 0.58],
+  },
   boards: [
     { img: 'board-cowboy-boots-trend', alt: 'Cowboy boots trend forecasting board', caption: 'Trend forecasting. Source: WGSN.' },
     { img: 'board-cowboy-boots-colour-material', alt: 'Cowboy boots colour and material board', caption: 'Colour and material.' },
@@ -294,11 +377,29 @@ export const cowboy = {
 export const leaves = [jacket, calf, cowboy]
 
 // ─── Bloom: the shoot ───────────────────────────────────────────────────────
-export const shoot = [
-  { img: 'final-full-look', loop: 'assets/auxin/loops/final-full-look.mp4', video: '', alt: 'Full look: the jacket tied with its lace, wide striped trousers with teal pleated panels, black boots' },
-  { img: 'final-editorial-1', loop: 'assets/auxin/loops/final-editorial-1.mp4', video: '', alt: 'The jacket worn open, one arm folded across the body, against a pale blue wall' },
-  { img: 'final-closeup', loop: 'assets/auxin/loops/final-closeup.mp4', video: '', alt: 'Close-up of the crossover neckline and the leather grain' },
-]
+// The order is the story: reaching for filtered light (the hero), close and
+// intimate, the walk, out in the world, and full sun at the end.
+// `develop`: shown in her palette until the visitor's light falls on it, where
+// it develops into colour. `crop`: an extreme crop made at display time
+// (x and y of its centre, from 0 to 1, and how far in). Every frame opens
+// untreated, full size, when clicked.
+export const bloom = {
+  hero: { img: 'jacket-reach-fog', loop: 'assets/auxin/loops/jacket-reach-fog.mp4', video: '', alt: 'In fog, seen from below, one hand on a tall stem and the face turned up to the light: the jacket tied over the striped trousers' },
+  spreads: [
+    [
+      { img: 'jacket-upside-down', develop: true, piece: 'Jacket', alt: 'Lying back, the face upside down in sunlight, the jacket’s collar against the skin' },
+      { img: 'jacket-neckline', crop: { x: 0.2, y: 0.74, zoom: 3.4 }, piece: 'Jacket, the leather', alt: 'The jacket’s leather, cropped close from the neckline photograph: the grain and its sheen' },
+    ],
+    [
+      { img: 'calf-crowd-print', piece: 'Calf boots', alt: 'An aged, taped print: a crowd walking past in a blur, one pair of calf boots standing still and sharp' },
+    ],
+    [
+      { img: 'cowboy-moss-walk', develop: true, piece: 'Cowboy boots', alt: 'Walking away over wet moss in the cowboy boots: the back seams and stacked heels' },
+      { img: 'calf-skyline', develop: true, piece: 'Calf boots', alt: 'A calf boot on a concrete ledge, a city skyline and power lines behind, a striped trouser hem above' },
+    ],
+  ],
+  finale: { img: 'ensemble-fisheye-sky', loop: 'assets/auxin/loops/ensemble-fisheye-sky.mp4', video: '', alt: 'Through a fisheye lens from below: crouched on a rail against the sky, both arms raised toward the sun, the full look' },
+}
 export const closingImage = { img: 'closing-plant', alt: 'A blurred plant leaning toward light: the closing image of the Auxin deck', caption: 'The closing image of the deck.' }
 
 export const sum = rows => rows.reduce((s, r) => s + Number(r[r.length - 1] || 0), 0)

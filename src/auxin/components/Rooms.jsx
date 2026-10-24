@@ -1,10 +1,10 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { Board, Costing, Estimate, Lean, Living, Pic, Slot, Spec, useCalm } from './media'
+import { Board, Costing, Estimate, Lean, Pic, ProofGallery, ProofRoom, Shot, Spec, useCalm, useLightbox } from './media'
 import { light } from '../lib/light'
 import { img, url } from '../lib/asset'
-import { jacket, calf, cowboy, swatches, sum, rupees } from '../content'
+import { jacket, calf, cowboy, sum, rupees } from '../content'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -16,6 +16,51 @@ function RoomHead({ room }) {
       <p className="room-line">{room.line}</p>
       {room.research && <p className="room-research">{room.research}</p>}
     </header>
+  )
+}
+
+// The lead photograph of a room grows toward the light as it arrives: the part
+// above `slit` is stretched upward out of its frame, a slit-scan made by the
+// scroll, and it settles back into the true photograph by the time it reaches
+// the middle of the screen. Under reduced motion it is simply the photograph.
+function Stretch({ item, slit, sizes, className = '' }) {
+  const calm = useCalm()
+  const open = useLightbox()
+  const ref = useRef(null)
+  const i = img(item.img)
+  useLayoutEffect(() => {
+    if (calm) return
+    const el = ref.current
+    // the same rise above the frame whatever the slit: 160px, or 64px on a phone,
+    // where the words sit just above it (styles.css leaves it that much room)
+    const amp = () => Math.min(1.6, (innerWidth < 900 ? 64 : 160) / Math.max(1, slit * el.offsetHeight))
+    const set = p => el.style.setProperty('--s', (1 + amp() * (1 - p) ** 1.6).toFixed(3))
+    const st = ScrollTrigger.create({ trigger: el, start: 'top bottom', end: 'center center', scrub: 0.6, onUpdate: self => set(self.progress) })
+    set(st.progress)
+    return () => st.kill()
+  }, [calm, slit])
+  return (
+    <figure ref={ref} className={`stretch ${className}`} style={{ '--slit': slit, '--ar': i.width / i.height }}>
+      <button type="button" className="stretch-btn" onClick={() => open({ img: item.img, alt: item.alt, caption: '' })} aria-label={`Open full size: ${item.alt}`}>
+        <span className="stretch-frame" style={{ aspectRatio: `${i.width} / ${i.height}` }}>
+          <Pic name={item.img} alt="" sizes={sizes} />
+        </span>
+        {!calm && <span className="stretch-top" aria-hidden="true"><Pic name={item.img} alt="" sizes={sizes} /></span>}
+      </button>
+    </figure>
+  )
+}
+
+// A room opens on its photographs: the lead frame on the side that sends the
+// eye into the text, a smaller second frame under the words.
+function RoomOpen({ room }) {
+  const o = room.open
+  return (
+    <div className={`room-open room-open--${o.side}`}>
+      <Stretch item={o.lead} slit={o.slit} className="room-open-lead" sizes="(min-width: 900px) 55vw, 100vw" />
+      <RoomHead room={room} />
+      <Shot item={o.second} className="room-open-second" sizes="(min-width: 900px) 24vw, 60vw" />
+    </div>
   )
 }
 
@@ -98,19 +143,22 @@ export function RoomJacket() {
   const j = jacket
   return (
     <article id={j.id} className="room">
-      <RoomHead room={j} />
+      <RoomOpen room={j} />
       <Morph />
       <figure className="range">
         <Lean max={4} cutout><Pic name={j.range.img} alt={j.range.alt} sizes="100vw" /></Lean>
         <figcaption className="cap">{j.range.caption}</figcaption>
       </figure>
-      <div className="room-grid">
-        <Living name={j.photos[0].img} loop={j.photos[0].loop} video={j.photos[0].video} alt={j.photos[0].alt} sizes="(min-width: 900px) 40vw, 100vw" className="room-photo" />
-        <Tabs label="ensemble" tabs={[
-          { label: 'Jacket', body: <><Spec rows={j.spec} caption="Specification: jacket" /><Costing rows={j.costing} caption="Costing: jacket" /></> },
-          { label: 'Trousers', body: <><Lean max={4} cutout className="tabs-flat"><Pic name={j.trousers.flat.img} alt={j.trousers.flat.alt} sizes="40vw" /></Lean><Spec rows={j.trousers.spec} caption="Specification: trousers" /><Costing rows={j.trousers.costing} caption="Costing: trousers" /></> },
-        ]} />
-      </div>
+      <Shot item={j.pause} className="room-pause" sizes="(min-width: 900px) 34vw, 80vw" />
+      <ProofRoom>
+        <div className="room-grid room-proof">
+          <ProofGallery items={j.proof} label="The jacket and trousers as made" />
+          <Tabs label="ensemble" tabs={[
+            { label: 'Jacket', body: <><Spec rows={j.spec} links={j.links} caption="Specification: jacket" /><Costing rows={j.costing} caption="Costing: jacket" /></> },
+            { label: 'Trousers', body: <><Lean max={4} cutout className="tabs-flat"><Pic name={j.trousers.flat.img} alt={j.trousers.flat.alt} sizes="40vw" /></Lean><Spec rows={j.trousers.spec} links={j.trousers.links} caption="Specification: trousers" /><Costing rows={j.trousers.costing} caption="Costing: trousers" /></> },
+          ]} />
+        </div>
+      </ProofRoom>
       <div className="drawer">
         <Board item={j.forms} />
         <Board item={j.sheet} />
@@ -131,17 +179,26 @@ function Turn() {
     setAt(((drag.current.at + steps) % views.length + views.length) % views.length)
   }
   const onUp = () => { drag.current = null }
+  const made = views[at].photo
   return (
     <div className="turn">
-      <div className="turn-stage" onPointerDown={onDown} onPointerMove={onMove} onPointerUp={onUp} onPointerCancel={onUp}
-        tabIndex={0} role="group" aria-roledescription="turnable drawing" aria-label={`Final design of the calf boot, ${views[at].label.toLowerCase()} view. Drag sideways or use the arrow keys to turn it.`}
-        onKeyDown={e => { if (e.key === 'ArrowRight') setAt((at + 1) % views.length); if (e.key === 'ArrowLeft') setAt((at + views.length - 1) % views.length) }}>
-        {views.map((v, i) => (
-          <div key={v.img} className={`turn-view ${i === at ? 'is-on' : ''}`} style={{ '--d': i - at }}>
-            <Pic name={v.img} alt="" sizes="(min-width: 900px) 30vw, 70vw" />
+      <div className="turn-pair">
+        <div className="turn-stage" onPointerDown={onDown} onPointerMove={onMove} onPointerUp={onUp} onPointerCancel={onUp}
+          tabIndex={0} role="group" aria-roledescription="turnable drawing" aria-label={`Final design of the calf boot, ${views[at].label.toLowerCase()} view. Drag sideways or use the arrow keys to turn it.`}
+          onKeyDown={e => { if (e.key === 'ArrowRight') setAt((at + 1) % views.length); if (e.key === 'ArrowLeft') setAt((at + views.length - 1) % views.length) }}>
+          {views.map((v, i) => (
+            <div key={v.img} className={`turn-view ${i === at ? 'is-on' : ''}`} style={{ '--d': i - at }}>
+              <Pic name={v.img} alt="" sizes="(min-width: 900px) 30vw, 70vw" />
+            </div>
+          ))}
+          <span className="turn-hint" aria-hidden="true">⟵ drag to turn ⟶</span>
+        </div>
+        <figure className="turn-made">
+          <div className="turn-made-plate">
+            {views.map((v, i) => <Pic key={v.photo.img} name={v.photo.img} alt={i === at ? made.alt : ''} sizes="(min-width: 900px) 24vw, 45vw" className={i === at ? 'is-on' : ''} />)}
           </div>
-        ))}
-        <span className="turn-hint" aria-hidden="true">⟵ drag to turn ⟶</span>
+          <figcaption className="cap">As made: {views[at].label.toLowerCase()}</figcaption>
+        </figure>
       </div>
       <div className="turn-btns" role="group" aria-label="View">
         {views.map((v, i) => <button key={v.label} type="button" aria-pressed={i === at} onClick={() => setAt(i)}>{v.label}</button>)}
@@ -154,7 +211,7 @@ export function RoomCalf() {
   const b = calf
   return (
     <article id={b.id} className="room">
-      <RoomHead room={b} />
+      <RoomOpen room={b} />
       <div className="room-grid room-grid--calf">
         <Turn />
         <div className="room-col">
@@ -168,16 +225,17 @@ export function RoomCalf() {
           </table>
         </div>
       </div>
-      <div className="room-grid">
-        <div>
-          <Lean max={5} cutout className="flat"><Pic name={b.flat.img} alt={b.flat.alt} sizes="(min-width: 900px) 30vw, 80vw" /></Lean>
-          <Slot label={b.photo.label} note={b.photo.note} ratio="4 / 3" />
+      <Shot item={b.pause} className="room-pause room-pause--right" sizes="(min-width: 900px) 34vw, 80vw" />
+      <ProofRoom>
+        <div className="room-grid room-proof">
+          <ProofGallery items={b.proof} label="The calf boots as made" />
+          <div>
+            <Spec rows={b.spec} links={b.links} caption="Specification: calf boots" />
+            <Lean max={5} cutout className="flat"><Pic name={b.flat.img} alt={b.flat.alt} sizes="(min-width: 900px) 30vw, 80vw" /></Lean>
+            <Estimate rows={b.estimate} caption="Estimated cost per component, ₹ (her ranges)" />
+          </div>
         </div>
-        <div>
-          <Spec rows={b.spec} caption="Specification: calf boots" />
-          <Estimate rows={b.estimate} caption="Estimated cost per component, ₹ (her ranges)" />
-        </div>
-      </div>
+      </ProofRoom>
       <div className="drawer drawer--three">
         <Board item={b.forms} />
         {b.boards.map(x => <Board key={x.img} item={x} />)}
@@ -203,7 +261,7 @@ function Reveal() {
       el.style.setProperty('--ry', `${(s.y - r.top).toFixed(0)}px`)
     })
   }, [calm])
-  const leather = url(swatches[0].tex)
+  const leather = url(cowboy.leather)
   const flat = m.src
   return (
     <figure className="reveal">
@@ -211,7 +269,7 @@ function Reveal() {
         <span className="reveal-leather" aria-hidden="true" />
         <Pic name={cowboy.flat.img} alt={cowboy.flat.alt} sizes="(min-width: 900px) 50vw, 100vw" className="reveal-lines" />
       </div>
-      <figcaption className="cap">Her technical flat. Where your light falls, it fills with the aqua oil pull-up leather it specifies, shown with the crop from the jacket photograph (the same finish).</figcaption>
+      <figcaption className="cap">Her technical flat. Where your light falls, it fills with the aqua oil pull-up leather it specifies, shown with a crop from the photograph of the boot.</figcaption>
     </figure>
   )
 }
@@ -245,18 +303,23 @@ export function RoomCowboy() {
   const b = cowboy
   return (
     <article id={b.id} className="room">
-      <RoomHead room={b} />
+      <RoomOpen room={b} />
       <div className="room-grid room-grid--cowboy">
         <Reveal />
         <div className="room-col">
           <Rivets n={b.rivets} />
-          <Slot label={b.photo.label} note={b.photo.note} ratio="4 / 3" />
+          <Shot item={b.made} className="room-made" sizes="(min-width: 900px) 30vw, 90vw" />
         </div>
       </div>
-      <div className="room-grid">
-        <Spec rows={b.spec} caption="Specification: cowboy boots" />
-        <Costing rows={b.costing} caption="Costing: cowboy boots" />
-      </div>
+      <ProofRoom>
+        <div className="room-grid room-proof">
+          <ProofGallery items={b.proof} label="The cowboy boots as made" />
+          <div>
+            <Spec rows={b.spec} links={b.links} caption="Specification: cowboy boots" />
+            <Costing rows={b.costing} caption="Costing: cowboy boots" />
+          </div>
+        </div>
+      </ProofRoom>
       <div className="drawer drawer--three">
         <Board item={b.forms} />
         {b.boards.map(x => <Board key={x.img} item={x} />)}
