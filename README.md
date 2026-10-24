@@ -74,11 +74,21 @@ one light that everything leans toward:
 - **The stem down the left edge** grows as you read, leans to the light, and has a brass node
   per chapter (click one to go there).
 - **Photographs and drawings** turn to face the light; cut-outs cast a shadow away from it.
-- **The shoot photographs** are treated by the page, never in the files: some Bloom
-  photographs wait in her palette (Surf the Web, Teal, Green Eyes) until the light develops
-  them into colour; one is a close crop of the leather; photographs that fill a space are
-  cropped by their frame. Every one opens full size and untouched when clicked. Under
-  *reduced motion* they are simply the photographs.
+- **The shoot photographs** are treated by the page, never in the files: photographs that fill
+  a space are cropped by their frame, and Bloom edits them by the light (below). Every one opens
+  full size and untouched when clicked. Under *reduced motion* they are simply the photographs.
+- **Bloom tells the shoot as growth toward light**: after the opening photograph, three acts,
+  *Shade*, *Filtered light* and *Sun*, and the ground lightens act by act (near black, deep teal,
+  pale). Each act is a spread of prints at three sizes, overlapping, held to the page by pins,
+  cross-stitches, brass rivets or tape. In the shade the prints are dim until your light finds
+  them; in filtered light they are in the collection's palette until your light develops them;
+  in the sun they are as they are, and the face finally meets the camera. The marks on the
+  prints change with the light too: a tailor's chalk in the shade (a loop, a measured calf
+  length, the line of the crossover; a crop of skin and a crop of the boot's ostrich-embossed
+  leather, sewn together), thread in filtered light (a running stitch sewing the prints
+  together), an editor's grease pencil in the sun (crop marks on the eyes, the picks ringed).
+  The last photograph opens as a circle, the sun, and is ringed. Each act's title is printed in
+  three colours that come into register as your light nears it. Nothing is drawn across a face.
 
 The page follows growth stages: **Seed** (the idea: her brainstorm redrawn as a stem that grows
 as you scroll), **Roots** (research and persona), **Stem** (colour and material),
@@ -86,7 +96,7 @@ as you scroll), **Roots** (research and persona), **Stem** (colour and material)
 photographs, then the drawings: the jacket from flat to design to photograph, the calf boot you
 can turn beside the boot as made, the cowboy boot whose drawing fills with its leather under your
 light and its 66 rivets. Its plain-background photographs sit beside the specification: point at
-a row and its place on the photograph lights up), **Bloom** (the shoot, from fog to full sun),
+a row and its place on the photograph lights up), **Bloom** (the shoot, from shade into sun),
 then About and Contact.
 Her own note on the brainstorm, "keep it abstract, not botanical", is followed: no leaf icons.
 
@@ -106,8 +116,13 @@ Her own note on the brainstorm, "keep it abstract, not botanical", is followed: 
   the eye into the text; the second fills the space under the words, keeping its `focus` point
   in view), `pause` (one photograph, or a pair, between the drawings and the specification),
   `proof` (the plain-background photographs beside the specification) and `links` (a
-  specification row, by its label, to a point on one of them). Bloom is `bloom`, near the end.
-  `npm test` checks that every link names a real row and photograph.
+  specification row, by its label, to a point on one of them). `npm test` checks that every
+  link names a real row and photograph.
+- **Bloom**: `bloom` near the end of `content.js`. Each act lists its prints with where they sit
+  on its spread (`at`, in % of its width), their width and side on a phone (`m`), how they are
+  held (`fix`) and the marks drawn on them (`marks`, x and y from 0 to 1 of the print). The
+  comment above `bloom` lists every option. `npm test` checks that each print sits on its
+  spread, each mark on its print, and that the ground lightens act by act.
 - **Video**: every moving photograph has a `video: ''` slot. Put an `.mp4` in
   `public/assets/auxin/video/` and write its path there. Until then it plays a *moving still*:
   a slow camera move over the same photograph (`public/assets/auxin/loops/`, made with ffmpeg
@@ -246,6 +261,7 @@ src/
       chrome.jsx        ← header, the stem down the left edge, chapter titles
       Seed.jsx  Roots.jsx  StemChapter.jsx  Leaves.jsx  Rooms.jsx  Bloom.jsx  Closing.jsx
       media.jsx         ← pictures, Lean (faces the light), moving stills, boards, tables
+      marks.jsx         ← Bloom's marks on the prints: chalk, thread, grease pencil, pins and tape
     lib/
       garden.js         ← three.js: the strips, ground, spores and light
       light.js          ← the one light everything leans toward

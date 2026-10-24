@@ -35,9 +35,13 @@ export default function App() {
     ScrollTrigger.config({ ignoreMobileResize: true })
     const ground = document.getElementById('ground')
     const ctx = gsap.context(() => {
-      gsap.utils.toArray('[data-tone]').forEach(sec => {
+      const tones = gsap.utils.toArray('[data-tone]')
+      tones.forEach((sec, i) => {
         ScrollTrigger.create({
-          trigger: sec, start: 'top 50%', end: 'bottom 50%',
+          // data-tone-at: where its ground takes over, when that must be earlier than half way
+          // (dark ink arriving over a dark ground would be unreadable until then); the part
+          // before it hands over at the same line, so scrolling back up reads the same way
+          trigger: sec, start: `top ${sec.dataset.toneAt || '50%'}`, end: `bottom ${tones[i + 1]?.dataset.toneAt || '50%'}`,
           onToggle: self => {
             if (!self.isActive) return
             gsap.to(ground, { backgroundColor: sec.dataset.tone, duration: calm ? 0 : 0.9, ease: 'power1.out', overwrite: true })
@@ -68,6 +72,13 @@ export default function App() {
               <feFuncG type="table" tableValues="0.235 0.396 0.584" />
               <feFuncB type="table" tableValues="0.498 0.498 0.427" />
             </feComponentTransfer>
+          </filter>
+          {/* tailor's chalk: a rough edge, and grain where the chalk skips */}
+          <filter id="ax-chalk" x="-2%" y="-2%" width="104%" height="104%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7" result="noise" />
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="5" xChannelSelector="R" yChannelSelector="G" result="rough" />
+            <feColorMatrix in="noise" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 -2.4 1.75" result="grain" />
+            <feComposite in="rough" in2="grain" operator="in" />
           </filter>
         </svg>
         <a className="skip" href="#seed">Skip to the collection</a>

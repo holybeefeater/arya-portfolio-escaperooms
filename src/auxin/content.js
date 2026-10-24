@@ -387,29 +387,88 @@ export const cowboy = {
 export const leaves = [jacket, calf, cowboy]
 
 // ─── Bloom: the shoot ───────────────────────────────────────────────────────
-// The order is the story: reaching for filtered light (the hero), close and
-// intimate, the walk, out in the world, and full sun at the end.
-// `develop`: shown in her palette until the visitor's light falls on it, where
-// it develops into colour. `crop`: an extreme crop made at display time
-// (x and y of its centre, from 0 to 1, and how far in). Every frame opens
-// untreated, full size, when clicked.
+// The shoot as growth toward light: after the opening photograph, three acts,
+// Shade, Filtered light and Sun, and the page's ground lightens act by act.
+// The face meets the camera only in the sun.
+//   light   how the visitor's light edits the act's photographs: 'shade' (dim
+//           until the light falls on them; with a mouse or pen only),
+//           'palette' (in the collection's palette until the light develops
+//           them into colour), or '' (as they are).
+//   tool    what the marks on the prints are drawn with: 'chalk' (a tailor's
+//           fitting marks), 'thread', or 'grease' (an editor's grease pencil).
+//   head    where the act's title sits: [x, y, width].
+//   h       the height of the act's spread, in % of its width.
+//   frames  each print: `at` [x, y, width] on the spread, in % of its width;
+//           `m` [width %, 'l' | 'r' | 'c'] in the column on a phone; `rot` its
+//           tilt in degrees; `fix` how it is held to the page ('pins', 'stitch',
+//           'rivets' or 'tape'); `tag` the corner of its frame number ('tl' or
+//           'tr'; bottom left unless set); `marks`, drawn over it, x and y 0 to 1:
+//             { circle: [x, y, rx, ry], label, at: [x, y] }   a loop around it
+//             { line: [[x, y], …], label, at: [x, y] }        a line along it
+//             { measure: [[x, y], [x, y]], label }             a measured length
+//             { brackets: [x0, y0, x1, y1] }                  crop marks
+//           Marks never cross a face. A `pair` is two close crops (x and y of
+//           the centre, and how far in), sewn together.
+//   thread  a running stitch across the spread: [x, y] points in spread units
+//           (a third value of 1 marks a hole through a print).
+//   finale  the last photograph, which opens as a circle: `at` and `m` as above.
+// Every photograph opens full size and untouched when clicked.
 export const bloom = {
   hero: { img: 'jacket-reach-fog', loop: 'assets/auxin/loops/jacket-reach-fog.mp4', video: '', alt: 'In fog, seen from below, one hand on a tall stem and the face turned up to the light: the jacket tied over the striped trousers' },
-  spreads: [
-    [
-      { img: 'jacket-upside-down', develop: true, piece: 'Jacket', alt: 'Lying back, the face upside down in sunlight, the jacket’s collar against the skin' },
-      { img: 'jacket-neckline', crop: { x: 0.2, y: 0.74, zoom: 3.4 }, piece: 'Jacket, the leather', alt: 'The jacket’s leather, cropped close from the neckline photograph: the grain and its sheen' },
-    ],
-    [
-      { img: 'calf-crowd-print', piece: 'Calf boots', alt: 'An aged, taped print: a crowd walking past in a blur, one pair of calf boots standing still and sharp' },
-      { img: 'calf-walking-away', piece: 'Calf boots', alt: 'Walking away across a pale floor in the calf boots: the striped collars, the lacing at the back of the leg and the lug soles' },
-    ],
-    [
-      { img: 'cowboy-branch-seated', develop: true, piece: 'Cowboy boots', alt: 'Sitting on a fallen branch in the cowboy boots: one shows the chevron of rivets, the other the pleated teal panel between two rows' },
-      { img: 'calf-skyline', develop: true, piece: 'Calf boots', alt: 'A calf boot on a concrete ledge, a city skyline and power lines behind, a striped trouser hem above' },
-    ],
+  acts: [
+    {
+      id: 'shade', n: 'I', title: 'Shade', words: 'continuously altered by its surroundings',
+      line: 'Indoors, in low light: the calf boots stand still in a moving crowd and walk away; the jacket is held closed.',
+      tone: '#121A22', ink: 'light', light: 'shade', tool: 'chalk', h: 76, head: [67, 0, 33],
+      frames: [
+        { img: 'calf-crowd-print', piece: 'Calf boots', at: [0, 0, 64], m: [100, 'c'], tag: 'tl',
+          marks: [{ circle: [0.705, 0.53, 0.165, 0.37], label: 'still', at: [0.865, 0.15] }],
+          alt: 'An aged, taped print: a crowd walking past in a blur, one pair of calf boots standing still and sharp' },
+        { img: 'jacket-stem-shadow', piece: 'Jacket', at: [4, 41, 25], rot: -2, m: [64, 'l'], fix: 'pins',
+          marks: [{ line: [[0.67, 0.39], [0.61, 0.5], [0.56, 0.6], [0.53, 0.68]], label: 'crossover', at: [0.6, 0.76] }],
+          alt: 'Holding the jacket closed at the lapel, a curved stem across the body and window shadows on the wall behind' },
+        { pair: [
+            { img: 'jacket-neckline', crop: { x: 0.58, y: 0.42, zoom: 3 }, word: 'skin', alt: 'The jacket’s neckline, cropped close: skin between the leather lapels' },
+            { img: 'calf-lace-detail', crop: { x: 0, y: 0.7, zoom: 2.6 }, word: 'hide', alt: 'The calf boot’s ostrich-embossed leather, cropped close: the raised quill marks beside a topstitched seam' },
+          ],
+          caption: 'Skin, and hide: the jacket’s neckline, worn; the calf boot’s ostrich-embossed leather.',
+          at: [32, 50, 27], m: [100, 'c'] },
+        { img: 'calf-walking-away', piece: 'Calf boots', at: [62, 30, 34], rot: 1.5, m: [80, 'r'], fix: 'pins',
+          marks: [{ measure: [[0.93, 0.39], [0.93, 0.91]], label: 'calf length' }],
+          alt: 'Walking away across a pale floor in the calf boots: the striped collars, the lacing at the back of the leg and the lug soles' },
+      ],
+    },
+    {
+      id: 'filtered', n: 'II', title: 'Filtered light', words: 'elongating toward filtered light',
+      line: 'Through tulle, tissue, leaves and grass: the calf boots veiled, the cowboy boots outdoors.',
+      tone: '#1B4250', ink: 'light', light: 'palette', tool: 'thread', h: 80, head: [0, 0, 34],
+      frames: [
+        { img: 'cowboy-branch-seated', piece: 'Cowboy boots', at: [36, 0, 46], m: [100, 'c'], fix: 'rivets',
+          alt: 'Sitting on a fallen branch in the cowboy boots: one shows the chevron of rivets, the other the pleated teal panel between two rows' },
+        { img: 'calf-pair-tulle', piece: 'Calf boots', at: [56, 40, 32], rot: -1, m: [78, 'r'], fix: 'stitch',
+          alt: 'The calf boots standing on concrete under a sheet of navy tulle' },
+        { img: 'calf-pair-stitched-tissue', piece: 'Calf boots', at: [7, 36, 28], rot: 2, m: [66, 'l'],
+          alt: 'The calf boots seen through tissue paper, the print stitched around its edge with dark thread' },
+        { img: 'cowboy-grass-low', piece: 'Cowboy boots', at: [84, 8, 16], rot: 1.5, m: [52, 'r'], fix: 'rivets',
+          alt: 'Walking away through long grass, seen from the ground: a column of rivets and one sole' },
+      ],
+      thread: [[46.5, 45.4, 1], [44, 51], [40.5, 57], [35.6, 61, 1], [42, 65.5], [50, 68.5], [56.8, 70.5, 1], [52, 75.5], [46, 80]],
+    },
+    {
+      id: 'sun', n: 'III', title: 'Sun', words: 'grows toward light',
+      line: 'In full sun the face turns to the camera, and the full look reaches up.',
+      tone: '#E8ECE1', ink: 'dark', light: '', tool: 'grease', h: 66, head: [0, 0, 30], select: true,
+      frames: [
+        { img: 'calf-skyline', piece: 'Calf boots', at: [30, 1, 27], rot: -1.2, m: [86, 'l'], fix: 'tape', tag: 'tr',
+          alt: 'A calf boot on a concrete ledge, a city skyline and power lines behind, a striped trouser hem above' },
+        { img: 'jacket-upside-down', piece: 'Jacket', at: [2, 31, 40], rot: 1.5, m: [100, 'c'], fix: 'tape',
+          marks: [{ brackets: [0.31, 0.57, 0.64, 0.8] }],
+          alt: 'Lying back in sunlight, the face upside down and looking into the camera, the jacket’s collar against the skin' },
+      ],
+      finale: { img: 'ensemble-fisheye-sky', loop: 'assets/auxin/loops/ensemble-fisheye-sky.mp4', video: '', piece: 'The full look', at: [56, 14, 44], m: [88, 'c'],
+        alt: 'Through a fisheye lens from below: crouched on a rail against the sky, both arms raised toward the sun, the full look' },
+    },
   ],
-  finale: { img: 'ensemble-fisheye-sky', loop: 'assets/auxin/loops/ensemble-fisheye-sky.mp4', video: '', alt: 'Through a fisheye lens from below: crouched on a rail against the sky, both arms raised toward the sun, the full look' },
 }
 export const closingImage = { img: 'closing-plant', alt: 'A blurred plant leaning toward light: the closing image of the Auxin deck', caption: 'The closing image of the deck.' }
 

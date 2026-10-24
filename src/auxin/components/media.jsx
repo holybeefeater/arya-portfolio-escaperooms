@@ -113,10 +113,12 @@ export function Fill({ item, sizes, className = '' }) {
   )
 }
 
-// Shown in her palette (Surf the Web, Teal, Green Eyes) until the visitor's
-// light falls on it; where it falls, the photograph develops into colour.
-// Under reduced motion it is simply shown in colour.
-export function Develop({ name, sizes }) {
+// Edited by the visitor's light. 'palette': shown in the collection's palette
+// (Surf the Web, Teal, Green Eyes) until the light falls on it, where the
+// photograph develops into colour. 'shade': dim until the light falls on it
+// (with a mouse or pen; on a touch screen it is simply shown). Under reduced
+// motion it is simply the photograph.
+export function Develop({ name, sizes, mode = 'palette' }) {
   const calm = useCalm()
   const ref = useRef(null)
   useEffect(() => {
@@ -130,7 +132,7 @@ export function Develop({ name, sizes }) {
     })
   }, [calm])
   return (
-    <span ref={ref} className="develop">
+    <span ref={ref} className={`develop develop--${mode}`}>
       <Pic name={name} alt="" sizes={sizes} />
       {!calm && <Pic name={name} alt="" sizes={sizes} className="develop-duo" />}
     </span>
