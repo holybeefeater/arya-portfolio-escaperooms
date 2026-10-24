@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { Board, Costing, Estimate, Lean, Pic, ProofGallery, ProofRoom, Shot, Spec, useCalm, useLightbox } from './media'
+import { Board, Costing, Estimate, Fill, Lean, Pic, ProofGallery, ProofRoom, Shot, Spec, useCalm } from './media'
 import { light } from '../lib/light'
 import { img, url } from '../lib/asset'
 import { jacket, calf, cowboy, sum, rupees } from '../content'
@@ -19,49 +19,25 @@ function RoomHead({ room }) {
   )
 }
 
-// The lead photograph of a room grows toward the light as it arrives: the part
-// above `slit` is stretched upward out of its frame, a slit-scan made by the
-// scroll, and it settles back into the true photograph by the time it reaches
-// the middle of the screen. Under reduced motion it is simply the photograph.
-function Stretch({ item, slit, sizes, className = '' }) {
-  const calm = useCalm()
-  const open = useLightbox()
-  const ref = useRef(null)
-  const i = img(item.img)
-  useLayoutEffect(() => {
-    if (calm) return
-    const el = ref.current
-    // the same rise above the frame whatever the slit: 160px, or 64px on a phone,
-    // where the words sit just above it (styles.css leaves it that much room)
-    const amp = () => Math.min(1.6, (innerWidth < 900 ? 64 : 160) / Math.max(1, slit * el.offsetHeight))
-    const set = p => el.style.setProperty('--s', (1 + amp() * (1 - p) ** 1.6).toFixed(3))
-    const st = ScrollTrigger.create({ trigger: el, start: 'top bottom', end: 'center center', scrub: 0.6, onUpdate: self => set(self.progress) })
-    set(st.progress)
-    return () => st.kill()
-  }, [calm, slit])
+// A room opens on its photographs: the lead frame on the side that sends the
+// eye into the text, the second filling the space under the words, so the
+// opening reads as one block with no gaps.
+function RoomOpen({ room }) {
+  const o = room.open
+  const lead = img(o.lead.img)
   return (
-    <figure ref={ref} className={`stretch ${className}`} style={{ '--slit': slit, '--ar': i.width / i.height }}>
-      <button type="button" className="stretch-btn" onClick={() => open({ img: item.img, alt: item.alt, caption: '' })} aria-label={`Open full size: ${item.alt}`}>
-        <span className="stretch-frame" style={{ aspectRatio: `${i.width} / ${i.height}` }}>
-          <Pic name={item.img} alt="" sizes={sizes} />
-        </span>
-        {!calm && <span className="stretch-top" aria-hidden="true"><Pic name={item.img} alt="" sizes={sizes} /></span>}
-      </button>
-    </figure>
+    <div className={`room-open room-open--${o.side}`} style={{ '--ar': lead.width / lead.height }}>
+      <Fill item={o.lead} className="room-open-lead" sizes="(min-width: 900px) 46vw, 100vw" />
+      <RoomHead room={room} />
+      <Fill item={o.second} className="room-open-second" sizes="(min-width: 900px) 46vw, 100vw" />
+    </div>
   )
 }
 
-// A room opens on its photographs: the lead frame on the side that sends the
-// eye into the text, a smaller second frame under the words.
-function RoomOpen({ room }) {
-  const o = room.open
-  return (
-    <div className={`room-open room-open--${o.side}`}>
-      <Stretch item={o.lead} slit={o.slit} className="room-open-lead" sizes="(min-width: 900px) 55vw, 100vw" />
-      <RoomHead room={room} />
-      <Shot item={o.second} className="room-open-second" sizes="(min-width: 900px) 24vw, 60vw" />
-    </div>
-  )
+// One photograph between the drawings and the specification, or a pair side by side.
+function Pause({ item, className = '' }) {
+  if (!Array.isArray(item)) return <Shot item={item} className={`room-pause ${className}`} sizes="(min-width: 900px) 34vw, 80vw" />
+  return <div className="room-pause-pair">{item.map(it => <Shot key={it.img} item={it} sizes="(min-width: 900px) 46vw, 50vw" />)}</div>
 }
 
 function Tabs({ tabs, label }) {
@@ -149,7 +125,7 @@ export function RoomJacket() {
         <Lean max={4} cutout><Pic name={j.range.img} alt={j.range.alt} sizes="100vw" /></Lean>
         <figcaption className="cap">{j.range.caption}</figcaption>
       </figure>
-      <Shot item={j.pause} className="room-pause" sizes="(min-width: 900px) 34vw, 80vw" />
+      <Pause item={j.pause} />
       <ProofRoom>
         <div className="room-grid room-proof">
           <ProofGallery items={j.proof} label="The jacket and trousers as made" />
@@ -225,7 +201,7 @@ export function RoomCalf() {
           </table>
         </div>
       </div>
-      <Shot item={b.pause} className="room-pause room-pause--right" sizes="(min-width: 900px) 34vw, 80vw" />
+      <Pause item={b.pause} className="room-pause--right" />
       <ProofRoom>
         <div className="room-grid room-proof">
           <ProofGallery items={b.proof} label="The calf boots as made" />

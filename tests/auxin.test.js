@@ -88,8 +88,8 @@ test('every specification link names a real row and one of the room’s photogra
 test('every room opens on photographs, and every shoot photograph has alt text', () => {
   for (const l of ax.leaves) {
     assert.ok(['left', 'right'].includes(l.open.side), l.id)
-    assert.ok(l.open.slit > 0 && l.open.slit < 1, l.id)
-    for (const p of [l.open.lead, l.open.second, l.pause || l.made, ...l.proof]) assert.ok(p.img && p.alt && p.alt.length > 20, `${l.id}: ${p.img}`)
+    if (l.open.second.focus) assert.ok(l.open.second.focus.every(v => v >= 0 && v <= 1), l.id)
+    for (const p of [l.open.lead, l.open.second, ...[].concat(l.pause || l.made), ...l.proof]) assert.ok(p.img && p.alt && p.alt.length > 20, `${l.id}: ${p.img}`)
   }
   const { hero, spreads, finale } = ax.bloom
   for (const p of [hero, ...spreads.flat(), finale]) {

@@ -96,6 +96,23 @@ export function Shot({ item, sizes = '(min-width: 900px) 40vw, 100vw', className
   )
 }
 
+// A photograph that fills its place in the layout, cropped by its frame; `focus`
+// ([x, y], 0 to 1) is the point kept in view. It opens whole when clicked.
+export function Fill({ item, sizes, className = '' }) {
+  const open = useLightbox()
+  const i = img(item.img)
+  const [fx, fy] = item.focus || [0.5, 0.5]
+  return (
+    <figure className={`fill ${className}`} style={{ '--ar': i.width / i.height }}>
+      <Lean max={4}>
+        <button type="button" className="shot-btn fill-btn" onClick={() => open({ img: item.img, alt: item.alt, caption: item.caption ?? '' })} aria-label={`Open full size: ${item.alt}`}>
+          <Pic name={item.img} alt="" sizes={sizes} style={{ objectPosition: `${fx * 100}% ${fy * 100}%` }} />
+        </button>
+      </Lean>
+    </figure>
+  )
+}
+
 // Shown in her palette (Surf the Web, Teal, Green Eyes) until the visitor's
 // light falls on it; where it falls, the photograph develops into colour.
 // Under reduced motion it is simply shown in colour.

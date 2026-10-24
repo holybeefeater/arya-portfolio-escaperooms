@@ -293,6 +293,12 @@
   "sw": 720,
   "w": 1122
  },
+ "ensemble-double-exposure": {
+  "alpha": true,
+  "h": 720,
+  "sw": 576,
+  "w": 576
+ },
  "ensemble-fisheye-sky": {
   "alpha": false,
   "h": 1402,
@@ -341,6 +347,12 @@
   "sw": 720,
   "w": 1122
  },
+ "jacket-hands-back": {
+  "alpha": false,
+  "h": 1086,
+  "sw": 720,
+  "w": 1448
+ },
  "jacket-neckline": {
   "alpha": false,
   "h": 1254,
@@ -376,6 +388,24 @@
   "h": 832,
   "sw": 720,
   "w": 1600
+ },
+ "swatch-leather": {
+  "alpha": false,
+  "h": 680,
+  "sw": 400,
+  "w": 400
+ },
+ "swatch-pleat": {
+  "alpha": false,
+  "h": 646,
+  "sw": 380,
+  "w": 380
+ },
+ "swatch-stripe": {
+  "alpha": false,
+  "h": 816,
+  "sw": 400,
+  "w": 480
  },
  "title-plate": {
   "alpha": false,

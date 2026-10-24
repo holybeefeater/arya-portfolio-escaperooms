@@ -74,12 +74,11 @@ one light that everything leans toward:
 - **The stem down the left edge** grows as you read, leans to the light, and has a brass node
   per chapter (click one to go there).
 - **Photographs and drawings** turn to face the light; cut-outs cast a shadow away from it.
-- **The shoot photographs** are treated by the page, never in the files: a room's first
-  photograph stretches upward out of its frame as it arrives and settles into the true picture
-  by the middle of the screen; some Bloom photographs wait in her palette (Surf the Web, Teal,
-  Green Eyes) until the light develops them into colour; one is a close crop of the leather.
-  Every one opens full size and untouched when clicked. Under *reduced motion* they are simply
-  the photographs.
+- **The shoot photographs** are treated by the page, never in the files: some Bloom
+  photographs wait in her palette (Surf the Web, Teal, Green Eyes) until the light develops
+  them into colour; one is a close crop of the leather; photographs that fill a space are
+  cropped by their frame. Every one opens full size and untouched when clicked. Under
+  *reduced motion* they are simply the photographs.
 
 The page follows growth stages: **Seed** (the idea: her brainstorm redrawn as a stem that grows
 as you scroll), **Roots** (research and persona), **Stem** (colour and material),
@@ -104,7 +103,8 @@ Her own note on the brainstorm, "keep it abstract, not botanical", is followed: 
   technical flats out of her specification pages and makes their sage background clear.
 - **Where the shoot photographs go**: each piece in `content.js` has `open` (the lifestyle
   photographs that open its room, with `side`: the lead photograph sits on the side that sends
-  the eye into the text), `pause` (one photograph between the drawings and the specification),
+  the eye into the text; the second fills the space under the words, keeping its `focus` point
+  in view), `pause` (one photograph, or a pair, between the drawings and the specification),
   `proof` (the plain-background photographs beside the specification) and `links` (a
   specification row, by its label, to a point on one of them). Bloom is `bloom`, near the end.
   `npm test` checks that every link names a real row and photograph.
@@ -114,6 +114,8 @@ Her own note on the brainstorm, "keep it abstract, not botanical", is followed: 
   from her photographs, nothing generated). It is labelled as such and can be paused. To make
   one for another photograph (720 × 900, five seconds in and five back):
   `ffmpeg -i media/auxin/shoot/NAME.webp -filter_complex "[0]scale=2880:-2,zoompan=z='1+0.07*on/150':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=150:s=720x900:fps=30,format=yuv420p,split[a][b];[b]reverse[r];[a][r]concat=n=2:v=1[v]" -map "[v]" -c:v libx264 -crf 24 -movflags +faststart -an public/assets/auxin/loops/NAME.mp4`
+- **Swatches** ("The three materials"): cut at full size from `jacket-neckline` and
+  `trousers-seam` by the media script (`swatches` in `scripts/auxin-media.py`).
 - **Strip materials**: `public/assets/auxin/tex/` (crops of her photographs with the lighting
   flattened, plus a relief map computed from each). `cowboy-leather.jpg` is a crop of
   `cowboy-outer-white`; the cowboy boot's drawing fills with it.
@@ -123,7 +125,7 @@ Her own note on the brainstorm, "keep it abstract, not botanical", is followed: 
 - Her role on Auxin, the year and module, and a short reflection (marked **To add** under Bloom).
 - Her shoot video, if there is one, for the moving stills.
 - Full-size files for two photographs that arrived small: `jacket-upside-down` (720 × 540)
-  and `jacket-stem-shadow` (576 × 720). Replace them in `media/auxin/shoot/` and run the script.
+  and `ensemble-double-exposure` (576 × 720). Replace them in `media/auxin/shoot/` and run the script.
 - Rows her specification sheets do not have, for details the photographs show: the jacket's
   flap pockets; the calf boots' teal textured panels and toe caps and striped collar (her sheet
   calls the contrast panels "reinforced curtain fabric, muted green"); the cowboy boots' pleated

@@ -239,7 +239,6 @@ html[data-ink='light'] .ax-header { --aa-toggle-on: var(--cobalt); }
 .seed-stage { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: clamp(28px, 5vw, 80px); align-items: center; min-height: 78vh; }
 .seed-quote { margin-top: 40px; padding-left: 20px; border-left: 2px solid var(--brass); max-width: 52ch; }
 .seed-quote p { font-family: var(--serif); font-style: italic; font-size: clamp(22px, 2.1vw, 30px); line-height: 1.25; }
-.seed-quote footer { margin-top: 10px; font-size: 12.5px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.7; }
 .seed-figure { justify-self: center; width: min(100%, 600px, calc((100vh - 190px) * 0.8)); }
 @media (max-width: 899px) { .seed-figure { width: min(100%, 600px); } }
 .bs { width: 100%; height: auto; overflow: visible; }
@@ -250,9 +249,6 @@ html[data-ink='light'] .ax-header { --aa-toggle-on: var(--cobalt); }
 .bs-note { font-family: var(--serif); font-style: italic; font-size: 20px; fill: rgba(44, 75, 51, 0.62); }
 .bs-ring { fill: none; stroke: var(--ochre); stroke-width: 1.6; stroke-dasharray: 5 5; }
 .bs-top-word { font-family: var(--serif); font-style: italic; font-size: 36px; fill: var(--ochre); }
-.bs-no { font-family: var(--serif); font-style: italic; font-size: 17px; fill: var(--rust); }
-.bs-keep { font-family: var(--serif); font-style: italic; font-size: 17px; fill: var(--teal); }
-.bs-strike { stroke: var(--rust); stroke-width: 1.6; stroke-dasharray: 1; }
 .bs-root { font-family: var(--serif); font-style: italic; font-size: 20px; fill: rgba(44, 75, 51, 0.8); }
 @media (max-width: 899px) { .seed-stage { grid-template-columns: 1fr; min-height: 0; } }
 
@@ -463,9 +459,15 @@ html[data-ink='light'] .ax-header { --aa-toggle-on: var(--cobalt); }
 @media (max-width: 760px) { .contact-files { grid-template-columns: 1fr; } }
 
 /* photographs that open full size, untreated */
-.shot-btn, .stretch-btn { position: relative; display: block; width: 100%; text-align: left; cursor: zoom-in; }
-.shot-frame, .stretch-frame { position: relative; display: block; overflow: hidden; background: var(--moss); }
-.shot-frame img, .stretch-frame img, .stretch-top img { width: 100%; height: 100%; object-fit: cover; }
+.shot-btn { position: relative; display: block; width: 100%; text-align: left; cursor: zoom-in; }
+.shot-frame { position: relative; display: block; overflow: hidden; background: var(--moss); }
+.shot-frame img { width: 100%; height: 100%; object-fit: cover; }
+/* a photograph that fills its place, cropped by its frame */
+.fill { position: relative; }
+.fill > .lean { position: absolute; inset: 0; }
+.fill .lean-body, .fill-btn { height: 100%; }
+.fill-btn { overflow: hidden; background: var(--moss); }
+.fill-btn img { width: 100%; height: 100%; object-fit: cover; }
 .ax-defs { position: absolute; }
 
 /* her palette, developed into colour where the light falls */
@@ -480,29 +482,23 @@ html[data-ink='light'] .ax-header { --aa-toggle-on: var(--cobalt); }
 .crop { display: block; width: 100%; height: 100%; overflow: hidden; }
 .crop img { object-fit: cover; }
 
-/* a room opens on its photographs */
+/* a room opens on its photographs: the lead at its own proportions, the head
+   beside it, and the second photograph filling what is left under the head */
 .room-open {
-  display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); grid-template-rows: auto 1fr;
-  grid-template-areas: 'lead head' 'lead second'; column-gap: clamp(28px, 5vw, 88px); align-items: start;
+  --lead: min(56%, calc(80vh * var(--ar)));
+  display: grid; grid-template-columns: var(--lead) minmax(0, 1fr); grid-template-rows: auto 1fr;
+  grid-template-areas: 'lead head' 'lead second'; gap: clamp(28px, 3.4vw, 48px) clamp(28px, 4vw, 64px);
   margin-bottom: clamp(70px, 10vw, 140px);
 }
-.room-open--right { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); grid-template-areas: 'head lead' 'second lead'; }
+.room-open--right { grid-template-columns: minmax(0, 1fr) var(--lead); grid-template-areas: 'head lead' 'second lead'; }
 .room-open .room-head { grid-area: head; margin-bottom: 0; }
 .room-open .room-title { font-size: clamp(52px, 6.4vw, 112px); }
-.room-open-lead { grid-area: lead; position: relative; z-index: 1; width: min(100%, calc(82vh * var(--ar))); }
-.room-open--right .room-open-lead { justify-self: end; }
-.room-open-second { grid-area: second; width: min(100%, 300px); margin-top: clamp(36px, 5vw, 72px); }
-.room-open--left .room-open-second { justify-self: end; }
-
-/* the lead photograph's slit-scan stretch */
-.stretch-top {
-  position: absolute; inset: 0; pointer-events: none; will-change: transform;
-  clip-path: inset(0 0 calc((1 - var(--slit)) * 100%) 0);
-  transform-origin: 50% calc(var(--slit) * 100%); transform: scaleY(var(--s, 1));
-}
+.room-open-lead { grid-area: lead; aspect-ratio: var(--ar); }
+.room-open-second { grid-area: second; min-height: 220px; }
 
 /* a pause between the drawings and the specification */
 .room-pause { width: min(100%, 440px); margin: clamp(90px, 13vw, 180px) auto 0 clamp(0px, 8vw, 140px); }
+.room-pause-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(12px, 2vw, 28px); margin-top: clamp(90px, 13vw, 180px); align-items: start; }
 .room-pause--right { margin-left: auto; margin-right: clamp(0px, 8vw, 140px); }
 .room-made { max-width: 420px; }
 
@@ -533,10 +529,9 @@ html[data-ink='light'] .ax-header { --aa-toggle-on: var(--cobalt); }
 .turn-made-plate img.is-on { opacity: 1; }
 
 @media (max-width: 899px) {
-  .room-open, .room-open--right { grid-template-columns: 1fr; grid-template-rows: auto; grid-template-areas: 'head' 'lead' 'second'; row-gap: 32px; }
-  .room-open-lead { width: 100%; margin-top: 40px; }
-  .room-open-second { width: 62%; margin-top: 0; justify-self: end; }
-  .room-open--right .room-open-second { justify-self: start; }
+  .room-open, .room-open--right { grid-template-columns: 1fr; grid-template-rows: auto; grid-template-areas: 'head' 'lead' 'second'; row-gap: 24px; }
+  .room-open-second { min-height: 0; aspect-ratio: var(--ar); }
+  .room-pause-pair { margin-top: 80px; }
   .proof { position: static; }
   .room-pause, .room-pause--right { width: min(80%, 440px); margin: 80px auto 0; }
 }

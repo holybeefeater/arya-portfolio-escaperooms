@@ -11,9 +11,11 @@
 //  • Photographs from the shoot sit in three places in each piece's room:
 //      open   the lifestyle frames that open the room. `side` is where the lead
 //             frame sits ('left' when the model looks or moves to the right, so
-//             the eye travels into the text); `slit` is how far down the lead
-//             frame the scroll-stretch starts (0 to 1, see Stretch in Rooms.jsx).
-//      pause  one frame between the drawings and the specification.
+//             the eye travels into the text). The second frame fills the space
+//             under the words and is cropped to fit; `focus` ([x, y], 0 to 1)
+//             is the point it keeps in view.
+//      pause  one frame between the drawings and the specification, or a list
+//             of two shown side by side.
 //      proof  the plain-background frames beside the specification. `links`
 //             ties a specification row (by its label) to a point on one of them:
 //             'Row label': ['image', x, y], x and y from 0 to 1 from the top left.
@@ -65,7 +67,6 @@ export const brainstorm = {
     ['reaching', 'material memory'],
   ],
   notes: [['shadow & light', 'hardware as nodes'], ['root to stem', 'seams as veins']],
-  rejected: ['too literal: photosynthesis pun', 'keep it abstract, not botanical'],
 }
 
 export const boards = {
@@ -86,7 +87,7 @@ export const research = {
     { tag: 'New neutrals', text: 'Neutrals drawn from nature: soft greens, browns and metallics.' },
     { tag: 'Deep Green', text: 'Forecast to give depth to A/W 27/28.' },
   ],
-  source: 'Trend sources: WGSN, as cited on her trend pages.',
+  source: 'Trend sources: WGSN.',
   persona: [
     { title: 'Who', items: ['Age 22–35', 'Unisex', 'Urban metropolitan cities', 'Income above ₹15 LPA'] },
     { title: 'Work', items: ['Designers', 'Architects', 'Musicians', 'Stylists', 'Media professionals'] },
@@ -104,11 +105,13 @@ export const palette = [
   { name: 'Juniper', code: 'Pantone 18-6330 TCX', hex: '#3D7245' },
 ]
 
-// Swatches are cropped from her own shoot photographs (see public/assets/auxin/tex/).
+// `img`: the swatch shown under "The three materials", cut at full size from the
+// shoot photographs by scripts/auxin-media.py. `tex`: the strip material in the
+// hero (public/assets/auxin/tex/).
 export const swatches = [
-  { id: 'leather', name: 'Aqua oil pull-up cow leather', note: 'Full grain, distressed vintage effect. Jacket and cowboy boots.', tex: 'assets/auxin/tex/leather.jpg' },
-  { id: 'stripe', name: 'Striped curtain fabric', note: 'Alternating vertical stripes. Trousers.', tex: 'assets/auxin/tex/stripe.jpg' },
-  { id: 'pleat', name: 'Teal pleat fabric', note: 'Pleated insertion: trouser outer seam, jacket centre back and inner sleeve.', tex: 'assets/auxin/tex/pleat.jpg' },
+  { id: 'leather', name: 'Aqua oil pull-up cow leather', note: 'Full grain, distressed vintage effect. Jacket and cowboy boots.', img: 'swatch-leather', tex: 'assets/auxin/tex/leather.jpg' },
+  { id: 'stripe', name: 'Striped curtain fabric', note: 'Alternating vertical stripes. Trousers.', img: 'swatch-stripe', tex: 'assets/auxin/tex/stripe.jpg' },
+  { id: 'pleat', name: 'Teal pleat fabric', note: 'Pleated insertion: trouser outer seam, jacket centre back and inner sleeve.', img: 'swatch-pleat', tex: 'assets/auxin/tex/pleat.jpg' },
 ]
 
 export const garmentMaterials = [
@@ -147,11 +150,14 @@ export const jacket = {
   range: { img: 'range-garments', alt: 'Range: five variations of the jacket and trousers, drawn on a model', caption: 'Range: five variations on the jacket and trousers.' },
   forms: { img: 'board-garment-forms-shapes', alt: 'Pages of silhouette sketches for jackets and trousers', caption: 'Forms and shapes: silhouette sketches.' },
   open: {
-    side: 'left', slit: 0.16,
+    side: 'left',
     lead: { img: 'jacket-grass-blade', alt: 'The jacket worn open against a dark wall, a long blade of grass held up to the face; the teal pleat shows at the inner sleeve' },
-    second: { img: 'jacket-stem-shadow', alt: 'A hand holding the jacket closed at the lapel, a curved stem across the body and window shadows on the wall behind' },
+    second: { img: 'jacket-hands-back', focus: [0.5, 0.58], alt: 'From behind, hands clasped at the back: the zipped sleeves with their teal pleated inner panels, the lace hanging over the striped trousers' },
   },
-  pause: { img: 'trousers-seated', alt: 'Seated with legs crossed: the striped trousers with their teal pleated outer panels, black lug-soled boots, the jacket’s lace hanging at the knee', caption: 'The trousers, seated, with their pleated outer panels.' },
+  pause: [
+    { img: 'trousers-seated', alt: 'Seated with legs crossed: the striped trousers with their teal pleated outer panels, black lug-soled boots, the jacket’s lace hanging at the knee', caption: 'The trousers, seated, with their pleated outer panels.' },
+    { img: 'ensemble-double-exposure', alt: 'A double exposure on black: the full look standing still beside a blurred second figure leaning back, holding a bag', caption: 'The full look, in a double exposure.' },
+  ],
   proof: [
     { img: 'jacket-front-studio', label: 'Front', alt: 'Front of the jacket on a plain grey backdrop: the crossover neckline, the lace tied at the waist, flap pockets and zipped sleeves' },
     { img: 'ensemble-back', label: 'Back', alt: 'Back of the jacket and trousers: the teal pleat insertion down the centre back, and the trousers’ pleated outer panels flaring to the floor' },
@@ -243,11 +249,14 @@ export const calf = {
     { img: 'calf-view-back', label: 'Back', photo: { img: 'calf-back-pair-white', alt: 'The finished pair from behind, on white: back seams, heel counters and striped collars' } },
   ],
   open: {
-    side: 'left', slit: 0.42,
+    side: 'left',
     lead: { img: 'calf-stride-sole', alt: 'A calf boot mid-stride, seen from below with its lug sole toward the camera, a striped trouser hem above' },
-    second: { img: 'calf-gum-step', alt: 'A calf boot lifting off a string of chewing gum on an olive floor' },
+    second: { img: 'calf-gum-step', focus: [0.55, 0.72], alt: 'A calf boot lifting off a string of chewing gum on an olive floor' },
   },
-  pause: { img: 'calf-door-handle', alt: 'One calf boot hung by its sole on a brass door handle, lit by a single spot', caption: 'One boot, hung on a door.' },
+  pause: [
+    { img: 'calf-door-handle', alt: 'One calf boot hung by its sole on a brass door handle, lit by a single spot', caption: 'One boot, hung on a door.' },
+    { img: 'calf-seated-pair', alt: 'Seated in a dark room, the calf boots laced to just below the knee, a striped hem above', caption: 'The pair, worn.' },
+  ],
   proof: [
     { img: 'calf-side-plinth', label: 'Side', alt: 'A calf boot in profile on a plinth: deep blue ostrich-embossed upper, teal textured panels and toe cap, striped collar, black lug sole' },
     { img: 'calf-top-pair-white', label: 'Above', alt: 'The pair from above on white: teal tongues, black laces, the shaped teal panels and toe caps' },
@@ -346,9 +355,9 @@ export const cowboy = {
   // the drawing fills with this crop of the boot's own leather (from cowboy-outer-white)
   leather: 'assets/auxin/tex/cowboy-leather.jpg',
   open: {
-    side: 'right', slit: 0.3,
+    side: 'right',
     lead: { img: 'cowboy-willow-water', alt: 'The cowboy boots worn with legs crossed, hanging under a willow over dark water' },
-    second: { img: 'cowboy-grass-low', alt: 'Walking away through long grass, seen from the ground: the rivet rows and one sole' },
+    second: { img: 'cowboy-moss-walk', focus: [0.5, 0.62], alt: 'Walking away over wet moss in the cowboy boots: the back seams and stacked heels' },
   },
   made: { img: 'cowboy-dark-studio', alt: 'One cowboy boot lit against a dark ground: the chevron of brass rivets and the pleated teal panel', caption: 'As made.' },
   proof: [
@@ -394,7 +403,7 @@ export const bloom = {
       { img: 'calf-crowd-print', piece: 'Calf boots', alt: 'An aged, taped print: a crowd walking past in a blur, one pair of calf boots standing still and sharp' },
     ],
     [
-      { img: 'cowboy-moss-walk', develop: true, piece: 'Cowboy boots', alt: 'Walking away over wet moss in the cowboy boots: the back seams and stacked heels' },
+      { img: 'cowboy-branch-seated', develop: true, piece: 'Cowboy boots', alt: 'Sitting on a fallen branch in the cowboy boots: one shows the chevron of rivets, the other the pleated teal panel between two rows' },
       { img: 'calf-skyline', develop: true, piece: 'Calf boots', alt: 'A calf boot on a concrete ledge, a city skyline and power lines behind, a striped trouser hem above' },
     ],
   ],

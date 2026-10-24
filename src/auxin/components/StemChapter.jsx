@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 import { ChapterHead } from './chrome'
 import { Board, Lean, useCalm } from './media'
 import { light } from '../lib/light'
-import { url } from '../lib/asset'
+import { img } from '../lib/asset'
 import { chapters, palette, swatches, garmentMaterials, boards } from '../content'
 
 const c = chapters[2]
@@ -45,21 +45,21 @@ export default function StemChapter() {
         <p>Blues and greens from water and plant tissue. The leather is paired with furnishing fabrics: upholstery fabric, a striped curtain fabric and a teal pleat.</p>
       </ChapterHead>
       <Palette />
-      <p className="cap pal-note">Pantone references from her colour page. Screen colours are close approximations.</p>
+      <p className="cap pal-note">Screen colours are close approximations.</p>
 
       <h3 className="ch-sub">The three materials</h3>
       <ul className="swatches">
         {swatches.map(s => (
           <li key={s.id}>
             <Lean max={10}>
-              <span className="swatch-cut" style={{ backgroundImage: `url(${url(s.tex)})` }} role="img" aria-label={`${s.name}, close-up`} />
+              <span className="swatch-cut" style={{ backgroundImage: `url(${img(s.img).src})` }} role="img" aria-label={`${s.name}, close-up`} />
             </Lean>
             <p className="swatch-name">{s.name}</p>
             <p className="swatch-note">{s.note}</p>
           </li>
         ))}
       </ul>
-      <p className="cap">Each swatch is cropped from the shoot photographs; the same crops make the strips at the top of the page.</p>
+      <p className="cap">Each swatch is cut from the shoot photographs.</p>
 
       <div className="mat-grid">
         <table className="spec spec--wide">

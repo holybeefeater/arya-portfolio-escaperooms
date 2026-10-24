@@ -60,7 +60,7 @@ function Brainstorm() {
       <title id="bs-title">Brainstorm, drawn as a stem from the root to the light</title>
       <desc id="bs-desc">
         From “{brainstorm.root}” up to “{brainstorm.top}”. Branches, from the bottom: {brainstorm.branches.map(p => p.join(' and ')).join('; ')}.
-        Notes: {brainstorm.notes.flat().join(', ')}. Crossed out: “{brainstorm.rejected.join('; ')}”.
+        Notes: {brainstorm.notes.flat().join(', ')}.
       </desc>
       <path className="bs-stem" pathLength="1" />
       {brainstorm.branches.map((pair, i) => pair.map((word, s) => {
@@ -79,11 +79,6 @@ function Brainstorm() {
       <g className="bs-top">
         <ellipse className="bs-ring" rx="138" ry="30" />
         <text className="bs-top-word" textAnchor="middle" y="9">{brainstorm.top}</text>
-      </g>
-      <g className="bs-rejected">
-        <text x={ROOT.x + 14} y={ROOT.y - 66} className="bs-no">{brainstorm.rejected[0]}</text>
-        <line className="bs-strike" x1={ROOT.x + 10} x2={ROOT.x + 236} y1={ROOT.y - 71} y2={ROOT.y - 71} pathLength="1" />
-        <text x={ROOT.x + 40} y={ROOT.y - 40} className="bs-keep">{brainstorm.rejected[1]}</text>
       </g>
       <text className="bs-root" x={ROOT.x} y={ROOT.y + 36} textAnchor="middle">{brainstorm.root}</text>
     </svg>
@@ -107,9 +102,7 @@ export default function Seed() {
         if (i < 2) tl.from(q(`.bs-note-${i}`), { opacity: 0, duration: 0.08 }, at + 0.14)
       })
       tl.from(q('.bs-top'), { opacity: 0, scale: 0.8, transformOrigin: '50% 50%', duration: 0.1 }, 0.66)
-        .from(q('.bs-no, .bs-keep'), { opacity: 0, duration: 0.06 }, 0.78)
-        .fromTo(q('.bs-strike'), { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.08 }, 0.86)
-        .to({}, { duration: 0.08 })
+        .to({}, { duration: 0.24 })
       return tl
     }
     const mm = gsap.matchMedia()
@@ -132,12 +125,10 @@ export default function Seed() {
           </ChapterHead>
           <blockquote className="seed-quote">
             <p>{collection.premise}</p>
-            <footer>From her moodboard</footer>
           </blockquote>
         </div>
         <figure className="seed-figure">
           <Brainstorm />
-          <figcaption className="cap">Her brainstorm, redrawn: it grows as you scroll, and its top follows your light.</figcaption>
         </figure>
       </div>
       <div className="drawer">

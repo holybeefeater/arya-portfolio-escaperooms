@@ -57,6 +57,15 @@ for f in sorted(os.listdir(SHOOT)):
     n, ext = os.path.splitext(f)
     if ext.lower() in ('.jpg', '.jpeg', '.png', '.webp', '.tif', '.tiff'):
         save(n, Image.open(os.path.join(SHOOT, f)), big=1600, small=720)
+# the three material swatches, cut at full size from the shoot photographs
+# (box in the photograph's own pixels; the swatch is 1 wide by 1.7 tall)
+swatches = {
+    'swatch-leather': ('jacket-neckline.webp', (10, 520, 410, 1200)),
+    'swatch-stripe': ('trousers-seam.webp', (20, 120, 500, 936)),
+    'swatch-pleat': ('trousers-seam.webp', (780, 330, 1160, 976)),
+}
+for name, (f, box) in swatches.items():
+    save(name, Image.open(os.path.join(SHOOT, f)).crop(box), big=800, small=400, q=86)
 # images from the deck (reference images, not her photographs)
 for n in ('title-plate', 'cells-texture', 'closing-plant'):
     save(n, open_(n + '.jpg'), big=1200, small=640)
