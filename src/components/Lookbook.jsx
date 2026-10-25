@@ -110,7 +110,7 @@ function Shot({ it, light, calm, no }) {
   )
 }
 
-function Level({ lv, calm }) {
+export function Level({ lv, calm }) {
   let k = 0
   return (
     <div id={lv.id} className={`lb-level lb-level--${lv.light || 'clear'}`} data-tone={lv.tone} data-ink={lv.ink} data-sign={lv.sign}>

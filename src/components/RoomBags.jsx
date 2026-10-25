@@ -7,6 +7,7 @@ import { progress } from '../lib/progress'
 import { sound } from '../lib/sound'
 import { CarryModes, DayWithBag, Nesting } from './craft'
 import { Plate, RoomHead, Chips, Bom, Film, SheetsLink, Sign } from './parts'
+import { Level } from './Lookbook'
 import { bags, collection } from '../content'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -74,7 +75,12 @@ export default function RoomBags() {
           {b.pieces.map((p, i) => (
             <article className="bay" key={p.name} aria-labelledby={`bay-${i}`}>
               <span className="bay-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
-              <Plate {...p.img} kind="cutout" className="bay-plate" />
+              <div className="bay-media">
+                <Plate {...p.img} kind={p.img.kind || 'cutout'} className="bay-plate" />
+                <div className="bay-close">
+                  {p.close.map(c => <Plate key={c.src} {...c} kind="photo" ratio="1 / 1" className="bay-close-plate" />)}
+                </div>
+              </div>
               <div className="bay-copy">
                 <h3 id={`bay-${i}`} className="display bay-title">{p.name}</h3>
                 <p className="bay-line">{p.line}</p>
@@ -95,13 +101,8 @@ export default function RoomBags() {
       <DayWithBag day={b.day} />
       <Nesting nesting={b.nesting} />
 
+      <Level lv={b.shoot} calm={calm} />
       <div className="bags-after">
-        {b.campaign.map(c => (
-          <figure key={c.src} className="bags-campaign">
-            <Plate {...c} />
-            <figcaption className="caption">{c.alt}.</figcaption>
-          </figure>
-        ))}
         <Film film={b.film} alt="Process film for the bags" className="bags-film" />
       </div>
       <SheetsLink room={b} />

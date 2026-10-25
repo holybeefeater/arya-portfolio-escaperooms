@@ -27,6 +27,12 @@ CUT = [
     'prototype-front-open', 'prototype-profile', 'prototype-back-walk',
 ]
 
+# product frames cropped from one photograph: name: (source, box in its pixels)
+CROPS = {
+    'duffle-held': ('bags-held-out', (150, 900, 855, 1760)),
+    'tbase-held': ('bags-held-out', (800, 420, 1333, 1180)),
+}
+
 session = None
 
 def cutout(im):
@@ -55,3 +61,8 @@ for f in sorted(os.listdir(SRC)):
             cut.save(path, quality=86, method=6)
         c = Image.open(path)
         print(f"{name}-cut: w: {c.width}, h: {c.height}")
+
+for name, (src, box) in CROPS.items():
+    c = Image.open(os.path.join(SRC, src + '.jpg')).convert('RGB').crop(box)
+    c.save(os.path.join(OUT, f'{name}.webp'), quality=84, method=6)
+    print(f"{name}: w: {c.width}, h: {c.height}")

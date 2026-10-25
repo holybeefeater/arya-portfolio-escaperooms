@@ -143,7 +143,12 @@ export const bags = {
     {
       name: 'Duffle',
       line: 'Designed for in-between spaces. It changes between duffle, top handle, backpack, shoulder and crossbody.',
-      img: { src: 'assets/products/duffle.webp', alt: 'Olive suede duffle with printed panels, studs and a push-lock flap, held by the handles', w: 1113, h: 1536 },
+      img: { src: 'assets/shoot/duffle-held.webp', alt: 'The duffle held up by its handles: olive suede and printed panels, rows of studs, the strap through metal loops and the push-lock', w: 705, h: 860, kind: 'photo' },
+      close: [
+        { src: 'assets/shoot/duffle-pushlock-studs.webp', alt: 'Close-up: the push-lock and rows of studs on the front panel', w: 1800, h: 1200 },
+        { src: 'assets/shoot/duffle-handle-hooks.webp', alt: 'Close-up: the detachable handles clipped on with brass snap hooks', w: 1200, h: 1800 },
+        { src: 'assets/shoot/duffle-side-pocket.webp', alt: 'Close-up: the concealed side zip pocket in the printed panel', w: 1200, h: 1800 },
+      ],
       size: '17 × 9.5 × 5.5 in, 8 in handle drop, 47.2 in detachable strap',
       details: ['Five front-panel pockets', 'Detachable handles', 'Push-lock flap', 'Side concealed zip pocket', 'Back welt pocket', 'Bottom panel studs'],
       // Aditi's sheet (page 23) prints ₹969, but its own line items add up to ₹989.
@@ -160,7 +165,11 @@ export const bags = {
     {
       name: 'T-base',
       line: 'A crossbody layered with pockets: card slots, a flap gusset and rings for hanging charms.',
-      img: { src: 'assets/products/tbase.webp', alt: 'T-base crossbody with a suede pocket over a printed flap, lifted by the top edge', w: 739, h: 1145 },
+      img: { src: 'assets/shoot/tbase-held.webp', alt: 'The T-base lifted by its top edge: a suede pocket over the printed flap, on its long strap', w: 533, h: 760, kind: 'photo' },
+      close: [
+        { src: 'assets/shoot/tbase-pocket-detail.webp', alt: 'Close-up: the suede pocket with its snap on the printed flap', w: 1200, h: 1800 },
+        { src: 'assets/shoot/tbase-snap-detail.webp', alt: 'Close-up: the engraved brass snap on the printed flap', w: 1200, h: 1800 },
+      ],
       size: '12 × 10.5 × 3 in, 40 in detachable strap',
       details: ['Four front-panel pockets', 'Card holder', 'Charm-hanging rings', 'Flap gusset pocket', 'Front-panel zip pocket', 'Front-flap push lock'],
       retail: null,
@@ -174,7 +183,11 @@ export const bags = {
     {
       name: 'Drawstring',
       line: 'A drawstring body with a studded, push-lock flap pocket and a zipped printed base.',
-      img: { src: 'assets/products/drawstring.webp', alt: 'Drawstring bag in olive suede with a studded flap pocket and a printed zipped base', w: 1416, h: 1688 },
+      img: { src: 'assets/shoot/drawstring-shoulder.webp', alt: 'The drawstring worn on the back over the maroon jacket: the studded flap pocket with its push-lock and the zipped printed base', w: 1200, h: 1800, kind: 'photo' },
+      close: [
+        { src: 'assets/shoot/drawstring-pushlock.webp', alt: 'Close-up: the push-lock and studs on the curved flap', w: 1800, h: 1200 },
+        { src: 'assets/shoot/drawstring-top-strap.webp', alt: 'Close-up: the gathered top, the strap through its buckle and the side zip', w: 1200, h: 1800 },
+      ],
       size: '12 × 15 × 2.5 in, 30 in string',
       details: ['Push-lock pocket flap', 'Two front-panel pockets', 'Side-seam concealed zip', 'Front-panel zip pocket', 'String and buckle'],
       // Aditi's sheet (page 32) prints ₹870, but its own line items add up to ₹810.
@@ -192,6 +205,11 @@ export const bags = {
       name: 'Hobo',
       line: 'A small crossbody gathered into pleats between suede panels, closed with a single zip.',
       img: { src: 'assets/products/hobo-single.webp', alt: 'Small hobo bag with pleated printed panels between suede strips, on a long strap', w: 696, h: 936 },
+      close: [
+        { src: 'assets/shoot/hobo-pleats-detail.webp', alt: 'Close-up: printed panels gathered into pleats between suede strips, held by studs', w: 1800, h: 1200 },
+        { src: 'assets/shoot/hobo-zip-detail.webp', alt: 'Close-up: the single top zip and its pull', w: 1800, h: 1200 },
+        { src: 'assets/shoot/hobo-strap-hardware.webp', alt: 'Close-up: the strap end with its snap hook, D-ring and rivet', w: 1800, h: 1200 },
+      ],
       size: '12 × 5 in, 40 in detachable strap',
       details: ['Pleated panels', 'No. 5 metal zip', 'D-ring hardware', 'Base studs'],
       retail: null,
@@ -234,10 +252,28 @@ export const bags = {
       ['Pocket', 70.8, 53.8, 16.0, 14.0],
     ],
   },
-  campaign: [
-    { src: 'assets/products/bags-pair.webp', alt: 'Drawstring and hobo bags held out side by side', w: 1800, h: 1656, kind: 'cutout' },
-    { src: 'assets/products/collection.webp', alt: 'All four bags laid together on a suede-draped plinth', w: 1800, h: 934, kind: 'cutout' },
-  ],
+  // the bags' shoot: a spread laid out like a level of the lookbook (see `lookbook` below)
+  shoot: {
+    id: 'bags-shoot', n: 'B', title: 'It loops', sign: 'it loops', light: '', tone: '#4A4A2E', ink: 'light', h: 112, head: [0, 0, 30],
+    line: 'Two people, four bags, passed between them: worn crossbody and on the shoulder, held out, set down.',
+    frames: [
+      { src: 'assets/shoot/bags-four-close.webp', w: 1800, h: 1200, at: [32, 0, 68], m: [100, 'c'], piece: 'All four bags',
+        marks: [{ circle: [0.56, 0.74, 0.19, 0.2], label: 'four from one hide', at: [0.05, 0.1] }],
+        alt: 'All four bags piled together on suede: the T-base, the duffle with its strap loops, the pleated hobo and the drawstring' },
+      { src: 'assets/shoot/bags-pair-lean.webp', w: 1200, h: 1800, at: [0, 30, 27], rot: -1.5, m: [82, 'l'], piece: 'T-base, duffle',
+        marks: [{ tape: [0.5, 0.92, -5], label: 'it loops' }],
+        alt: 'Two models leaning together, the T-base worn crossbody and the duffle on the shoulder' },
+      { src: 'assets/shoot/bags-pair-silhouette.webp', w: 1200, h: 1800, at: [47, 49, 22], m: [70, 'r'], piece: 'Duffle, T-base',
+        alt: 'The same pair backlit to silhouettes, the bags dark shapes against white' },
+      { src: 'assets/shoot/bags-pair-glance.webp', w: 1200, h: 1800, at: [72, 45, 24], rot: 1, m: [76, 'l'], piece: 'Duffle, T-base',
+        marks: [{ arrow: [[0.95, 0.42], [0.86, 0.5], [0.76, 0.58]], label: 'back zip pocket', at: [0.5, 0.38] }],
+        alt: 'One model faces the camera with the duffle crossbody; the other turns away, the T-base on her back showing its zip pocket' },
+      { src: 'assets/shoot/bags-pair-seated.webp', w: 1800, h: 1200, at: [0, 74, 44], m: [100, 'c'], piece: 'Duffle, T-base',
+        alt: 'Seated on the floor and on a chair, the duffle and T-base set down between them' },
+      { src: 'assets/shoot/duffle-strap-loops.webp', w: 1200, h: 1800, at: [50, 86, 16], rot: -1, m: [60, 'r'], piece: 'Duffle',
+        alt: 'Close-up: the printed strap threaded through metal loops down the studded suede' },
+    ],
+  },
   film: { src: 'assets/films/bags.mp4', poster: 'assets/posters/bags.webp', caption: 'Trends, bag explorations, technical drawings and the bill of materials, then each bag in turn.' },
   sheets: { from: 17, to: 37 },
   pdf: 'downloads/Aditi-Arya-Escape-Rooms.pdf',
@@ -382,7 +418,7 @@ export const models = {
       relief: { src: 'assets/shoot/jacket-open-front-cut.webp', w: 806, h: 1600 },
       line: 'Cherry maroon sheep nappa with olive suede collar, cuffs and hem.' },
     { id: 'duffle', label: 'Duffle bag', room: '#bags', src: '',
-      relief: { src: 'assets/products/duffle.webp', w: 1113, h: 1536 },
+      relief: { src: 'assets/shoot/duffle-held.webp', w: 705, h: 860 },
       line: 'Olive cow suede and printed microfibre, with antique-finish hardware.' },
     { id: 'boot', label: 'Ankle boot', room: '#boots', src: '',
       relief: { src: 'assets/models/boot-relief.webp', w: 714, h: 525 },

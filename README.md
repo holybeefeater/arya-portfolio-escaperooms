@@ -200,6 +200,10 @@ background, used in the rooms. The script prints each size for `content.js`.
   collar close-up sit beside it. **Prototype variant**: the four-shade brown prototype beside
   the final maroon jacket, front, side and back (`jacket.prototype`).
 - **Boots room**: the cut-out side view and the hands lacing it.
+- **Bags room**: each bay shows the bag as made (cropped from the shoot, `CROPS` in the script)
+  with its close-ups beside it (`close` on each piece). The Hobo keeps its earlier product
+  photograph until a whole-bag shot of it is added. After the row, `bags.shoot` is a spread
+  of the two models with the four bags, laid out like a level of the lookbook.
 - **The way out** (`lookbook` in `content.js`, after the boots): the shoot as a way out of the
   Backrooms, in three levels named with her wayfinding phrases. Level 0 is under yellow-green
   strip light, Level 1 is a green security-camera feed, Level 2 is white light and ends at the
