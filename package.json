@@ -9,7 +9,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "node --test tests/content.test.js tests/depth.test.js tests/auxin.test.js",
-    "media:auxin": "python3 scripts/auxin-media.py"
+    "media:auxin": "python3 scripts/auxin-media.py",
+    "media:escape": "python3 scripts/escape-media.py"
   },
   "dependencies": {
     "@fontsource-variable/archivo": "5.2.8",

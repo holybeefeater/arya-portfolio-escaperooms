@@ -110,7 +110,7 @@ export function Cursor() {
 }
 
 export const hasModels = models.showReliefs || models.items.some(i => i.src)
-const LINKS = [['Jacket', '#jacket'], ['Bags', '#bags'], ['Boots', '#boots'], ...(hasModels ? [['In 3D', '#in-3d']] : []), ['Other work', '#other'], ['About', '#about'], ['Contact', '#exit']]
+const LINKS = [['Jacket', '#jacket'], ['Bags', '#bags'], ['Boots', '#boots'], ['Shoot', '#shoot'], ...(hasModels ? [['In 3D', '#in-3d']] : []), ['Other work', '#other'], ['About', '#about'], ['Contact', '#exit']]
 
 function KeyIcon({ found }) {
   return (

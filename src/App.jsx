@@ -12,6 +12,7 @@ import RoomJacket from './components/RoomJacket'
 import RoomBags from './components/RoomBags'
 import RoomBoots from './components/RoomBoots'
 import Showcase from './components/Showcase'
+import Lookbook from './components/Lookbook'
 import { OtherWork, About, Exit } from './components/closing'
 import SheetViewer from './components/SheetViewer'
 import Hint from './components/Hint'
@@ -89,6 +90,7 @@ export default function App() {
         <RoomJacket />
         <RoomBags />
         <RoomBoots />
+        <Lookbook />
         {hasModels && <Showcase />}
         <OtherWork />
         <About />

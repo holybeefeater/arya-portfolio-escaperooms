@@ -7,7 +7,7 @@ import { person, collection, jacket, bags, boots, about, downloads } from '../co
 // "Need a hint?": the whole portfolio on one screen, for anyone short of time.
 // In an escape room a hint is how you get out quickly.
 const PROJECTS = [
-  { room: jacket, img: 'assets/products/jacket-front.webp', what: 'Kimono-cut nappa jacket with a strap-and-buckle front' },
+  { room: jacket, img: 'assets/shoot/jacket-open-front-cut.webp', what: 'Kimono-cut nappa jacket with a strap-and-buckle front' },
   { room: bags, img: 'assets/products/duffle.webp', what: 'Four convertible bags in olive suede; the duffle carries five ways' },
   { room: boots, img: 'assets/models/boot-relief.webp', what: 'High ankle boot on a six-layer sole unit, fully costed' },
 ]

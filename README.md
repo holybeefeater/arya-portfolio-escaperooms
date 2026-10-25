@@ -188,6 +188,26 @@ until it is filled in, in `src/content.js`:
 | Real 3D models | `models.items[].src` | The "Turn it over" section comes back (it hides while there are none; `models.showReliefs: true` shows the photo reliefs meanwhile) |
 | The live address | `person.site` | Used by the QR codes in the print kit |
 
+## The shoot (Escape Rooms)
+
+Shoot photographs live in `media/escape/shoot/` (developed from the raw files). Run
+`npm run media:escape` (Python 3 with Pillow; `pip install rembg onnxruntime` for the
+cut-outs) to write web sizes to `public/assets/shoot/` and, for the plain-background
+photographs listed in `CUT` in `scripts/escape-media.py`, a `-cut` version cut out of its
+background, used in the rooms. The script prints each size for `content.js`.
+
+- **Jacket room**: the cut-out front view carries the detail markers; the back view and the
+  collar close-up sit beside it. **Prototype variant**: the four-shade brown prototype beside
+  the final maroon jacket, front, side and back (`jacket.prototype`).
+- **Boots room**: the cut-out side view and the hands lacing it.
+- **The way out** (`lookbook` in `content.js`, after the boots): the shoot as a way out of the
+  Backrooms, in three levels named with her wayfinding phrases. Level 0 is under yellow-green
+  strip light, Level 1 is a green security-camera feed, Level 2 is white light and ends at the
+  exit door. Your pointer is a torch that shows the photograph as it is; marks in exit-sign
+  green (loops, arrows, a measured 25 in, hazard tape) are drawn by the page, never across a
+  face. Every photograph opens untouched when clicked; under reduced motion they are simply
+  the photographs. The comment above `lookbook` lists every option.
+
 ## Print kit
 
 `/print.html` (not linked from the site) is a keycard business card, 85.6 × 54 mm front and back,

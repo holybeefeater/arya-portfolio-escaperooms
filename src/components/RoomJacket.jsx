@@ -3,6 +3,34 @@ import { Plate, RoomHead, Chips, Spec, Film, SheetsLink } from './parts'
 import { StitchLine } from './craft'
 import { jacket, collection } from '../content'
 
+// The prototype beside the final jacket, one view at a time.
+function Prototype({ p }) {
+  const [at, setAt] = useState(0)
+  const v = p.views[at]
+  return (
+    <div className="proto">
+      <div className="proto-copy">
+        <h3 className="proto-k">Prototype variant</h3>
+        <p className="proto-line">{p.line}</p>
+        <div className="proto-tabs" role="group" aria-label="View">
+          {p.views.map((x, i) => <button key={x.label} type="button" aria-pressed={i === at} onClick={() => setAt(i)}>{x.label}</button>)}
+        </div>
+      </div>
+      <div className="proto-pair">
+        <figure className="proto-fig">
+          <Plate key={v.proto.src} {...v.proto} kind="cutout" className="proto-plate" />
+          <figcaption><span className="proto-tag proto-tag--proto">Prototype</span>{v.label}</figcaption>
+        </figure>
+        <span className="proto-arrow" aria-hidden="true">→</span>
+        <figure className="proto-fig">
+          <Plate key={v.final.src} {...v.final} kind="cutout" className="proto-plate" />
+          <figcaption><span className="proto-tag">Final</span>{v.label}</figcaption>
+        </figure>
+      </div>
+    </div>
+  )
+}
+
 export default function RoomJacket() {
   const j = jacket
   const [focus, setFocus] = useState(null)
@@ -65,6 +93,7 @@ export default function RoomJacket() {
           ))}
         </div>
       </div>
+      <Prototype p={j.prototype} />
       <Film film={j.film} alt="Process film for the jacket" />
       <SheetsLink room={j} />
     </section>
