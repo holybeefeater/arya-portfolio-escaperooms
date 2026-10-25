@@ -445,8 +445,15 @@ export const internship = {
     { title: 'Scarf bag: Paradise patchwork', src: 'assets/communication/scarfbag-patchwork.webp', w: 1400, h: 700 },
     { title: 'Scarf bag: Toucan garden', src: 'assets/communication/scarfbag-toucan.webp', w: 1400, h: 700 },
   ],
-  // the finished scarf bag: add its photograph here, e.g. { src: 'assets/communication/scarf-bag.webp', w, h, alt }
-  bag: null,
+  // the finished scarf bag, made from the Paradise patchwork print
+  bag: {
+    title: 'The Paradise scarf bag',
+    text: 'The Paradise patchwork print made up as a scarf bag: the scarf knotted onto a carved wooden handle, with a long scarf-print strap for wearing crossbody.',
+    photos: [
+      { src: 'assets/communication/scarf-bag-handle.webp', w: 1000, h: 1333, alt: 'The Paradise scarf bag on its carved wooden handle, the scarf corners knotted at each end' },
+      { src: 'assets/communication/scarf-bag-strap.webp', w: 1000, h: 1333, alt: 'The Paradise scarf bag with its long scarf-print crossbody strap clipped to the handle' },
+    ],
+  },
 }
 
 // Shown as a corridor of doors. Add `thumb: 'assets/other/….webp'` to any item and

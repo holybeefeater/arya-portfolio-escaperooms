@@ -47,13 +47,17 @@ export function OtherWork() {
             <figcaption className="caption">{p.title}, the two panels</figcaption>
           </figure>
         ))}
-        {i.bag && (
-          <figure className="panels-bag">
-            <Still {...i.bag} />
-            <figcaption className="caption">The scarf bag, made</figcaption>
-          </figure>
-        )}
       </div>
+      {i.bag && (
+        <div className="scarf-bag">
+          <div className="scarf-bag-copy">
+            <p className="print-n">05</p>
+            <h3 className="scarf-bag-t">{i.bag.title}</h3>
+            <p className="scarf-bag-d">{i.bag.text}</p>
+          </div>
+          {i.bag.photos.map(p => <Still key={p.src} {...p} className="scarf-bag-img" />)}
+        </div>
+      )}
       <h3 className="h-small work-h">Research, publishing and identity</h3>
       <p className="doors-hint">{finePointer() ? 'Point at a door to look inside.' : 'Tap a door to look inside.'}</p>
       <Doors items={otherWork} />

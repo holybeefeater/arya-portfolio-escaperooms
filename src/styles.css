@@ -933,5 +933,9 @@ html[data-ink='dark'] .header-toggle { --aa-toggle-on: var(--tube); }
 .print-t { margin-top: 10px; font-size: 14px; font-weight: 700; }
 .print-d { margin-top: 4px; font-size: 13px; line-height: 1.45; opacity: 0.8; }
 .panels { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(14px, 2vw, 28px); margin-top: clamp(36px, 5vh, 60px); }
-.panels-bag { grid-column: 1 / -1; justify-self: center; width: min(100%, 560px); }
-@media (max-width: 860px) { .prints { grid-template-columns: repeat(2, minmax(0, 1fr)); } .panels { grid-template-columns: minmax(0, 1fr); } }
+/* the made scarf bag: the end of the sequence, and the largest */
+.scarf-bag { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr) minmax(0, 1fr); gap: clamp(14px, 2vw, 28px); align-items: end; margin-top: clamp(56px, 8vh, 100px); }
+.scarf-bag-t { font-weight: 800; font-stretch: 62%; text-transform: uppercase; font-size: clamp(2.2rem, 4vw, 4rem); line-height: 0.88; }
+.scarf-bag-d { margin-top: 14px; max-width: 36ch; font-size: 15px; line-height: 1.5; }
+.scarf-bag-img { height: min(80vh, 760px); width: 100%; object-fit: cover; }
+@media (max-width: 860px) { .prints { grid-template-columns: repeat(2, minmax(0, 1fr)); } .panels, .scarf-bag { grid-template-columns: minmax(0, 1fr); } .scarf-bag-img { height: auto; } }
