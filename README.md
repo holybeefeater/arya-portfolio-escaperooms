@@ -137,7 +137,6 @@ Her own note on the brainstorm, "keep it abstract, not botanical", is followed: 
 
 ### Things only Aditi can add (Auxin)
 
-- Her role on Auxin, the year and module, and a short reflection (marked **To add** under Bloom).
 - Her shoot video, if there is one, for the moving stills.
 - Full-size files for two photographs that arrived small: `jacket-upside-down` (720 × 540)
   and `ensemble-double-exposure` (576 × 720). Replace them in `media/auxin/shoot/` and run the script.

@@ -43,9 +43,8 @@ export const collection = {
   idea: 'The collection borrows that movement. Silhouettes lengthen and lean, and vertical ribbing reads as vascular structure, giving the pieces an upward pull.',
   pieces: 'A menswear ensemble (an asymmetric, kimono-inspired leather jacket with pleated, striped trousers) and two boot ranges, calf boots and cowboy boots.',
   closing: 'Exploration on the idea of objects shaped by invisible environmental forces.',
-  role: gap('Your role on Auxin, e.g. research, design, pattern, construction, styling'),
-  when: gap('Year and course or module'),
-  reflection: gap('What Auxin taught you, what you would change, and what you would develop next.'),
+  role: 'Everything from scratch: concept development, trend research, brainstorming, colour, mood, material, finish, sourcing, pattern making, garment construction, display, photoshoot and styling.',
+  when: '2 weeks',
 }
 
 // The five growth stages that organise the page. `id` is the anchor in the address bar.

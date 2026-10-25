@@ -176,7 +176,6 @@ export default function Bloom() {
             <div><dt>Pieces</dt><dd>Jacket and trousers; calf boots; cowboy boots</dd></div>
             <div><dt>Role</dt><dd><Gap v={collection.role} /></dd></div>
             <div><dt>When</dt><dd><Gap v={collection.when} /></dd></div>
-            <div className="bloom-reflect"><dt>Reflection</dt><dd><Gap v={collection.reflection} /></dd></div>
           </dl>
         </div>
       </div>
