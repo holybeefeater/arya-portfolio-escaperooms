@@ -51,6 +51,17 @@ export function Plate({
   )
 }
 
+// A photograph from the shoot, drawn plainly: no stage, no shadow, no frame.
+export function Still({ src, alt = '', w, h, className = '', style, eager, pos, ...rest }) {
+  return (
+    <img
+      className={`still ${className}`} src={url(src)} alt={alt} width={w} height={h}
+      loading={eager ? 'eager' : 'lazy'} decoding="async"
+      style={{ aspectRatio: `${w} / ${h}`, objectPosition: pos, ...style }} {...rest}
+    />
+  )
+}
+
 export function Sign({ children, className = '' }) {
   return (
     <p className={`sign ${className}`}>

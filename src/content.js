@@ -22,6 +22,14 @@ export const person = {
   site: 'https://aditiaryaescaperoomsportfolio.vercel.app/',
 }
 
+import sizes from './shoot-sizes.js'
+
+// A photograph from the shoot, by name, with its size (see scripts/shoot-sizes.py).
+export const shot = (name, alt = '') => {
+  const [w, h] = sizes[name] || [1, 1]
+  return { src: `assets/shoot/${name}.webp`, w, h, alt }
+}
+
 export const collection = {
   title: 'Escape Rooms',
   season: 'Ready-to-wear, A/W 2026',
@@ -82,36 +90,59 @@ export const jacket = {
   line: 'Waist-length, unisex jacket with a kimono-based silhouette.',
   materials: ['Cherry maroon sheep nappa', 'Olive suede leather'],
   text: 'The body is cut in cherry maroon sheep nappa. Olive suede lines the standing collar and turns back at the cuffs and hem. The front fastens with a column of straps, each finished with an antique buckle and rivets.',
-  // Photographs from the shoot are in public/assets/shoot/ (see scripts/escape-media.py);
-  // `-cut` files are cut out of their background.
-  hero: { src: 'assets/shoot/jacket-open-front-cut.webp', alt: 'Model wearing the cherry maroon nappa jacket open over bare chest: the standing olive suede collar, the strap-and-buckle column down the front, olive cuffs and hem', w: 806, h: 1600 },
+  // Photographs from the shoot, edited and cut out by scripts/escape-media.py
+  // (public/assets/shoot/). `shot(name, alt)` adds the file's size.
+  hero: shot('jacket-open-front-cut', 'The cherry maroon nappa jacket worn open over bare chest: the standing collar, the strap-and-buckle column down the front, olive suede cuffs and hem'),
   // Hotspots sit on the hero image. x and y run from 0 to 1, measured from the top-left corner.
   hotspots: [
-    { x: 0.64, y: 0.27, label: 'Standing dual-tone collar' },
-    { x: 0.73, y: 0.47, label: 'Antique-finish rivets' },
-    { x: 0.75, y: 0.55, label: 'Antique-finish buckle closure' },
-    { x: 0.04, y: 0.5, label: 'Cuff-accented half sleeve' },
+    { x: 0.62, y: 0.27, label: 'Standing dual-tone collar' },
+    { x: 0.74, y: 0.47, label: 'Antique-finish rivets' },
+    { x: 0.75, y: 0.56, label: 'Antique-finish buckle closure' },
+    { x: 0.05, y: 0.5, label: 'Cuff-accented half sleeve' },
     { x: 0.12, y: 0.72, label: 'Contrast panelling at the hem' },
-    { x: 0.76, y: 0.75, label: 'Belt-strap closure' },
+    { x: 0.77, y: 0.76, label: 'Belt-strap closure' },
   ],
-  gallery: [
-    { src: 'assets/shoot/jacket-back-plain-cut.webp', alt: 'Back view of the jacket: the dropped shoulder, the back seams, olive suede cuffs and hem band', w: 780, h: 1600, kind: 'cutout' },
-    { src: 'assets/shoot/jacket-collar-hand.webp', alt: 'Close-up of a hand holding the collar: olive suede lining the standing collar of the maroon nappa', w: 1800, h: 1200, kind: 'photo' },
+  // the other two views, either side of the front
+  views: [
+    { label: 'Side', ...shot('jacket-profile-grey-cut', 'The jacket in profile: the strap column, the olive suede collar and cuff, the hem band') },
+    { label: 'Back', ...shot('jacket-back-plain-cut', 'The jacket from behind: the dropped shoulder, the back seams, the olive suede cuffs and hem band') },
   ],
-  // The prototype, shown beside the final jacket, view by view.
-  prototype: {
-    line: 'Before the final jacket, a prototype: four shades of brown with a basket-weave emboss, cream sleeves, a rust front, and a chocolate back and collar. The final is cut in cherry maroon sheep nappa with olive suede.',
+  // close-ups from the shoot, cut out
+  close: [
+    { label: 'Standing dual-tone collar', ...shot('jacket-collar-hand-cut', 'A ringed hand gripping the standing collar: olive suede against cherry maroon nappa') },
+    { label: 'The strap, buckle and rivet column', ...shot('jacket-buckles-skin-cut', 'The jacket held open on bare skin, the column of straps, buckles and rivets down the open edge') },
+  ],
+  // The fit variant: the jacket made once before the final, to get the fit and the pattern right.
+  variant: {
+    title: 'Fit variant',
+    line: 'Before the nappa was cut, the jacket was made once as a construction variant: the same pattern sewn up to check the fit, the drop of the shoulder and the proportions, and to correct the pattern before the final.',
     views: [
-      { label: 'Front',
-        proto: { src: 'assets/shoot/prototype-front-open-cut.webp', alt: 'The prototype jacket from the front, worn open: rust front panels, cream sleeves, chocolate collar', w: 765, h: 1600 },
-        final: { src: 'assets/shoot/jacket-open-front-cut.webp', alt: 'The final jacket from the front, worn open', w: 806, h: 1600 } },
-      { label: 'Side',
-        proto: { src: 'assets/shoot/prototype-profile-cut.webp', alt: 'The prototype jacket in profile: the rust front and cream sleeve', w: 636, h: 1600 },
-        final: { src: 'assets/shoot/jacket-profile-grey-cut.webp', alt: 'The final jacket in profile: the strap column, the olive collar and cuff', w: 620, h: 1600 } },
-      { label: 'Back',
-        proto: { src: 'assets/shoot/prototype-back-walk-cut.webp', alt: 'The prototype jacket from behind: the chocolate back and standing collar', w: 426, h: 1600 },
-        final: { src: 'assets/shoot/jacket-back-plain-cut.webp', alt: 'The final jacket from behind', w: 780, h: 1600 } },
+      { label: 'Front', ...shot('prototype-front-open-cut', 'The fit variant from the front, worn open') },
+      { label: 'Side', ...shot('prototype-profile-cut', 'The fit variant in profile') },
+      { label: 'Back', ...shot('prototype-back-walk-cut', 'The fit variant from behind, with its standing collar') },
     ],
+  },
+  // A general outline of the pattern, drawn from the measurements in her specification
+  // (length 25 in, sleeve 15 in, cap height 9 in, cuff 4 in). Paths are in inches.
+  pattern: {
+    note: 'A general outline of the pattern, drawn to the measurements on her specification sheet. Point at a piece to see what it is cut from.',
+    pieces: [
+      { name: 'Back', cut: 'Cut 1 on the fold', mat: 'nappa', at: [0.4, 1], grain: 'v',
+        d: 'M 11.2 0.9 Q 13.1 0.8 14.5 0 L 21.2 1.7 Q 21.6 6.2 22.2 10.5 L 22.4 25 L 0 25 L 0.2 10.5 Q 0.8 6.2 1.2 1.7 L 7.9 0 Q 9.3 0.8 11.2 0.9 Z' },
+      { name: 'Front', cut: 'Cut 2', mat: 'nappa', at: [25, 1], grain: 'v',
+        d: 'M 0 4.6 Q 2.6 4.2 3.4 0 L 10 1.7 Q 10.4 6.2 11 10.5 L 11.2 25 L 0 25 Z' },
+      { name: 'Sleeve', cut: 'Cut 2', mat: 'nappa', at: [38.4, 1], grain: 'v',
+        d: 'M 0 9 C 2 3 5.5 0 8 0 C 10.5 0 14 3 16 9 L 15 15 L 1 15 Z' },
+      { name: 'Cuff', cut: 'Cut 2', mat: 'suede', at: [39.4, 18.6], grain: 'h',
+        d: 'M 0 0 H 14 V 4 H 0 Z' },
+      { name: 'Standing collar', cut: 'Cut 1 nappa, 1 suede', mat: 'suede', at: [57.4, 1.6], grain: 'h',
+        d: 'M 0 3.8 Q 8.5 2.6 17 3.8 L 17 1.2 Q 8.5 0 0 1.2 Z' },
+      { name: 'Hem band', cut: 'Cut 2', mat: 'suede', at: [57.4, 8.2], grain: 'h',
+        d: 'M 0 0 H 19 V 2.6 H 0 Z' },
+      { name: 'Strap', cut: 'Cut 6', mat: 'nappa', at: [57.6, 14], grain: 'v', repeat: 6, step: 2.4,
+        d: 'M 0 0 H 1.2 V 4.6 L 0.6 5.4 L 0 4.6 Z' },
+    ],
+    materials: { nappa: 'Cherry maroon sheep nappa', suede: 'Olive suede leather' },
   },
   details: [
     'Multi-strap front fastening system',
@@ -143,11 +174,17 @@ export const bags = {
     {
       name: 'Duffle',
       line: 'Designed for in-between spaces. It changes between duffle, top handle, backpack, shoulder and crossbody.',
-      img: { src: 'assets/shoot/duffle-held.webp', alt: 'The duffle held up by its handles: olive suede and printed panels, rows of studs, the strap through metal loops and the push-lock', w: 705, h: 860, kind: 'photo' },
-      close: [
-        { src: 'assets/shoot/duffle-pushlock-studs.webp', alt: 'Close-up: the push-lock and rows of studs on the front panel', w: 1800, h: 1200 },
-        { src: 'assets/shoot/duffle-handle-hooks.webp', alt: 'Close-up: the detachable handles clipped on with brass snap hooks', w: 1200, h: 1800 },
-        { src: 'assets/shoot/duffle-side-pocket.webp', alt: 'Close-up: the concealed side zip pocket in the printed panel', w: 1200, h: 1800 },
+      // the bag, cut out; `film` plays beside it; each of `looks` is a close-up,
+      // pinned to a point on the cut-out (`at`, 0 to 1) or, without one, shown
+      // from the list of details only
+      cut: shot('duffle-cut', 'The duffle: olive suede and printed panels, rows of studs, the strap through metal loops and the push-lock'),
+      film: { src: 'assets/films/film-lining.mp4', poster: 'assets/posters/film-lining.jpg', label: 'Opened: the dark green lining' },
+      looks: [
+        { label: 'Push-lock flap', at: [0.47, 0.82], ...shot('duffle-pushlock-studs', 'The push-lock and rows of studs on the front panel') },
+        { label: 'Detachable handles', at: [0.33, 0.06], ...shot('duffle-handle-hooks', 'The handles clipped on with brass snap hooks') },
+        { label: 'Side concealed zip pocket', at: [0.93, 0.58], ...shot('duffle-side-pocket', 'The concealed zip pocket in the printed side panel') },
+        { label: 'Back welt pocket', ...shot('duffle-back-welt', 'The back welt pocket and the snap hook at the top corner') },
+        { label: 'Strap through metal loops', at: [0.57, 0.6], ...shot('duffle-strap-loops', 'The printed strap threaded through metal loops down the studded suede') },
       ],
       size: '17 × 9.5 × 5.5 in, 8 in handle drop, 47.2 in detachable strap',
       details: ['Five front-panel pockets', 'Detachable handles', 'Push-lock flap', 'Side concealed zip pocket', 'Back welt pocket', 'Bottom panel studs'],
@@ -165,10 +202,11 @@ export const bags = {
     {
       name: 'T-base',
       line: 'A crossbody layered with pockets: card slots, a flap gusset and rings for hanging charms.',
-      img: { src: 'assets/shoot/tbase-held.webp', alt: 'The T-base lifted by its top edge: a suede pocket over the printed flap, on its long strap', w: 533, h: 760, kind: 'photo' },
-      close: [
-        { src: 'assets/shoot/tbase-pocket-detail.webp', alt: 'Close-up: the suede pocket with its snap on the printed flap', w: 1200, h: 1800 },
-        { src: 'assets/shoot/tbase-snap-detail.webp', alt: 'Close-up: the engraved brass snap on the printed flap', w: 1200, h: 1800 },
+      cut: shot('tbase-cut', 'The T-base: a suede pocket over the printed flap, on its long strap'),
+      film: { src: 'assets/films/film-garage.mp4', poster: 'assets/posters/film-garage.jpg', label: 'With the duffle, in the car park' },
+      looks: [
+        { label: 'Card holder', at: [0.42, 0.14], ...shot('tbase-pocket-detail', 'The suede pocket with its snap on the printed flap') },
+        { label: 'Front-flap push lock', at: [0.5, 0.3], ...shot('tbase-snap-detail', 'The engraved brass snap on the printed flap') },
       ],
       size: '12 × 10.5 × 3 in, 40 in detachable strap',
       details: ['Four front-panel pockets', 'Card holder', 'Charm-hanging rings', 'Flap gusset pocket', 'Front-panel zip pocket', 'Front-flap push lock'],
@@ -183,10 +221,13 @@ export const bags = {
     {
       name: 'Drawstring',
       line: 'A drawstring body with a studded, push-lock flap pocket and a zipped printed base.',
-      img: { src: 'assets/shoot/drawstring-shoulder.webp', alt: 'The drawstring worn on the back over the maroon jacket: the studded flap pocket with its push-lock and the zipped printed base', w: 1200, h: 1800, kind: 'photo' },
-      close: [
-        { src: 'assets/shoot/drawstring-pushlock.webp', alt: 'Close-up: the push-lock and studs on the curved flap', w: 1800, h: 1200 },
-        { src: 'assets/shoot/drawstring-top-strap.webp', alt: 'Close-up: the gathered top, the strap through its buckle and the side zip', w: 1200, h: 1800 },
+      cut: shot('drawstring-cut', 'The drawstring: the studded flap pocket with its push-lock over the zipped printed base'),
+      film: { src: 'assets/films/film-drawstring.mp4', poster: 'assets/posters/film-drawstring.jpg', label: 'Turning, front to back' },
+      looks: [
+        { label: 'Push-lock pocket flap', at: [0.47, 0.36], ...shot('drawstring-pushlock', 'The push-lock and studs on the curved flap') },
+        { label: 'Front-panel zip pocket', at: [0.5, 0.63], ...shot('drawstring-zip-flap', 'The studded flap above the zipped printed base') },
+        { label: 'String and buckle', at: [0.86, 0.27], ...shot('drawstring-top-strap', 'The gathered top, the strap through its buckle and the side zip') },
+        { label: 'Under the flap', at: [0.28, 0.27], ...shot('drawstring-inner-flap', 'The flap lifted: the push-lock plate, the snap and the suede beneath') },
       ],
       size: '12 × 15 × 2.5 in, 30 in string',
       details: ['Push-lock pocket flap', 'Two front-panel pockets', 'Side-seam concealed zip', 'Front-panel zip pocket', 'String and buckle'],
@@ -204,11 +245,12 @@ export const bags = {
     {
       name: 'Hobo',
       line: 'A small crossbody gathered into pleats between suede panels, closed with a single zip.',
-      img: { src: 'assets/products/hobo-single.webp', alt: 'Small hobo bag with pleated printed panels between suede strips, on a long strap', w: 696, h: 936 },
-      close: [
-        { src: 'assets/shoot/hobo-pleats-detail.webp', alt: 'Close-up: printed panels gathered into pleats between suede strips, held by studs', w: 1800, h: 1200 },
-        { src: 'assets/shoot/hobo-zip-detail.webp', alt: 'Close-up: the single top zip and its pull', w: 1800, h: 1200 },
-        { src: 'assets/shoot/hobo-strap-hardware.webp', alt: 'Close-up: the strap end with its snap hook, D-ring and rivet', w: 1800, h: 1200 },
+      cut: shot('hobo-cut', 'The hobo: printed panels gathered into pleats between suede strips, on a long strap'),
+      film: { src: 'assets/films/film-hobo.mp4', poster: 'assets/posters/film-hobo.jpg', label: 'Up close, pleat by pleat' },
+      looks: [
+        { label: 'Pleated panels', at: [0.52, 0.28], ...shot('hobo-pleats-detail', 'Printed panels gathered into pleats between suede strips, held by studs') },
+        { label: 'No. 5 metal zip', at: [0.4, 0.05], ...shot('hobo-zip-detail', 'The single top zip and its pull') },
+        { label: 'D-ring hardware', at: [0.08, 0.13], ...shot('hobo-strap-hardware', 'The strap end with its snap hook, D-ring and rivet') },
       ],
       size: '12 × 5 in, 40 in detachable strap',
       details: ['Pleated panels', 'No. 5 metal zip', 'D-ring hardware', 'Base studs'],
@@ -252,28 +294,6 @@ export const bags = {
       ['Pocket', 70.8, 53.8, 16.0, 14.0],
     ],
   },
-  // the bags' shoot: a spread laid out like a level of the lookbook (see `lookbook` below)
-  shoot: {
-    id: 'bags-shoot', n: 'B', title: 'It loops', sign: 'it loops', light: '', tone: '#4A4A2E', ink: 'light', h: 112, head: [0, 0, 30],
-    line: 'Two people, four bags, passed between them: worn crossbody and on the shoulder, held out, set down.',
-    frames: [
-      { src: 'assets/shoot/bags-four-close.webp', w: 1800, h: 1200, at: [32, 0, 68], m: [100, 'c'], piece: 'All four bags',
-        marks: [{ circle: [0.56, 0.74, 0.19, 0.2], label: 'four from one hide', at: [0.05, 0.1] }],
-        alt: 'All four bags piled together on suede: the T-base, the duffle with its strap loops, the pleated hobo and the drawstring' },
-      { src: 'assets/shoot/bags-pair-lean.webp', w: 1200, h: 1800, at: [0, 30, 27], rot: -1.5, m: [82, 'l'], piece: 'T-base, duffle',
-        marks: [{ tape: [0.5, 0.92, -5], label: 'it loops' }],
-        alt: 'Two models leaning together, the T-base worn crossbody and the duffle on the shoulder' },
-      { src: 'assets/shoot/bags-pair-silhouette.webp', w: 1200, h: 1800, at: [47, 49, 22], m: [70, 'r'], piece: 'Duffle, T-base',
-        alt: 'The same pair backlit to silhouettes, the bags dark shapes against white' },
-      { src: 'assets/shoot/bags-pair-glance.webp', w: 1200, h: 1800, at: [72, 45, 24], rot: 1, m: [76, 'l'], piece: 'Duffle, T-base',
-        marks: [{ arrow: [[0.95, 0.42], [0.86, 0.5], [0.76, 0.58]], label: 'back zip pocket', at: [0.5, 0.38] }],
-        alt: 'One model faces the camera with the duffle crossbody; the other turns away, the T-base on her back showing its zip pocket' },
-      { src: 'assets/shoot/bags-pair-seated.webp', w: 1800, h: 1200, at: [0, 74, 44], m: [100, 'c'], piece: 'Duffle, T-base',
-        alt: 'Seated on the floor and on a chair, the duffle and T-base set down between them' },
-      { src: 'assets/shoot/duffle-strap-loops.webp', w: 1200, h: 1800, at: [50, 86, 16], rot: -1, m: [60, 'r'], piece: 'Duffle',
-        alt: 'Close-up: the printed strap threaded through metal loops down the studded suede' },
-    ],
-  },
   film: { src: 'assets/films/bags.mp4', poster: 'assets/posters/bags.webp', caption: 'Trends, bag explorations, technical drawings and the bill of materials, then each bag in turn.' },
   sheets: { from: 17, to: 37 },
   pdf: 'downloads/Aditi-Arya-Escape-Rooms.pdf',
@@ -297,8 +317,8 @@ export const boots = {
     { name: 'Outsole',  src: 'assets/layers/outsole.webp', w: 723, h: 131 },
   ],
   photos: [
-    { src: 'assets/shoot/boots-side-kick-cut.webp', alt: 'The dark green boot in profile on a raised foot: the overlapping panels, the lacing loops and the chunky tread sole', w: 1240, h: 917, kind: 'cutout' },
-    { src: 'assets/shoot/boots-lacing-hands-cut.webp', alt: 'Hands tying the laces of the dark green boot through its leather loops', w: 1289, h: 1197, kind: 'cutout' },
+    { label: 'Side: overlapping panels, lacing loops, the tread sole', ...shot('boots-side-kick-cut', 'The dark green boot in profile on a raised foot: the overlapping panels, the lacing loops and the chunky tread sole') },
+    { label: 'Laced through the leather loops', ...shot('boots-lacing-hands-cut', 'Hands tying the laces of the dark green boot through its leather loops') },
   ],
   spec: [
     ['Size', 'UK 9 / EU 43–44'], ['Colour', 'Dark green, black finish'], ['Construction', 'Cemented / direct injection'],
@@ -322,82 +342,59 @@ export const boots = {
   pdf: 'downloads/Aditi-Arya-Ankle-Boots.pdf',
 }
 
-// ─── The shoot: a lookbook in three levels ─────────────────────────────────
-// The shoot as a way out of the Backrooms: level by level, from the hum of
-// yellow-green strip lights, through a dark corridor watched by a camera, to
-// the exit. Each level is named with one of her wayfinding phrases.
-//   light  how the visitor's torch edits the level's photographs: 'fluoro'
-//          (under yellow-green strip light, true colour where the torch falls),
-//          'cctv' (a green security-camera feed, true colour under the torch),
-//          or '' (as they are). Under reduced motion they are the photographs.
-//   tone / ink   the level's ground, and dark or light text over it.
-//   h      the height of the level's spread, in % of its width.
-//   head   where the level's title sits: [x, y, width].
-//   frames each photograph: `src` in public/assets/shoot/, `w` `h`; `at` [x, y,
-//          width] on the spread in % of its width; `m` [width %, 'l' | 'r' | 'c']
-//          in the column on a phone; `rot` its tilt; `marks` drawn over it
-//          (x and y from 0 to 1 of the photograph), never across a face:
-//            { circle: [x, y, rx, ry], label, at: [x, y] }   a loop around it
-//            { arrow: [[x, y], …], label, at: [x, y] }       an arrow along it
-//            { measure: [[x, y], [x, y]], label }             a measured length
-//            { tape: [x, y, rotation], label }                hazard tape, lettered
-//   exit   the last photograph, seen through the exit door.
-const shot = (name, w, h) => ({ src: `assets/shoot/${name}.webp`, w, h })
+// ─── The shoot: the lookbook ────────────────────────────────────────────────
+// The shoot, level by level, every photograph edited and cut out of the studio
+// (scripts/escape-media.py). Each level is a spread placed in % of its width:
+//   scene  the ground behind it: 'backrooms' (sodium-yellow wall), 'alley'
+//          (night, a wet floor that reflects), 'cherry', 'olive'
+//   frames `at` [x, y, width] on the spread; `m` [width %, 'l' | 'r' | 'c'] in
+//          the column on a phone; `depth` how far it drifts as the page scrolls
+//          (0 stays put); `echo` copies trailing behind it; `reflect` mirrored in
+//          the floor; `crop` a rectangle cut from a photograph ({ ar, pos })
+//   close  the last photograph, across the whole page
 export const lookbook = {
-  title: 'The way out',
-  line: 'The shoot, level by level: the jacket, the boots, and the bags they carry, worn. Move your torch over the photographs; click any of them to see it untouched.',
+  title: 'The shoot',
+  line: 'The jacket, the boots and the bags, worn. Click any photograph to open it.',
   levels: [
     {
-      id: 'level-0', n: '00', title: 'Level 0', sign: 'observe carefully', light: 'fluoro', tone: '#CFC98C', ink: 'dark', h: 70, head: [70, 0, 30],
-      line: 'Strip lights hum over a ceiling grid that never ends. The boots come at the camera.',
+      id: 'level-0', n: '00', title: 'Level 0', line: 'The boots, from the floor up.', scene: 'backrooms', tone: '#B9AF5C', ink: 'dark', h: 70,
       frames: [
-        { ...shot('jacket-reach-studio', 1202, 1800), at: [33, 0, 35], m: [100, 'c'], piece: 'Jacket, boots',
-          marks: [{ tape: [0.5, 0.2, -6], label: 'observe carefully' }],
-          alt: 'The full look under the studio ceiling grid, one arm flung out, the maroon jacket open over wide jeans and the green boots' },
-        { ...shot('boots-soles-lying', 1202, 1800), at: [0, 8, 30], rot: -2, m: [80, 'l'], piece: 'Boots',
-          marks: [{ circle: [0.4, 0.86, 0.22, 0.1], label: 'tread', at: [0.68, 0.98] }],
-          alt: 'Lying back on the studio floor, both green boots pushed at the camera: the deep lug tread of the soles' },
-        { ...shot('boots-stride-low', 1202, 1800), at: [69, 27, 27], rot: 1.5, m: [72, 'r'], piece: 'Boots',
-          marks: [{ arrow: [[0.86, 0.42], [0.8, 0.56], [0.68, 0.66]], label: 'follow the line', at: [0.56, 0.4] }],
-          alt: 'From the floor, a green boot pushed toward the camera, a hand reaching down over it' },
+        { ...shot('jacket-reach-studio-cut', 'The full look, one arm flung out: the maroon jacket open over wide jeans, the green boots planted'), at: [1, 6, 23], m: [62, 'l'], depth: -0.4, piece: 'Jacket, boots' },
+        { ...shot('boots-stride-low-cut', 'From the floor: a green boot pushed at the camera, a ringed hand reaching down over it'), at: [27, 0, 40], m: [100, 'c'], depth: 0.3, echo: 2, piece: 'Boots' },
+        { ...shot('boots-soles-lying-cut', 'Lying back, both green boots pushed at the camera: the deep lug tread of the soles'), at: [63, 20, 36], m: [92, 'r'], depth: 0.8, piece: 'Boots' },
       ],
     },
     {
-      id: 'level-1', n: '01', title: 'Level 1', sign: 'not all is visible', light: 'cctv', tone: '#0E1813', ink: 'light', h: 84, head: [0, 0, 32],
-      line: 'A dark corridor, watched. Under your torch the feed turns back into skin, nappa and brass.',
+      id: 'level-1', n: '01', title: 'Level 1', line: 'The jacket, after dark.', scene: 'alley', tone: '#0B0F0C', ink: 'light', h: 70,
       frames: [
-        { ...shot('jacket-buckles-skin', 1200, 1800), at: [32, 0, 34], m: [100, 'c'], piece: 'Jacket',
-          marks: [{ circle: [0.63, 0.62, 0.15, 0.27], label: 'alignment required', at: [0.42, 0.95] }],
-          alt: 'The jacket held open on bare skin, a ringed hand on the chest, the strap-and-buckle column running down the open edge' },
-        { ...shot('jacket-profile-look-up', 1200, 1800), at: [3, 36, 25], rot: -1.5, m: [70, 'l'], piece: 'Jacket',
-          marks: [{ measure: [[0.8, 0.29], [0.8, 0.72]], label: '25 in' }],
-          alt: 'In profile, head thrown back: the strap column, the olive suede collar, cuff and hem band of the jacket' },
-        { ...shot('jacket-dark-tilt', 1200, 1800), at: [71, 22, 29], rot: 1, m: [76, 'r'], piece: 'Jacket',
-          alt: 'In near darkness, head tilted back, hands in pockets: the jacket catching a single light' },
-        { ...shot('jacket-collar-hand', 1800, 1200), at: [30, 55, 38], m: [100, 'c'], piece: 'Jacket',
-          marks: [{ arrow: [[0.62, 0.05], [0.5, 0.16], [0.4, 0.3]], label: 'standing collar', at: [0.64, 0.12] }],
-          alt: 'A ringed hand gripping the standing collar: olive suede against cherry maroon nappa' },
+        { ...shot('jacket-profile-look-up-cut', 'In profile, head thrown back: the strap column, the olive suede collar, cuff and hem band'), at: [0, 6, 27], m: [70, 'l'], depth: -0.3, reflect: true, piece: 'Jacket' },
+        { ...shot('jacket-buckles-skin-cut', 'The jacket held open on bare skin, a ringed hand on the chest, straps and buckles down the open edge'), at: [30, 0, 24], m: [80, 'c'], depth: 0.5, piece: 'Jacket' },
+        { ...shot('jacket-dark-tilt-cut', 'Head tilted back in the dark, hands in pockets, the jacket catching a single light'), at: [56, 8, 18], m: [56, 'r'], depth: -0.2, reflect: true, piece: 'Jacket' },
+        { ...shot('jacket-back-glance-cut', 'From behind, looking back over the shoulder into the camera'), at: [76, 2, 22], m: [64, 'l'], depth: 0.4, reflect: true, piece: 'Jacket' },
+        { ...shot('jacket-collar-hand-cut', 'A ringed hand gripping the standing collar: olive suede against cherry maroon nappa'), at: [24, 40, 34], m: [100, 'c'], depth: 0.6, piece: 'Jacket' },
       ],
     },
     {
-      id: 'level-2', n: '02', title: 'Level 2', sign: 'entry != exit', light: '', tone: '#DADDD0', ink: 'dark', h: 94, head: [0, 0, 30],
-      line: 'Out into white light, carrying everything: the duffle by its handles and against the body, the drawstring and the crossbody over a shoulder.',
+      id: 'level-2', n: '02', title: 'Level 2', line: 'Carrying the bags: the duffle by its handles and against the body, the drawstring and the T-base worn.', scene: 'cherry', tone: '#260C12', ink: 'light', h: 70,
       frames: [
-        { ...shot('duffle-handles-walk', 1200, 1800), at: [32, 0, 32], m: [100, 'c'], piece: 'Full look',
-          marks: [{ circle: [0.79, 0.76, 0.14, 0.13], label: 'top handle', at: [0.6, 0.6] }],
-          alt: 'Walking toward the camera in the full look: the open jacket, wide jeans, green boots and the duffle carried by its handles' },
-        { ...shot('duffle-lean-back', 1200, 1800), at: [68, 8, 30], rot: 1.5, m: [80, 'r'], piece: 'Full look',
-          marks: [{ tape: [0.5, 0.42, 8], label: 'it loops' }],
-          alt: 'Leaning far back, knees bent, hugging the studded duffle to the body' },
-        { ...shot('drawstring-shoulder', 1200, 1800), at: [2, 32, 26], rot: -1.5, m: [72, 'l'], piece: 'Full look',
-          alt: 'Glancing back over the shoulder, the drawstring bag with its studded flap worn on the back of the jacket' },
-        { ...shot('tbase-crossbody-back', 1200, 1800), at: [62, 58, 24], rot: 1, m: [66, 'r'], piece: 'Full look',
-          alt: 'From behind, looking down, a crossbody bag at the hip over the jacket' },
+        { ...shot('duffle-handles-walk-cut', 'Walking toward the camera in the full look, the duffle carried by its handles'), at: [0, 2, 25], m: [74, 'l'], depth: 0.2, echo: 2, piece: 'Duffle' },
+        { ...shot('duffle-lean-back-cut', 'Leaning far back, knees bent, hugging the studded duffle to the body'), at: [25, 9, 28], m: [86, 'r'], depth: -0.3, piece: 'Duffle' },
+        { ...shot('drawstring-shoulder-cut', 'Glancing back, the drawstring worn on the back over the jacket'), at: [54, 0, 22], m: [66, 'l'], depth: 0.5, piece: 'Drawstring' },
+        { ...shot('tbase-crossbody-back-cut', 'From behind, looking down, the T-base at the hip'), at: [76, 14, 23], m: [66, 'r'], depth: -0.1, piece: 'T-base' },
       ],
-      exit: { ...shot('jacket-back-glance', 1200, 1800), piece: 'The way out',
-        alt: 'From behind, the jacket and wide jeans, looking back over the shoulder into the camera' },
+    },
+    {
+      id: 'level-3', n: '03', title: 'Level 3', line: 'Two people, four bags, passed between them.', scene: 'olive', tone: '#1A1D13', ink: 'light', h: 78,
+      frames: [
+        { ...shot('bags-pair-lean-cut', 'Two models leaning together, the T-base worn crossbody and the duffle on the shoulder'), at: [0, 0, 30], m: [90, 'l'], depth: 0.3, piece: 'T-base, duffle' },
+        { ...shot('bags-four-close', 'All four bags piled together on suede: the T-base, the duffle, the pleated hobo and the drawstring'), crop: { ar: '4 / 3', pos: '50% 60%' }, at: [33, 6, 34], m: [100, 'c'], depth: -0.4, piece: 'All four bags' },
+        { ...shot('bags-pair-glance-cut', 'One model faces the camera with the duffle crossbody; the other turns away, the T-base on her back'), at: [70, 0, 30], m: [86, 'r'], depth: 0.5, piece: 'Duffle, T-base' },
+        { ...shot('bags-pair-seated-cut', 'Seated on the floor and on a chair, the duffle and T-base set down between them'), at: [28, 44, 44], m: [100, 'c'], depth: 0.2, piece: 'Duffle, T-base' },
+      ],
     },
   ],
+  // printed onto the backrooms' yellow: the light behind them becomes the way out
+  close: { ...shot('bags-pair-silhouette', 'The pair backlit to silhouettes, the bags dark shapes against the white'), piece: 'Duffle, T-base' },
 }
 
 // ─── 3D viewer ──────────────────────────────────────────────────────────────
@@ -418,7 +415,7 @@ export const models = {
       relief: { src: 'assets/shoot/jacket-open-front-cut.webp', w: 806, h: 1600 },
       line: 'Cherry maroon sheep nappa with olive suede collar, cuffs and hem.' },
     { id: 'duffle', label: 'Duffle bag', room: '#bags', src: '',
-      relief: { src: 'assets/shoot/duffle-held.webp', w: 705, h: 860 },
+      relief: { src: 'assets/shoot/duffle-cut.webp', w: 600, h: 600 },
       line: 'Olive cow suede and printed microfibre, with antique-finish hardware.' },
     { id: 'boot', label: 'Ankle boot', room: '#boots', src: '',
       relief: { src: 'assets/models/boot-relief.webp', w: 714, h: 525 },

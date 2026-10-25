@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useScroll } from '../lib/scroll'
@@ -6,11 +6,64 @@ import { guide, guideFor } from '../lib/guide'
 import { progress } from '../lib/progress'
 import { sound } from '../lib/sound'
 import { CarryModes, DayWithBag, Nesting } from './craft'
-import { Plate, RoomHead, Chips, Bom, Film, SheetsLink, Sign } from './parts'
-import { Level } from './Lookbook'
+import { RoomHead, Chips, Bom, Film, SheetsLink, Sign, Still } from './parts'
+import { url } from '../lib/asset'
+import { MoreBelow } from './RoomJacket'
 import { bags, collection } from '../content'
 
 gsap.registerPlugin(ScrollTrigger)
+
+// One bay: the bag cut out, with its close-ups pinned to it, and beside it a
+// small screen that plays the bag's film until a close-up is chosen, from a pin
+// or from the list of details.
+function Bay({ p, i }) {
+  const [look, setLook] = useState(null)
+  const vid = useRef(null), box = useRef(null)
+  useEffect(() => {
+    const v = vid.current
+    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) v.play().catch(() => {}); else v.pause() }, { threshold: 0.25 })
+    io.observe(box.current)
+    return () => io.disconnect()
+  }, [])
+  const hold = l => ({
+    onMouseEnter: () => setLook(l), onMouseLeave: () => setLook(null), onFocus: () => setLook(l), onBlur: () => setLook(null),
+    onClick: () => setLook(x => (x === l ? null : l)), 'aria-pressed': look === l,
+  })
+  const byLabel = Object.fromEntries(p.looks.map(l => [l.label, l]))
+  return (
+    <article ref={box} className="bay" aria-labelledby={`bay-${i}`}>
+      <span className="bay-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+      <div className="bag-stage">
+        <div className="bag-zone">
+          <div className="bag-cut" style={{ '--ar': p.cut.w / p.cut.h }}>
+            <Still {...p.cut} />
+            {p.looks.filter(l => l.at).map(l => (
+              <button key={l.label} type="button" className={`bag-pin ${look === l ? 'is-on' : ''}`} style={{ left: `${l.at[0] * 100}%`, top: `${l.at[1] * 100}%` }}
+                aria-label={`Close-up: ${l.label}`} {...hold(l)} />
+            ))}
+          </div>
+        </div>
+        <figure className="bag-screen">
+          <div className="bag-screen-box">
+            <video ref={vid} src={url(p.film.src)} poster={url(p.film.poster)} muted loop playsInline preload="none" aria-label={`Film: the ${p.name.toLowerCase()}`} />
+            {p.looks.map(l => <img key={l.src} src={url(l.src)} alt={l.alt} loading="lazy" className={look === l ? 'is-on' : ''} />)}
+          </div>
+          <figcaption>{look ? look.label : p.film.label}</figcaption>
+        </figure>
+      </div>
+      <div className="bay-copy">
+        <h3 id={`bay-${i}`} className="display bay-title">{p.name}</h3>
+        <p className="bay-line">{p.line}</p>
+        <p className="bay-size">{p.size}</p>
+        <ul className="details details--compact">
+          {p.details.map(d => <li key={d}>{byLabel[d] ? <button type="button" className="detail-link" {...hold(byLabel[d])}>{d}</button> : d}</li>)}
+        </ul>
+        <Bom rows={p.bom} />
+        <MoreBelow what={p.name.toLowerCase()} />
+      </div>
+    </article>
+  )
+}
 
 // Four bags parked in numbered bays. Scrolling drives along the row.
 export default function RoomBags() {
@@ -63,7 +116,7 @@ export default function RoomBags() {
   }, [ready, calm])
 
   return (
-    <section id="bags" className="room room--dark" data-tone="#5E5C3A" data-ink="light" data-sign={collection.signs.bags}>
+    <section id="bags" className="room room--dark room--noir" data-tone="#26271A" data-ink="light" data-sign={collection.signs.bags}>
       <RoomHead room={b} sign={collection.signs.bags} variant="bay" />
       <div className="room-intro">
         <p className="lead">{b.text}</p>
@@ -72,24 +125,7 @@ export default function RoomBags() {
 
       <div ref={pin} className={`bays-pin ${calm ? 'is-native' : ''}`}>
         <div ref={track} className="bays-track">
-          {b.pieces.map((p, i) => (
-            <article className="bay" key={p.name} aria-labelledby={`bay-${i}`}>
-              <span className="bay-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
-              <div className="bay-media">
-                <Plate {...p.img} kind={p.img.kind || 'cutout'} className="bay-plate" />
-                <div className="bay-close">
-                  {p.close.map(c => <Plate key={c.src} {...c} kind="photo" ratio="1 / 1" className="bay-close-plate" />)}
-                </div>
-              </div>
-              <div className="bay-copy">
-                <h3 id={`bay-${i}`} className="display bay-title">{p.name}</h3>
-                <p className="bay-line">{p.line}</p>
-                <p className="bay-size">{p.size}</p>
-                <ul className="details details--compact">{p.details.map(d => <li key={d}>{d}</li>)}</ul>
-                <Bom rows={p.bom} />
-              </div>
-            </article>
-          ))}
+          {b.pieces.map((p, i) => <Bay key={p.name} p={p} i={i} />)}
           <div className="bay bay--end">
             <Sign>{collection.signs.bagsEnd}</Sign>
             <p className="bay-end-text">Four bags from one hide, each carried more than one way.</p>
@@ -101,7 +137,6 @@ export default function RoomBags() {
       <DayWithBag day={b.day} />
       <Nesting nesting={b.nesting} />
 
-      <Level lv={b.shoot} calm={calm} />
       <div className="bags-after">
         <Film film={b.film} alt="Process film for the bags" className="bags-film" />
       </div>

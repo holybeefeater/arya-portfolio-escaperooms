@@ -190,27 +190,28 @@ until it is filled in, in `src/content.js`:
 
 ## The shoot (Escape Rooms)
 
-Shoot photographs live in `media/escape/shoot/` (developed from the raw files). Run
-`npm run media:escape` (Python 3 with Pillow; `pip install rembg onnxruntime` for the
-cut-outs) to write web sizes to `public/assets/shoot/` and, for the plain-background
-photographs listed in `CUT` in `scripts/escape-media.py`, a `-cut` version cut out of its
-background, used in the rooms. The script prints each size for `content.js`.
+Shoot photographs live in `media/escape/shoot/` (developed from the raw files); stills
+taken from the bag films in `media/escape/frames/`. `npm run media:escape` (Python 3 with
+Pillow and numpy; `pip install rembg onnxruntime` for the cut-outs) edits every photograph
+with the collection's grade (`scripts/noir.py`: neo-noir, fine grain, the product kept clear),
+cuts the names in `CUT` out of the studio with BiRefNet, and writes them to
+`public/assets/shoot/`. Then run `python3 scripts/shoot-sizes.py`, which records each size
+for `content.js` (`shot('name', alt)` reads it). BiRefNet needs a lot of memory: with many
+cut-outs, make them one per process (`CUTS_ONLY=1 python3 scripts/escape-media.py <name>`).
+The bag films are edited the same way when `FILMS_FROM=<folder of the originals>` is set.
 
-- **Jacket room**: the cut-out front view carries the detail markers; the back view and the
-  collar close-up sit beside it. **Prototype variant**: the four-shade brown prototype beside
-  the final maroon jacket, front, side and back (`jacket.prototype`).
-- **Boots room**: the cut-out side view and the hands lacing it.
-- **Bags room**: each bay shows the bag as made (cropped from the shoot, `CROPS` in the script)
-  with its close-ups beside it (`close` on each piece). The Hobo keeps its earlier product
-  photograph until a whole-bag shot of it is added. After the row, `bags.shoot` is a spread
-  of the two models with the four bags, laid out like a level of the lookbook.
-- **The way out** (`lookbook` in `content.js`, after the boots): the shoot as a way out of the
-  Backrooms, in three levels named with her wayfinding phrases. Level 0 is under yellow-green
-  strip light, Level 1 is a green security-camera feed, Level 2 is white light and ends at the
-  exit door. Your pointer is a torch that shows the photograph as it is; marks in exit-sign
-  green (loops, arrows, a measured 25 in, hazard tape) are drawn by the page, never across a
-  face. Every photograph opens untouched when clicked; under reduced motion they are simply
-  the photographs. The comment above `lookbook` lists every option.
+- **Jacket**: on a dark cherry ground, the side, front and back cut-outs stand on one line;
+  the front carries the detail markers and the stitch line. Close-ups, then the **fit
+  variant** (the jacket made once to check fit and pattern before the nappa was cut) and the
+  **pattern**: a dotted outline of every piece, drawn to her specification's measurements;
+  point at a piece and it fills with the leather it is cut from.
+- **Bags**: each bay shows the bag cut out, with its close-ups pinned to it; a small screen
+  beside it plays the bag's film and shows a close-up when a pin or a detail is chosen.
+- **Boots**: the cut-outs large on the deep green.
+- Each piece ends with a link down to **The shoot**, the lookbook: four levels, every
+  photograph cut out (a sodium-yellow back room for the boots, the jacket after dark on a
+  floor that reflects, cherry and olive for the bags), the cut-outs drifting at different
+  depths as you scroll, closing on the silhouettes printed onto the yellow.
 
 ## Print kit
 

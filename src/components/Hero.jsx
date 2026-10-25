@@ -166,7 +166,7 @@ export default function Hero({ onRoomReady }) {
         ))}
       </h1>
       <canvas ref={canvas} className="room-canvas" data-cursor="drag" aria-hidden="true" />
-      {failed && <img className="room-fallback" src={url('assets/shoot/duffle-held.webp')} alt="Olive suede duffle bag from Escape Rooms" />}
+      {failed && <img className="room-fallback" src={url('assets/shoot/duffle-cut.webp')} alt="Olive suede duffle bag from Escape Rooms" />}
 
       <div className="hero-fade hero-lede">
         <p ref={sign} className="lit-sign">

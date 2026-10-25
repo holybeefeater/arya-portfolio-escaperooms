@@ -5,7 +5,8 @@ import { useScroll } from '../lib/scroll'
 import { guide, guideFor } from '../lib/guide'
 import { progress } from '../lib/progress'
 import { Costing } from './craft'
-import { Plate, RoomHead, Spec, Bom, Film, SheetsLink, Sign } from './parts'
+import { Plate, RoomHead, Spec, Bom, Film, SheetsLink, Sign, Still } from './parts'
+import { MoreBelow } from './RoomJacket'
 import { boots, bags, collection } from '../content'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -80,7 +81,7 @@ export default function RoomBoots() {
   }, [ready, calm, smoother])
 
   return (
-    <section id="boots" className="room" data-tone="#BCC8C3" data-ink="dark" data-sign={collection.signs.boots}>
+    <section id="boots" className="room room--noir" data-tone="#10261F" data-ink="light" data-sign={collection.signs.boots}>
       <RoomHead room={b} sign={collection.signs.boots} variant="layers" />
       <div ref={pin} className="explode-pin">
         <div className="explode-copy">
@@ -113,13 +114,14 @@ export default function RoomBoots() {
       <div className="boots-after">
         {b.photos.map(p => (
           <figure key={p.src} className="boots-photo">
-            <Plate {...p} />
-            <figcaption className="caption">{p.alt}.</figcaption>
+            <Still {...p} />
+            <figcaption className="caption">{p.label}</figcaption>
           </figure>
         ))}
         <div className="boots-bom">
           <h3 className="h-small">Bill of materials, high ankle boot</h3>
           <Bom rows={b.bom} name="UK 9" />
+          <MoreBelow what="boots" />
         </div>
       </div>
       <Costing items={[...bags.pieces, { name: 'High ankle boot', bom: b.bom, retail: b.retail }]} />
