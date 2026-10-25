@@ -925,3 +925,13 @@ html[data-ink='dark'] .header-toggle { --aa-toggle-on: var(--tube); }
 }
 .room--noir .layer-band:nth-of-type(3) { color: #c99a6a; }
 .room--noir .layer-band:nth-of-type(4) { color: #8fa996; }
+
+/* other work: the internship prints, in order */
+.prints { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(14px, 2vw, 28px); margin-top: clamp(48px, 7vh, 80px); counter-reset: none; }
+.print-n { display: block; margin-bottom: 8px; font-weight: 800; font-stretch: 62%; font-size: clamp(1.6rem, 2.4vw, 2.4rem); line-height: 1; color: var(--wine); }
+.print-img { aspect-ratio: 1 !important; object-fit: contain; background: #e8e6dc; }
+.print-t { margin-top: 10px; font-size: 14px; font-weight: 700; }
+.print-d { margin-top: 4px; font-size: 13px; line-height: 1.45; opacity: 0.8; }
+.panels { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(14px, 2vw, 28px); margin-top: clamp(36px, 5vh, 60px); }
+.panels-bag { grid-column: 1 / -1; justify-self: center; width: min(100%, 560px); }
+@media (max-width: 860px) { .prints { grid-template-columns: repeat(2, minmax(0, 1fr)); } .panels { grid-template-columns: minmax(0, 1fr); } }

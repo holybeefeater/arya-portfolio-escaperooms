@@ -433,9 +433,20 @@ export const internship = {
   boards: [
     { title: 'Print 1: process', text: 'Eighteen trials that build a border, a grid and the motifs one layer at a time, until the finished print.', src: 'assets/communication/print-process.png', w: 935, h: 661,
       film: { src: 'assets/films/print.mp4', poster: 'assets/posters/print.webp' } },
-    { title: 'Print 4: double block', text: 'Four scarf-format studies in blue, ochre and brown that vary the border, motif scale and centre.', src: 'assets/communication/double-block.png', w: 935, h: 661 },
-    { title: 'Nano bag proposal', text: 'An inspiration deck covering prints, charms and silhouettes before development began.', src: 'assets/communication/nano-bag.png', w: 935, h: 661 },
   ],
+  // the prints developed for the scarf bags, in order, then the bag panels they became
+  prints: [
+    { title: 'Postmarks', text: 'Summer stamps, postmarks and hand-lettered place names, framed in Hats Off’s border.', src: 'assets/communication/print-stamps.webp', w: 1400, h: 1400 },
+    { title: 'Paradise patchwork', text: 'Dot-painted panels on the diagonal: jaguar, toucan, pineapple and palm, lettered “Hats Off”.', src: 'assets/communication/print-patchwork.webp', w: 1400, h: 1400 },
+    { title: 'Toucan garden', text: 'A mirrored tropical garden of toucans, parrots, bananas and acanthus scrolls around a palm.', src: 'assets/communication/print-toucan.webp', w: 1400, h: 1400 },
+    { title: 'Double block', text: 'Four scarf-format studies in blue, ochre and brown that vary the border, motif scale and centre.', src: 'assets/communication/double-block.png', w: 935, h: 661 },
+  ],
+  panels: [
+    { title: 'Scarf bag: Paradise patchwork', src: 'assets/communication/scarfbag-patchwork.webp', w: 1400, h: 700 },
+    { title: 'Scarf bag: Toucan garden', src: 'assets/communication/scarfbag-toucan.webp', w: 1400, h: 700 },
+  ],
+  // the finished scarf bag: add its photograph here, e.g. { src: 'assets/communication/scarf-bag.webp', w, h, alt }
+  bag: null,
 }
 
 // Shown as a corridor of doors. Add `thumb: 'assets/other/….webp'` to any item and

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { Plate, Sign, StretchTitle } from './parts'
+import { Plate, Sign, StretchTitle, Still } from './parts'
 import Mark from './Mark'
 import { url } from '../lib/asset'
 import { finePointer } from '../lib/motion'
@@ -11,7 +11,7 @@ import { collection, internship, otherWork, about, person, downloads, keys } fro
 
 export function OtherWork() {
   const i = internship
-  const [print, ...boards] = i.boards
+  const [print] = i.boards
   return (
     <section id="other" className="room" data-tone="#CBCFBF" data-ink="dark" data-sign={collection.signs.other}>
       <Sign>{collection.signs.other}</Sign>
@@ -29,13 +29,30 @@ export function OtherWork() {
           <figcaption className="caption"><strong>{print.title}.</strong> {print.text} {finePointer() ? 'Hover' : 'Tap'} to watch it build.</figcaption>
         </figure>
       </div>
-      <div className="boards">
-        {boards.map(b => (
-          <figure key={b.title} className="board">
-            <Plate kind="photo" src={b.src} alt={b.title} w={b.w} h={b.h} tilt={0.1} />
-            <figcaption className="caption"><strong>{b.title}.</strong> {b.text}</figcaption>
+      {/* the prints for the scarf bags, in order, then the bag panels, then the bag */}
+      <ol className="prints">
+        {i.prints.map((p, k) => (
+          <li key={p.title} className="print">
+            <span className="print-n">{String(k + 1).padStart(2, '0')}</span>
+            <Still src={p.src} alt={`${p.title}: ${p.text}`} w={p.w} h={p.h} className="print-img" />
+            <p className="print-t">{p.title}</p>
+            <p className="print-d">{p.text}</p>
+          </li>
+        ))}
+      </ol>
+      <div className="panels">
+        {i.panels.map(p => (
+          <figure key={p.src}>
+            <Still src={p.src} alt={`${p.title}, the two panels of the bag`} w={p.w} h={p.h} />
+            <figcaption className="caption">{p.title}, the two panels</figcaption>
           </figure>
         ))}
+        {i.bag && (
+          <figure className="panels-bag">
+            <Still {...i.bag} />
+            <figcaption className="caption">The scarf bag, made</figcaption>
+          </figure>
+        )}
       </div>
       <h3 className="h-small work-h">Research, publishing and identity</h3>
       <p className="doors-hint">{finePointer() ? 'Point at a door to look inside.' : 'Tap a door to look inside.'}</p>
