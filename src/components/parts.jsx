@@ -52,10 +52,11 @@ export function Plate({
 }
 
 // A photograph from the shoot, drawn plainly: no stage, no shadow, no frame.
-export function Still({ src, alt = '', w, h, className = '', style, eager, pos, ...rest }) {
+// A cut-out that runs into the photograph's edge fades out there (`edges`).
+export function Still({ src, alt = '', w, h, className = '', style, eager, pos, edges, label, ...rest }) {
   return (
     <img
-      className={`still ${className}`} src={url(src)} alt={alt} width={w} height={h}
+      className={`still ${edges ? 'fade fade-' + [...edges].join(' fade-') : ''} ${className}`} src={url(src)} alt={alt} width={w} height={h}
       loading={eager ? 'eager' : 'lazy'} decoding="async"
       style={{ aspectRatio: `${w} / ${h}`, objectPosition: pos, ...style }} {...rest}
     />

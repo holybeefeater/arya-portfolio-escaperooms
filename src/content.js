@@ -25,9 +25,10 @@ export const person = {
 import sizes from './shoot-sizes.js'
 
 // A photograph from the shoot, by name, with its size (see scripts/shoot-sizes.py).
+// `edges`: the sides where a cut-out runs into the photograph's own crop.
 export const shot = (name, alt = '') => {
-  const [w, h] = sizes[name] || [1, 1]
-  return { src: `assets/shoot/${name}.webp`, w, h, alt }
+  const [w, h, edges = ''] = sizes[name] || [1, 1]
+  return { src: `assets/shoot/${name}.webp`, w, h, alt, edges }
 }
 
 export const collection = {
@@ -347,8 +348,11 @@ export const boots = {
 // (scripts/escape-media.py). Each level is a spread placed in % of its width:
 //   scene  the ground behind it: 'backrooms' (sodium-yellow wall), 'alley'
 //          (night, a wet floor that reflects), 'cherry', 'olive'
-//   frames `at` [x, y, width] on the spread; `m` [width %, 'l' | 'r' | 'c'] in
-//          the column on a phone; `depth` how far it drifts as the page scrolls
+//   frames `at` [x, y, width] on the spread, or `on` [x, floor, width]: standing
+//          with its foot on that floor line (in % of the spread's width), so the
+//          level reads in one-point perspective, near and large below, far and
+//          small up toward the back wall; `m` [width %, 'l' | 'r' | 'c'] in the
+//          column on a phone; `depth` how far it drifts as the page scrolls
 //          (0 stays put); `echo` copies trailing behind it; `reflect` mirrored in
 //          the floor; `crop` a rectangle cut from a photograph ({ ar, pos })
 //   close  the last photograph, across the whole page
@@ -365,35 +369,34 @@ export const lookbook = {
       ],
     },
     {
-      id: 'level-1', n: '01', title: 'Level 1', line: 'The jacket, after dark.', scene: 'alley', tone: '#0B0F0C', ink: 'light', h: 70,
+      id: 'level-1', n: '01', title: 'Level 1', line: 'The jacket, after dark.', scene: 'alley', tone: '#0B0F0C', ink: 'light', h: 62,
       frames: [
-        { ...shot('jacket-profile-look-up-cut', 'In profile, head thrown back: the strap column, the olive suede collar, cuff and hem band'), at: [0, 6, 27], m: [70, 'l'], depth: -0.3, reflect: true, piece: 'Jacket' },
-        { ...shot('jacket-buckles-skin-cut', 'The jacket held open on bare skin, a ringed hand on the chest, straps and buckles down the open edge'), at: [30, 0, 24], m: [80, 'c'], depth: 0.5, piece: 'Jacket' },
-        { ...shot('jacket-dark-tilt-cut', 'Head tilted back in the dark, hands in pockets, the jacket catching a single light'), at: [56, 8, 18], m: [56, 'r'], depth: -0.2, reflect: true, piece: 'Jacket' },
-        { ...shot('jacket-back-glance-cut', 'From behind, looking back over the shoulder into the camera'), at: [76, 2, 22], m: [64, 'l'], depth: 0.4, reflect: true, piece: 'Jacket' },
-        { ...shot('jacket-collar-hand-cut', 'A ringed hand gripping the standing collar: olive suede against cherry maroon nappa'), at: [24, 40, 34], m: [100, 'c'], depth: 0.6, piece: 'Jacket' },
+        { ...shot('jacket-dark-tilt-cut', 'Head tilted back in the dark, hands in pockets, the jacket catching a single light'), on: [46.5, 42, 7.5], m: [56, 'r'], piece: 'Jacket' },
+        { ...shot('jacket-profile-look-up-cut', 'In profile, head thrown back: the strap column, the olive suede collar, cuff and hem band'), on: [26, 50, 15], m: [70, 'l'], piece: 'Jacket' },
+        { ...shot('jacket-back-glance-cut', 'From behind, looking back over the shoulder into the camera'), on: [60, 50, 12.5], m: [64, 'r'], piece: 'Jacket' },
+        { ...shot('jacket-buckles-skin', 'The jacket held open on bare skin, a ringed hand on the chest, straps and buckles down the open edge'), crop: { ar: '3 / 4', pos: '55% 40%' }, on: [2, 60, 21], m: [80, 'l'], piece: 'Jacket' },
+        { ...shot('jacket-collar-hand', 'A ringed hand gripping the standing collar: olive suede against cherry maroon nappa'), crop: { ar: '3 / 2', pos: '45% 45%' }, on: [72, 60, 26], m: [100, 'c'], piece: 'Jacket' },
       ],
     },
     {
-      id: 'level-2', n: '02', title: 'Level 2', line: 'Carrying the bags: the duffle by its handles and against the body, the drawstring and the T-base worn.', scene: 'cherry', tone: '#260C12', ink: 'light', h: 70,
+      id: 'level-2', n: '02', title: 'Level 2', line: 'Carrying the bags: the duffle by its handles and against the body, the drawstring and the T-base worn.', scene: 'cherry', tone: '#260C12', ink: 'light', h: 64,
       frames: [
-        { ...shot('duffle-handles-walk-cut', 'Walking toward the camera in the full look, the duffle carried by its handles'), at: [0, 2, 25], m: [74, 'l'], depth: 0.2, echo: 2, piece: 'Duffle' },
-        { ...shot('duffle-lean-back-cut', 'Leaning far back, knees bent, hugging the studded duffle to the body'), at: [25, 9, 28], m: [86, 'r'], depth: -0.3, piece: 'Duffle' },
-        { ...shot('drawstring-shoulder-cut', 'Glancing back, the drawstring worn on the back over the jacket'), at: [54, 0, 22], m: [66, 'l'], depth: 0.5, piece: 'Drawstring' },
-        { ...shot('tbase-crossbody-back-cut', 'From behind, looking down, the T-base at the hip'), at: [76, 14, 23], m: [66, 'r'], depth: -0.1, piece: 'T-base' },
+        { ...shot('drawstring-shoulder-cut', 'Glancing back, the drawstring worn on the back over the jacket'), on: [31, 42, 13], m: [66, 'l'], piece: 'Drawstring' },
+        { ...shot('tbase-crossbody-back-cut', 'From behind, looking down, the T-base at the hip'), on: [56, 42, 13], m: [66, 'r'], piece: 'T-base' },
+        { ...shot('duffle-lean-back-cut', 'Leaning far back, knees bent, hugging the studded duffle to the body'), on: [1, 63, 27], m: [86, 'l'], piece: 'Duffle' },
+        { ...shot('duffle-handles-walk-cut', 'Walking toward the camera in the full look, the duffle carried by its handles'), on: [76, 63, 19], m: [74, 'r'], piece: 'Duffle' },
       ],
     },
     {
-      id: 'level-3', n: '03', title: 'Level 3', line: 'Two people, four bags, passed between them.', scene: 'olive', tone: '#1A1D13', ink: 'light', h: 78,
+      id: 'level-3', n: '03', title: 'Level 3', line: 'Two people, four bags, passed between them.', scene: 'olive', tone: '#1A1D13', ink: 'light', h: 66,
       frames: [
-        { ...shot('bags-pair-lean-cut', 'Two models leaning together, the T-base worn crossbody and the duffle on the shoulder'), at: [0, 0, 30], m: [90, 'l'], depth: 0.3, piece: 'T-base, duffle' },
-        { ...shot('bags-four-close', 'All four bags piled together on suede: the T-base, the duffle, the pleated hobo and the drawstring'), crop: { ar: '4 / 3', pos: '50% 60%' }, at: [33, 6, 34], m: [100, 'c'], depth: -0.4, piece: 'All four bags' },
-        { ...shot('bags-pair-glance-cut', 'One model faces the camera with the duffle crossbody; the other turns away, the T-base on her back'), at: [70, 0, 30], m: [86, 'r'], depth: 0.5, piece: 'Duffle, T-base' },
-        { ...shot('bags-pair-seated-cut', 'Seated on the floor and on a chair, the duffle and T-base set down between them'), at: [28, 44, 44], m: [100, 'c'], depth: 0.2, piece: 'Duffle, T-base' },
+        { ...shot('bags-four-close', 'All four bags piled together on suede: the T-base, the duffle, the pleated hobo and the drawstring'), crop: { ar: '4 / 3', pos: '50% 60%' }, on: [37, 38, 26], m: [100, 'c'], piece: 'All four bags' },
+        { ...shot('bags-pair-lean-cut', 'Two models leaning together, the T-base worn crossbody and the duffle on the shoulder'), on: [5, 51, 26], m: [90, 'l'], piece: 'T-base, duffle' },
+        { ...shot('bags-pair-glance-cut', 'One model faces the camera with the duffle crossbody; the other turns away, the T-base on her back'), on: [71, 51, 22], m: [86, 'r'], piece: 'Duffle, T-base' },
+        { ...shot('bags-pair-seated-cut', 'Seated on the floor and on a chair, the duffle and T-base set down between them'), on: [30, 65, 40], m: [100, 'c'], piece: 'Duffle, T-base' },
       ],
     },
   ],
-  // printed onto the backrooms' yellow: the light behind them becomes the way out
   close: { ...shot('bags-pair-silhouette', 'The pair backlit to silhouettes, the bags dark shapes against the white'), piece: 'Duffle, T-base' },
 }
 
@@ -503,7 +506,7 @@ export const about = {
 
 // The Exit's clue cards, in this order.
 export const downloads = [
-  { label: 'Résumé', note: 'One page', file: 'downloads/Aditi-Arya-Resume.pdf', size: '0.8 MB' },
+  { label: 'Résumé', note: 'One page', file: 'downloads/Aditi-Arya-Resume.pdf', size: '30 KB' },
   { label: 'Full portfolio', note: '49 pages', file: 'downloads/Aditi-Arya-Full-Portfolio.pdf', size: '10 MB' },
   { label: 'Jacket', note: 'Project PDF', file: 'downloads/Aditi-Arya-Kimono-Jacket.pdf', size: '' },
   { label: 'Bags', note: 'Project PDF', file: 'downloads/Aditi-Arya-Escape-Rooms.pdf', size: '' },

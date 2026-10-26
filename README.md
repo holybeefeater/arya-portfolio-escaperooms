@@ -205,13 +205,15 @@ The bag films are edited the same way when `FILMS_FROM=<folder of the originals>
   variant** (the jacket made once to check fit and pattern before the nappa was cut) and the
   **pattern**: a dotted outline of every piece, drawn to her specification's measurements;
   point at a piece and it fills with the leather it is cut from.
-- **Bags**: each bay shows the bag cut out, with its close-ups pinned to it; a small screen
-  beside it plays the bag's film and shows a close-up when a pin or a detail is chosen.
+- **Bags**: each bay shows the bag cut out above its text, never over it; a pin on the bag
+  or a detail in the list shows that close-up in the same space. Each bag's film has its own
+  narrow bay right after it. `shoot-sizes.py` also records which edges a cut-out runs into,
+  and the page fades those edges out.
 - **Boots**: the cut-outs large on the deep green.
-- Each piece ends with a link down to **The shoot**, the lookbook: four levels, every
-  photograph cut out (a sodium-yellow back room for the boots, the jacket after dark on a
-  floor that reflects, cherry and olive for the bags), the cut-outs drifting at different
-  depths as you scroll, closing on the silhouettes printed onto the yellow.
+- Each piece ends with a link down to **The shoot**, the lookbook: four levels in one-point
+  perspective, a dotted room running to one vanishing point and the figures standing on its
+  floor (`on` in `content.js`): a sodium-yellow back room for the boots, the jacket after dark,
+  cherry and olive for the bags; closing on the silhouettes printed onto the yellow.
 
 ## Print kit
 

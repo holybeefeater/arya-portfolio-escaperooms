@@ -11,7 +11,6 @@ import { collection, internship, otherWork, about, person, downloads, keys } fro
 
 export function OtherWork() {
   const i = internship
-  const [print] = i.boards
   return (
     <section id="other" className="room" data-tone="#CBCFBF" data-ink="dark" data-sign={collection.signs.other}>
       <Sign>{collection.signs.other}</Sign>
@@ -24,13 +23,8 @@ export function OtherWork() {
           <p className="muted">{i.mentors}</p>
           <a className="btn btn--quiet" href={url(i.deck)} download>Download the internship presentation</a>
         </div>
-        <figure className="board board--film">
-          <Plate kind="film" film={print.film.src} poster={print.film.poster} alt={`${print.title}, build-up film`} ratio="1 / 1" w={560} h={560} />
-          <figcaption className="caption"><strong>{print.title}.</strong> {print.text} {finePointer() ? 'Hover' : 'Tap'} to watch it build.</figcaption>
-        </figure>
-      </div>
-      {/* the prints for the scarf bags, in order, then the bag panels, then the bag */}
-      <ol className="prints">
+        {/* the prints for the scarf bags, in order, beside the internship; then the bag panels, then the bag */}
+        <ol className="prints">
         {i.prints.map((p, k) => (
           <li key={p.title} className="print">
             <span className="print-n">{String(k + 1).padStart(2, '0')}</span>
@@ -39,7 +33,8 @@ export function OtherWork() {
             <p className="print-d">{p.text}</p>
           </li>
         ))}
-      </ol>
+        </ol>
+      </div>
       <div className="panels">
         {i.panels.map(p => (
           <figure key={p.src}>

@@ -62,3 +62,19 @@ def clean_alpha(cut):
     a[..., :3] = rgb
     out = Image.fromarray(a.astype(np.uint8), 'RGBA')
     return out.crop(out.getbbox())
+
+def clean(im, contrast=1.06, lift=0.0):
+    """The product grade: true colour, no grain, no tint. A gentle S-curve for
+    depth, and for cut-outs on a dark page a little lift in the shadows."""
+    rgba = im.convert('RGBA')
+    a = np.asarray(rgba).astype(np.float32) / 255
+    rgb, alpha = a[..., :3], a[..., 3:]
+    lum = (rgb * [0.2126, 0.7152, 0.0722]).sum(-1, keepdims=True)
+    # contrast on luminance only, so the hue and saturation of every colour stay
+    lum2 = np.clip(0.5 + (lum - 0.5) * contrast, 0, 1)
+    lum2 = lum2 + lift * (1 - lum2) ** 3
+    rgb = np.clip(rgb * (lum2 + 1e-4) / (lum + 1e-4), 0, 1)
+    out = np.concatenate([rgb, alpha], -1)
+    img = Image.fromarray((out * 255 + 0.5).astype(np.uint8), 'RGBA')
+    img = img.filter(ImageFilter.UnsharpMask(radius=1.0, percent=30, threshold=3))
+    return img if im.mode == 'RGBA' else img.convert('RGB')

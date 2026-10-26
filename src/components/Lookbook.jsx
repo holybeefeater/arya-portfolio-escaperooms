@@ -10,7 +10,24 @@ import { lookbook } from '../content'
 //  cut-outs drift at different depths. Click any photograph to open it.
 // ─────────────────────────────────────────────────────────────────────────────
 
-const place = it => ({ '--x': it.at[0], '--y': it.at[1], '--w': it.at[2], '--mw': it.m[0] })
+// `on`: standing on a floor line; the top is the floor less the picture's height
+const ratio = it => (it.crop ? (([a, b]) => b / a)(it.crop.ar.split('/').map(Number)) : it.h / it.w)
+const place = it => it.on
+  ? { '--x': it.on[0], '--y': it.on[1] - it.on[2] * ratio(it), '--w': it.on[2], '--mw': it.m[0], zIndex: Math.round(it.on[1]) }
+  : { '--x': it.at[0], '--y': it.at[1], '--w': it.at[2], '--mw': it.m[0] }
+
+// The room the level stands in: a back wall and the lines of floor, walls and
+// ceiling running to one vanishing point, drawn in dotted line.
+function Room({ h }) {
+  const wall = [36, 8, 64, Math.round(h * 0.6)]
+  const [x0, y0, x1, y1] = wall
+  return (
+    <svg className="lb-room" viewBox={`0 0 100 ${h}`} preserveAspectRatio="none" aria-hidden="true">
+      <rect x={x0} y={y0} width={x1 - x0} height={y1 - y0} />
+      <path d={`M0 0 L${x0} ${y0} M100 0 L${x1} ${y0} M0 ${h} L${x0} ${y1} M100 ${h} L${x1} ${y1}`} />
+    </svg>
+  )
+}
 
 function Frame({ it }) {
   const href = url(it.src)
@@ -26,7 +43,7 @@ function Frame({ it }) {
       {Array.from({ length: it.echo || 0 }, (_, k) => (
         <img key={k} className="lb-echo" src={href} alt="" aria-hidden="true" loading="lazy" style={{ '--k': k + 1 }} />
       ))}
-      <img className="lb-main" src={href} alt="" width={it.w} height={it.h} loading="lazy" decoding="async" />
+      <img className={`lb-main ${it.edges ? 'fade fade-' + [...it.edges].join(' fade-') : ''}`} src={href} alt="" width={it.w} height={it.h} loading="lazy" decoding="async" />
       {it.reflect && <img className="lb-reflect" src={href} alt="" aria-hidden="true" loading="lazy" />}
     </a>
   )
@@ -40,6 +57,7 @@ function Level({ lv }) {
         <p className="lb-line">{lv.line}</p>
       </header>
       <div className="lb-spread" style={{ '--h': lv.h }}>
+        <Room h={lv.h} />
         {lv.frames.map(it => (
           <figure key={it.src} className={`lb-item lb-m-${it.m[1]}`} style={place(it)} data-depth={it.depth || 0}>
             <Frame it={it} />

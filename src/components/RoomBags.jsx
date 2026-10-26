@@ -13,43 +13,33 @@ import { bags, collection } from '../content'
 
 gsap.registerPlugin(ScrollTrigger)
 
-// One bay: the bag cut out, with its close-ups pinned to it, and beside it a
-// small screen that plays the bag's film until a close-up is chosen, from a pin
-// or from the list of details.
+// One bay: the bag cut out, filling the space above its text. Choosing a
+// close-up (a pin on the bag, or a detail in the list) shows it in that same
+// space. The bag's film has a bay of its own, right after it.
 function Bay({ p, i }) {
   const [look, setLook] = useState(null)
-  const vid = useRef(null), box = useRef(null)
-  useEffect(() => {
-    const v = vid.current
-    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) v.play().catch(() => {}); else v.pause() }, { threshold: 0.25 })
-    io.observe(box.current)
-    return () => io.disconnect()
-  }, [])
   const hold = l => ({
     onMouseEnter: () => setLook(l), onMouseLeave: () => setLook(null), onFocus: () => setLook(l), onBlur: () => setLook(null),
     onClick: () => setLook(x => (x === l ? null : l)), 'aria-pressed': look === l,
   })
   const byLabel = Object.fromEntries(p.looks.map(l => [l.label, l]))
   return (
-    <article ref={box} className="bay" aria-labelledby={`bay-${i}`}>
+    <article className="bay" aria-labelledby={`bay-${i}`}>
       <span className="bay-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
-      <div className="bag-stage">
-        <div className="bag-zone">
-          <div className="bag-cut" style={{ '--ar': p.cut.w / p.cut.h }}>
-            <Still {...p.cut} />
-            {p.looks.filter(l => l.at).map(l => (
-              <button key={l.label} type="button" className={`bag-pin ${look === l ? 'is-on' : ''}`} style={{ left: `${l.at[0] * 100}%`, top: `${l.at[1] * 100}%` }}
-                aria-label={`Close-up: ${l.label}`} {...hold(l)} />
-            ))}
-          </div>
+      <div className="bag-zone">
+        <div className={`bag-cut ${look ? 'is-away' : ''}`} style={{ '--ar': p.cut.w / p.cut.h }}>
+          <Still {...p.cut} />
+          {p.looks.filter(l => l.at).map(l => (
+            <button key={l.label} type="button" className={`bag-pin ${look === l ? 'is-on' : ''}`} style={{ left: `${l.at[0] * 100}%`, top: `${l.at[1] * 100}%` }}
+              aria-label={`Close-up: ${l.label}`} {...hold(l)} />
+          ))}
         </div>
-        <figure className="bag-screen">
-          <div className="bag-screen-box">
-            <video ref={vid} src={url(p.film.src)} poster={url(p.film.poster)} muted loop playsInline preload="none" aria-label={`Film: the ${p.name.toLowerCase()}`} />
-            {p.looks.map(l => <img key={l.src} src={url(l.src)} alt={l.alt} loading="lazy" className={look === l ? 'is-on' : ''} />)}
-          </div>
-          <figcaption>{look ? look.label : p.film.label}</figcaption>
-        </figure>
+        {p.looks.map(l => (
+          <figure key={l.src} className={`bag-look ${look === l ? 'is-on' : ''}`} aria-hidden={look !== l}>
+            <img src={url(l.src)} alt={l.alt} loading="lazy" />
+            <figcaption>{l.label}</figcaption>
+          </figure>
+        ))}
       </div>
       <div className="bay-copy">
         <h3 id={`bay-${i}`} className="display bay-title">{p.name}</h3>
@@ -62,6 +52,23 @@ function Bay({ p, i }) {
         <MoreBelow what={p.name.toLowerCase()} />
       </div>
     </article>
+  )
+}
+
+// The bag's film, in a narrow bay of its own; it plays while it is in view.
+function FilmBay({ p }) {
+  const vid = useRef(null)
+  useEffect(() => {
+    const v = vid.current
+    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) v.play().catch(() => {}); else v.pause() }, { threshold: 0.3 })
+    io.observe(v)
+    return () => io.disconnect()
+  }, [])
+  return (
+    <figure className="bay bay--film">
+      <video ref={vid} src={url(p.film.src)} poster={url(p.film.poster)} muted loop playsInline preload="none" aria-label={`Film of the ${p.name.toLowerCase()}: ${p.film.label}`} />
+      <figcaption><strong>{p.name}</strong> · {p.film.label}</figcaption>
+    </figure>
   )
 }
 
@@ -125,7 +132,7 @@ export default function RoomBags() {
 
       <div ref={pin} className={`bays-pin ${calm ? 'is-native' : ''}`}>
         <div ref={track} className="bays-track">
-          {b.pieces.map((p, i) => <Bay key={p.name} p={p} i={i} />)}
+          {b.pieces.map((p, i) => [<Bay key={p.name} p={p} i={i} />, <FilmBay key={p.name + '-film'} p={p} />])}
           <div className="bay bay--end">
             <Sign>{collection.signs.bagsEnd}</Sign>
             <p className="bay-end-text">Four bags from one hide, each carried more than one way.</p>
